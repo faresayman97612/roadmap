@@ -364,6 +364,9 @@ function setConnStatus(status, label){
   if(lbl){ lbl.textContent = label; }
 }
 
+// ── Initialize Firebase App immediately ──
+firebase.initializeApp(FB_CONFIG);
+
 // ── ALLOWED EMAIL ──
 const ALLOWED_EMAIL = "faresayman12316@gmail.com"; // change to your email
 
@@ -375,22 +378,19 @@ function signInWithGoogle(){
   });
 }
 
-firebase.auth ? firebase.auth().onAuthStateChanged(user => {
+firebase.auth().onAuthStateChanged(user => {
   if(user && user.email === ALLOWED_EMAIL){
     document.getElementById("authGate").classList.add("hidden");
     initFirebase();
   } else if(user) {
-    // wrong email — sign them out and show error
     firebase.auth().signOut();
     document.getElementById("authError").classList.add("show");
     document.getElementById("authError").textContent = "Access denied. This tracker is private.";
   }
-  // if no user, gate stays visible
-}) : initFirebase();
+});
 
 function initFirebase(){
   try {
-    firebase.initializeApp(FB_CONFIG);
     const db = firebase.database();
     dbRef = db.ref(FB_PATH);
 
