@@ -1,0 +1,607 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ML Roadmap — Full Tracker</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:ital,wght@0,300;0,400;0,500;1,400&family=Cabinet+Grotesk:wght@400;500;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#080810;--surface:#0e0e1c;--surface2:#13132b;--border:#1a1a35;--border2:#242448;--text:#dde1f0;--muted:#565680;--muted2:#7878a8;--c0:#00e5ff;--c1:#7c3aed;--c2:#ec4899;--c3:#f59e0b;--c4:#00ff9d;--c5:#f97316}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);color:var(--text);font-family:'DM Mono',monospace;min-height:100vh;overflow-x:hidden}
+body::after{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");pointer-events:none;z-index:9999;opacity:.5}
+
+/* SIDEBAR */
+.sidebar{position:fixed;left:0;top:0;bottom:0;width:220px;background:var(--surface);border-right:1px solid var(--border);display:flex;flex-direction:column;z-index:200;transition:transform .3s ease}
+/* MOBILE OVERLAY */
+.sidebar-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:199;backdrop-filter:blur(2px)}
+.sidebar-overlay.open{display:block}
+/* HAMBURGER */
+.hamburger{display:none;position:fixed;top:12px;left:12px;z-index:300;background:var(--surface);border:1px solid var(--border);border-radius:8px;width:40px;height:40px;align-items:center;justify-content:center;cursor:pointer;flex-direction:column;gap:5px;padding:10px}
+.hamburger span{display:block;width:18px;height:2px;background:var(--text);border-radius:1px;transition:all .2s}
+.mobile-header{display:none;position:fixed;top:0;left:0;right:0;height:56px;background:var(--surface);border-bottom:1px solid var(--border);z-index:198;align-items:center;padding:0 16px 0 60px}
+.mobile-title{font-family:'Cabinet Grotesk',sans-serif;font-size:14px;font-weight:800;color:var(--text)}
+.mobile-pct{margin-left:auto;font-size:12px;color:var(--c4);font-weight:600}
+.sidebar-logo{padding:24px 20px 18px;border-bottom:1px solid var(--border)}
+.logo-title{font-family:'Cabinet Grotesk',sans-serif;font-size:16px;font-weight:900;letter-spacing:-.03em;line-height:1.1}
+.logo-title .accent{color:var(--c0)}
+.logo-sub{font-size:9px;color:var(--muted);letter-spacing:.14em;text-transform:uppercase;margin-top:5px}
+.nav-items{flex:1;padding:14px 10px;display:flex;flex-direction:column;gap:3px;overflow-y:auto}
+.nav-item{display:flex;align-items:center;gap:9px;padding:8px 11px;border-radius:7px;cursor:pointer;font-size:11px;color:var(--muted2);transition:all .15s;border:1px solid transparent;position:relative}
+.nav-item:hover{background:var(--surface2);color:var(--text)}
+.nav-item.active{background:var(--surface2);border-color:var(--border2);color:var(--text)}
+.nav-item.active .nav-accent{opacity:1}
+.nav-accent{position:absolute;left:0;top:5px;bottom:5px;width:2px;border-radius:1px;opacity:0;transition:opacity .2s}
+.nav-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0}
+.nav-pct{margin-left:auto;font-size:9px;color:var(--muted)}
+.nav-divider{height:1px;background:var(--border);margin:6px 0}
+.nav-label{font-size:9px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);padding:3px 11px 1px}
+.sidebar-footer{padding:14px 18px;border-top:1px solid var(--border)}
+.sf-label{font-size:9px;color:var(--muted);margin-bottom:6px;letter-spacing:.08em}
+.sf-pct{font-family:'Cabinet Grotesk',sans-serif;font-size:24px;font-weight:800;color:var(--c4)}
+.sf-track{background:var(--border);height:3px;border-radius:2px;overflow:hidden;margin-top:6px}
+.sf-fill{height:100%;background:linear-gradient(90deg,var(--c1),var(--c4));border-radius:2px;transition:width .6s}
+
+/* MAIN */
+.main{margin-left:220px;min-height:100vh}
+.page{display:none}
+.page.active{display:block;animation:fadein .2s ease}
+@keyframes fadein{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+
+/* DASHBOARD */
+.dash-header{padding:36px 36px 0}
+.dash-eyebrow{font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);margin-bottom:8px}
+.dash-title{font-family:'Cabinet Grotesk',sans-serif;font-size:clamp(26px,4vw,46px);font-weight:900;letter-spacing:-.03em;line-height:1;margin-bottom:5px}
+.dash-title em{color:var(--c0);font-style:normal}
+.dash-subtitle{font-size:11px;color:var(--muted2)}
+.stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;padding:22px 36px 0}
+.stat-box{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:16px 18px}
+.stat-box-label{font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-bottom:7px}
+.stat-box-value{font-family:'Cabinet Grotesk',sans-serif;font-size:30px;font-weight:800;line-height:1}
+.stat-box-sub{font-size:9px;color:var(--muted);margin-top:4px}
+.dash-charts{display:grid;grid-template-columns:1fr 1fr;gap:14px;padding:18px 36px 0}
+.chart-card{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:18px}
+.chart-title{font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-bottom:14px}
+.section-bars{display:flex;flex-direction:column;gap:12px}
+.sbar-row{display:flex;flex-direction:column;gap:5px}
+.sbar-header{display:flex;justify-content:space-between;align-items:baseline}
+.sbar-name{font-size:11px;font-weight:500}
+.sbar-meta{font-size:9px;color:var(--muted)}
+.sbar-track{background:var(--border);height:5px;border-radius:3px;overflow:hidden}
+.sbar-fill{height:100%;border-radius:3px;transition:width .6s cubic-bezier(.4,0,.2,1)}
+.heatmap-grid{display:grid;grid-template-columns:repeat(12,1fr);gap:6px}
+.hm-col{display:flex;flex-direction:column;align-items:center;gap:3px}
+.hm-month-label{font-size:7px;color:var(--muted)}
+.hm-cell{width:100%;aspect-ratio:1;border-radius:3px}
+.time-breakdown{display:flex;flex-direction:column;gap:9px}
+.tb-row{display:flex;align-items:center;gap:9px;font-size:10px}
+.tb-name{width:100px;flex-shrink:0;color:var(--muted2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tb-track{flex:1;background:var(--border);height:5px;border-radius:3px;overflow:hidden;position:relative}
+.tb-fill{height:100%;border-radius:3px;position:relative;z-index:1}
+.tb-bg{position:absolute;left:0;top:0;bottom:0;border-radius:3px;z-index:0}
+.tb-hrs{font-size:9px;color:var(--muted);width:36px;text-align:right;flex-shrink:0}
+.sections-overview{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;padding:18px 36px 36px}
+.overview-card{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:16px;cursor:pointer;transition:all .15s}
+.overview-card:hover{border-color:var(--border2);transform:translateY(-2px)}
+.oc-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px}
+.oc-dot{width:9px;height:9px;border-radius:50%;margin-top:2px;flex-shrink:0}
+.oc-badge{font-size:8px;letter-spacing:.1em;text-transform:uppercase;padding:3px 8px;border-radius:100px}
+.oc-title{font-family:'Cabinet Grotesk',sans-serif;font-size:13px;font-weight:700;margin-bottom:3px;line-height:1.2}
+.oc-meta{font-size:9px;color:var(--muted);margin-bottom:10px}
+.oc-track{background:var(--border);height:3px;border-radius:2px;overflow:hidden;margin-bottom:5px}
+.oc-fill{height:100%;border-radius:2px;transition:width .5s}
+.oc-pct{font-size:9px;color:var(--muted);display:flex;justify-content:space-between}
+
+/* SECTION PAGES */
+.section-page-header{padding:32px 36px 20px;border-bottom:1px solid var(--border);display:flex;align-items:flex-end;justify-content:space-between;gap:16px}
+.sph-eyebrow{font-size:9px;letter-spacing:.18em;text-transform:uppercase;margin-bottom:7px}
+.sph-title{font-family:'Cabinet Grotesk',sans-serif;font-size:clamp(20px,3vw,34px);font-weight:900;letter-spacing:-.02em;line-height:1;margin-bottom:5px}
+.sph-desc{font-size:10px;color:var(--muted2);max-width:380px}
+.sph-right{text-align:right;flex-shrink:0}
+.sph-pct-big{font-family:'Cabinet Grotesk',sans-serif;font-size:40px;font-weight:900;line-height:1}
+.sph-time-left{font-size:9px;color:var(--muted);margin-top:3px}
+.cards-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;padding:20px 36px 36px}
+
+/* TOPIC CARDS */
+.topic-card{background:var(--surface);border:1px solid var(--border);border-radius:11px;overflow:hidden;transition:border-color .15s,transform .15s}
+.topic-card:hover{transform:translateY(-1px);border-color:var(--border2)}
+.topic-card.status-done{border-color:rgba(0,255,157,.2)}
+.topic-card.status-wip{border-color:rgba(245,158,11,.25)}
+@keyframes pulse-wip{0%,100%{box-shadow:0 0 0 rgba(245,158,11,0)}50%{box-shadow:0 0 14px rgba(245,158,11,.12)}}
+.topic-card.status-wip{animation:pulse-wip 3s ease-in-out infinite}
+.tc-header{padding:13px 16px;display:flex;align-items:flex-start;justify-content:space-between;gap:10px;border-bottom:1px solid var(--border);position:relative}
+.tc-stripe{position:absolute;left:0;top:0;bottom:0;width:3px;opacity:0;transition:opacity .2s}
+.topic-card.status-done .tc-stripe,.topic-card.status-wip .tc-stripe{opacity:1}
+.topic-card.status-wip .tc-stripe{background:var(--c3)!important}
+.tc-num{font-size:9px;color:var(--muted);letter-spacing:.1em;margin-bottom:3px}
+.tc-title{font-family:'Cabinet Grotesk',sans-serif;font-size:14px;font-weight:700;line-height:1.2}
+.tc-badge{font-size:8px;letter-spacing:.1em;text-transform:uppercase;padding:3px 8px;border-radius:100px;font-weight:500;flex-shrink:0;white-space:nowrap}
+.badge-done{background:rgba(0,255,157,.1);color:var(--c4)}
+.badge-wip{background:rgba(245,158,11,.1);color:var(--c3)}
+.badge-todo{background:rgba(86,86,128,.12);color:var(--muted2)}
+.tc-body{padding:10px 16px}
+.checkpoint-row{display:flex;align-items:flex-start;gap:9px;padding:6px 0;border-bottom:1px solid rgba(26,26,53,.6)}
+.checkpoint-row:last-child{border-bottom:none}
+.ck-box{width:14px;height:14px;border-radius:3px;border:1.5px solid var(--border2);flex-shrink:0;margin-top:2px;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .12s}
+.ck-box:hover{border-color:var(--c0)}
+.ck-box.checked{border-color:var(--c4);background:var(--c4)}
+.ck-box.checked::after{content:'✓';font-size:8px;color:#000;font-weight:700}
+.ck-content{flex:1}
+.ck-topic{font-size:11px;font-weight:500;letter-spacing:.02em}
+.ck-detail{font-size:10px;color:var(--muted);margin-top:2px;line-height:1.35}
+.ck-time{font-size:9px;color:var(--muted);white-space:nowrap;flex-shrink:0;margin-top:3px}
+.tc-footer{padding:7px 16px 11px;display:flex;align-items:center;gap:7px}
+.tc-track{flex:1;background:var(--border);height:3px;border-radius:2px;overflow:hidden}
+.tc-fill{height:100%;border-radius:2px;transition:width .4s}
+.tc-pct-label{font-size:9px;color:var(--muted);min-width:26px;text-align:right}
+.tc-time-label{font-size:8px;color:var(--muted);margin-left:2px}
+.project-tag{display:inline-flex;align-items:center;gap:5px;font-size:9px;padding:5px 11px;margin:0 16px 12px;border-radius:6px;border:1px solid;line-height:1.35}
+.bonus-ck:hover{border-color:var(--c5)!important}
+.bonus-ck.checked{border-color:var(--c5)!important;background:var(--c5)!important}
+
+/* ═══ RESPONSIVE / MOBILE ═══ */
+@media (max-width:768px){
+  .hamburger{display:flex}
+  .mobile-header{display:flex}
+  .sidebar{transform:translateX(-100%);width:240px}
+  .sidebar.open{transform:translateX(0)}
+  .main{margin-left:0;padding-top:56px}
+  .dash-header{padding:20px 16px 0}
+  .stats-row{grid-template-columns:1fr 1fr;gap:8px;padding:16px 16px 0}
+  .stat-box{padding:12px 14px}
+  .stat-box-value{font-size:24px}
+  .dash-charts{grid-template-columns:1fr;gap:10px;padding:14px 16px 0}
+  .chart-card{padding:14px}
+  .sections-overview{grid-template-columns:1fr 1fr;gap:10px;padding:14px 16px 24px}
+  .section-page-header{padding:20px 16px 16px;flex-direction:column;align-items:flex-start;gap:12px}
+  .sph-right{text-align:left}
+  .sph-pct-big{font-size:28px}
+  .cards-grid{grid-template-columns:1fr;gap:12px;padding:16px 16px 28px}
+  .heatmap-grid{grid-template-columns:repeat(6,1fr);gap:8px}
+  .tb-name{width:72px;font-size:9px}
+  .sbar-name{font-size:10px}
+  .dash-title{font-size:clamp(22px,7vw,36px)}
+  div[style*="padding:0 36px 8px"]{padding:0 16px 8px!important}
+}
+@media (max-width:480px){
+  .stats-row{grid-template-columns:1fr 1fr}
+  .sections-overview{grid-template-columns:1fr}
+  .heatmap-grid{grid-template-columns:repeat(4,1fr)}
+}
+
+/* Connection status indicator */
+.conn-badge{position:fixed;bottom:16px;right:16px;z-index:9000;display:flex;align-items:center;gap:6px;background:var(--surface);border:1px solid var(--border);border-radius:100px;padding:5px 12px 5px 8px;font-size:10px;color:var(--muted);font-family:'DM Mono',monospace;transition:all .3s}
+.conn-dot{width:7px;height:7px;border-radius:50%;background:var(--muted);flex-shrink:0;transition:background .3s}
+.conn-badge.online .conn-dot{background:#00ff9d;box-shadow:0 0 6px rgba(0,255,157,.5)}
+.conn-badge.online{border-color:rgba(0,255,157,.2);color:var(--text)}
+.conn-badge.syncing .conn-dot{background:#f59e0b}
+.conn-badge.offline .conn-dot{background:#ef4444}
+@keyframes spin{to{transform:rotate(360deg)}}
+</style>
+<!-- Firebase SDK -->
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+</head>
+<body>
+
+<nav class="sidebar">
+  <div class="sidebar-logo">
+    <div class="logo-title">ML / AI<br><span class="accent">Roadmap</span></div>
+    <div class="logo-sub">Full Tracker</div>
+  </div>
+  <div class="nav-items">
+    <div class="nav-label">Overview</div>
+    <div class="nav-item active" data-page="dashboard" onclick="showPage('dashboard')">
+      <div class="nav-accent" style="background:var(--c0)"></div>
+      <div class="nav-dot" style="background:var(--c0)"></div>
+      <span>Dashboard</span>
+    </div>
+    <div class="nav-divider"></div>
+    <div class="nav-label">Core 12 Months</div>
+    <div class="nav-item" data-page="s0" onclick="showPage('s0')">
+      <div class="nav-accent" style="background:var(--c0)"></div>
+      <div class="nav-dot" style="background:var(--c0)"></div>
+      <span>Foundations</span><span class="nav-pct" id="nav-pct-s0">0%</span>
+    </div>
+    <div class="nav-item" data-page="s1" onclick="showPage('s1')">
+      <div class="nav-accent" style="background:var(--c1)"></div>
+      <div class="nav-dot" style="background:var(--c1)"></div>
+      <span>Classical ML</span><span class="nav-pct" id="nav-pct-s1">0%</span>
+    </div>
+    <div class="nav-item" data-page="s2" onclick="showPage('s2')">
+      <div class="nav-accent" style="background:var(--c2)"></div>
+      <div class="nav-dot" style="background:var(--c2)"></div>
+      <span>Deep Learning</span><span class="nav-pct" id="nav-pct-s2">0%</span>
+    </div>
+    <div class="nav-item" data-page="s3" onclick="showPage('s3')">
+      <div class="nav-accent" style="background:var(--c3)"></div>
+      <div class="nav-dot" style="background:var(--c3)"></div>
+      <span>LLMs & RAG</span><span class="nav-pct" id="nav-pct-s3">0%</span>
+    </div>
+    <div class="nav-item" data-page="s4" onclick="showPage('s4')">
+      <div class="nav-accent" style="background:var(--c4)"></div>
+      <div class="nav-dot" style="background:var(--c4)"></div>
+      <span>Production AI</span><span class="nav-pct" id="nav-pct-s4">0%</span>
+    </div>
+    <div class="nav-divider"></div>
+    <div class="nav-label">Extras</div>
+    <div class="nav-item" data-page="s5" onclick="showPage('s5')">
+      <div class="nav-accent" style="background:var(--c5)"></div>
+      <div class="nav-dot" style="background:var(--c5)"></div>
+      <span>Recommended+</span><span class="nav-pct" id="nav-pct-s5">0%</span>
+    </div>
+  </div>
+  <div class="sidebar-footer">
+    <div class="sf-label">Overall Progress</div>
+    <div class="sf-pct" id="sidebar-pct">0%</div>
+    <div class="sf-track"><div class="sf-fill" id="sidebar-fill"></div></div>
+  </div>
+</nav>
+<div class="sidebar-overlay" id="sidebarOverlay" onclick="closeSidebar()"></div>
+<div class="hamburger" id="hamburger" onclick="toggleSidebar()">
+  <span></span><span></span><span></span>
+</div>
+<div class="mobile-header">
+  <div class="mobile-title">ML Roadmap</div>
+  <div class="mobile-pct" id="mobile-pct">0%</div>
+</div>
+
+<div class="main">
+  <!-- DASHBOARD -->
+  <div class="page active" id="page-dashboard">
+    <div class="dash-header">
+      <div class="dash-eyebrow">12-Month Curriculum · ML / AI Engineer</div>
+      <div class="dash-title">Your Learning <em>Dashboard</em></div>
+      <div class="dash-subtitle">Progress weighted by actual learning time — not just checkbox count</div>
+    </div>
+    <div class="stats-row">
+      <div class="stat-box">
+        <div class="stat-box-label">Time Progress</div>
+        <div class="stat-box-value" id="d-overall-pct" style="color:var(--c4)">0%</div>
+        <div class="stat-box-sub">weighted by topic hours</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-box-label">Hours Done</div>
+        <div class="stat-box-value" id="d-hrs-done" style="color:var(--c0)">0h</div>
+        <div class="stat-box-sub">of <span id="d-hrs-total">0</span>h total</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-box-label">Topics Done</div>
+        <div class="stat-box-value" id="d-topics-done" style="color:var(--c1)">0</div>
+        <div class="stat-box-sub" id="d-topics-sub">of 0 total</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-box-label">Est. Remaining</div>
+        <div class="stat-box-value" id="d-remaining-hrs" style="color:var(--c5)">0h</div>
+        <div class="stat-box-sub">hours to completion</div>
+      </div>
+    </div>
+    <div class="dash-charts">
+      <div class="chart-card">
+        <div class="chart-title">Progress by Section (time-weighted)</div>
+        <div class="section-bars" id="d-section-bars"></div>
+      </div>
+      <div class="chart-card">
+        <div class="chart-title">Time Allocation per Section</div>
+        <div class="time-breakdown" id="d-time-breakdown"></div>
+      </div>
+      <div class="chart-card" style="grid-column:1/-1">
+        <div class="chart-title">Month-by-Month Completion Heatmap</div>
+        <div class="heatmap-grid" id="d-heatmap"></div>
+        <div style="display:flex;gap:14px;margin-top:12px;font-size:9px;color:var(--muted);align-items:center">
+          <span>0%</span>
+          <div style="display:flex;gap:3px">
+            <div style="width:11px;height:11px;border-radius:2px;background:var(--border)"></div>
+            <div style="width:11px;height:11px;border-radius:2px;background:#182818"></div>
+            <div style="width:11px;height:11px;border-radius:2px;background:#1e4a1e"></div>
+            <div style="width:11px;height:11px;border-radius:2px;background:#1a7a1a"></div>
+            <div style="width:11px;height:11px;border-radius:2px;background:var(--c4)"></div>
+          </div>
+          <span>100%</span>
+        </div>
+      </div>
+    </div>
+    <div style="padding:0 36px 8px;font-size:9px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);margin-top:4px">Jump to Section</div>
+    <div class="sections-overview" id="d-sections-overview"></div>
+  </div>
+
+  <!-- SECTION PAGES injected here -->
+  <div id="section-pages"></div>
+</div>
+
+<script>
+const SECTIONS=[{id:'s0',color:'#00e5ff',label:'Foundations',desc:'The base layer — math, Python, data manipulation, and software engineering practices built for ML.',months:[{title:'Math for ML',num:'M0',checkpoints:[{topic:'Linear Algebra',detail:'vectors, matrices, dot product, matrix multiply, transpose, inverse, eigenvalues & eigenvectors',hours:20},{topic:'Calculus',detail:'derivatives, chain rule, partial derivatives, gradients — intuition for backprop',hours:16},{topic:'Probability & Statistics',detail:'distributions, Bayes theorem, expectation, variance, MLE, MAP estimation',hours:18},{topic:'Information Theory',detail:'entropy, cross-entropy, KL divergence — loss functions explained from first principles',hours:10},{topic:'Optimisation',detail:'gradient descent, learning rate, convexity, saddle points, momentum intuition',hours:12},{topic:'Notation & tools',detail:'numpy for linear algebra, sympy for symbolic math, matplotlib for plotting math concepts',hours:8}],project:'Implement gradient descent from scratch + derive softmax & cross-entropy loss by hand'},{title:'Python Foundations',num:1,checkpoints:[{topic:'Core syntax',detail:'variables, operators, type system, f-strings',hours:8},{topic:'Control flow',detail:'if/else, for/while loops, comprehensions',hours:6},{topic:'Data structures',detail:'lists, dicts, sets, tuples — and when to use each',hours:8},{topic:'Functions',detail:'args, kwargs, closures, decorators, lambda',hours:10},{topic:'OOP',detail:'classes, inheritance, dunder methods, dataclasses',hours:12},{topic:'Tooling',detail:'VS Code, virtual environments, pip, Jupyter notebooks',hours:6}],project:'Build a CLI data parser that reads, processes and outputs structured JSON'},{title:'Data Preprocessing & Feature Engineering',num:2,checkpoints:[{topic:'NumPy',detail:'arrays, vectorised ops, broadcasting, masking',hours:10},{topic:'Pandas',detail:'DataFrames, groupby, merge, pivot, time-series indexing',hours:16},{topic:'Cleaning',detail:'missing values, outliers, duplicate detection, dtype casting',hours:10},{topic:'Feature engineering',detail:'encoding, binning, log-transforms, interaction terms',hours:12},{topic:'Scaling',detail:'StandardScaler, MinMaxScaler, RobustScaler — and why it matters',hours:6},{topic:'EDA tools',detail:'Matplotlib, Seaborn, Plotly — correlation heatmaps, distribution plots',hours:12}],project:'Full preprocessing pipeline on a Kaggle tabular dataset'},{title:'Software Engineering for ML',num:3,checkpoints:[{topic:'Git & GitHub',detail:'branching, pull requests, rebasing, .gitignore for ML repos',hours:8},{topic:'APIs',detail:'REST fundamentals, JSON, HTTP methods, status codes, auth headers',hours:8},{topic:'FastAPI',detail:'routing, Pydantic models, async endpoints, dependency injection',hours:16},{topic:'Packaging',detail:'modules, packages, pyproject.toml, __init__.py structure',hours:6},{topic:'Testing',detail:'pytest, fixtures, mock, unit tests for data pipelines',hours:10},{topic:'Docker basics',detail:'Dockerfile, build, run, volumes — containerising a Python app',hours:14}],project:'Containerised FastAPI ML service with full test suite'}]},{id:'s1',color:'#7c3aed',label:'Classical ML',desc:'Core ML algorithms from linear models to gradient boosting, with full scikit-learn mastery.',months:[{title:'Core Machine Learning',num:4,checkpoints:[{topic:'Fundamentals',detail:'bias-variance tradeoff, overfitting, cross-validation, metrics',hours:14},{topic:'Supervised learning',detail:'linear/logistic regression, SVMs, k-NN — maths + intuition',hours:18},{topic:'Tree models',detail:'decision trees, CART algorithm, feature importance, pruning',hours:12},{topic:'Scikit-learn',detail:'Pipeline, ColumnTransformer, GridSearchCV, joblib persistence',hours:10},{topic:'Unsupervised',detail:'K-Means, DBSCAN, PCA, t-SNE, silhouette score',hours:14},{topic:'Imbalanced data',detail:'SMOTE, class weights, precision-recall AUC vs ROC-AUC',hours:8}],project:'End-to-end classification pipeline on a healthcare or finance dataset'},{title:'Ensemble Learning & Advanced ML',num:5,checkpoints:[{topic:'Bagging',detail:'Random Forest — bootstrap sampling, out-of-bag error, feature subspacing',hours:12},{topic:'Boosting',detail:'XGBoost, LightGBM, CatBoost — learning rates, tree depth, early stopping',hours:20},{topic:'Stacking & blending',detail:'meta-learners, holdout sets, avoiding data leakage',hours:10},{topic:'Hyperparameter tuning',detail:'Optuna, Bayesian optimisation, Hyperopt',hours:12},{topic:'SHAP',detail:'global and local feature explanations, waterfall plots, beeswarms',hours:10},{topic:'Feature selection',detail:'recursive elimination, permutation importance, mutual information',hours:8}],project:'Kaggle-style tabular competition — beat a strong XGBoost baseline with a stacked ensemble'}]},{id:'s2',color:'#ec4899',label:'Deep Learning',desc:'Neural networks from scratch, PyTorch, CNNs, RNNs, transformers, and experiment tracking.',months:[{title:'Deep Learning & Neural Networks',num:6,checkpoints:[{topic:'Foundations',detail:'perceptrons, backpropagation, chain rule, gradient descent (Adam, RMSProp)',hours:18},{topic:'PyTorch',detail:'tensors, autograd, Dataset, DataLoader, training loops',hours:20},{topic:'CNNs',detail:'convolution, pooling, ResNet, transfer learning with torchvision',hours:18},{topic:'RNNs & LSTMs',detail:'sequence modelling, vanishing gradients, BPTT',hours:14},{topic:'Regularisation',detail:'dropout, batch norm, weight decay, early stopping',hours:8},{topic:'Experiment tracking',detail:'Weights & Biases, MLflow — metrics, artefacts, model registry',hours:10}],project:'Image or time-series classifier trained and tracked with W&B'},{title:'Transformers & Large Language Models',num:7,checkpoints:[{topic:'Attention mechanism',detail:'self-attention, multi-head attention, positional encoding',hours:16},{topic:'Transformer architecture',detail:'encoder-decoder, BERT vs GPT paradigms, layer norm',hours:14},{topic:'Hugging Face',detail:'Transformers library, tokenisers, pipeline API, model hub',hours:12},{topic:'Key models',detail:'BERT, RoBERTa, GPT-2/3, Llama, Mistral — when to use each',hours:10},{topic:'Tokenisation',detail:'BPE, WordPiece, SentencePiece — vocabulary size tradeoffs',hours:8},{topic:'NLP tasks',detail:'classification, NER, summarisation, QA — fine-tuning examples',hours:16}],project:'Intent classification system using a pre-trained transformer'}]},{id:'s3',color:'#f59e0b',label:'LLMs & RAG',desc:'LLM APIs, advanced prompting, retrieval-augmented generation, vector databases, and fine-tuning.',months:[{title:'LLM APIs, Prompting & Context Engineering',num:8,checkpoints:[{topic:'OpenAI API',detail:'chat completions, function calling, vision, streaming, token management',hours:10},{topic:'Anthropic API',detail:'Messages API, system prompts, tool use, extended thinking',hours:10},{topic:'Prompt engineering',detail:'chain-of-thought, few-shot, role prompting, XML structuring',hours:14},{topic:'Context engineering',detail:'context window management, KV-cache awareness, prompt compression',hours:12},{topic:'Structured outputs',detail:'JSON mode, Pydantic with Instructor, schema enforcement',hours:8},{topic:'FastAPI + LLM',detail:'streaming inference endpoint with retry logic and rate limiting',hours:16}],project:'Multi-model chat API that routes prompts to the right model based on task type'},{title:'RAG & Vector Databases',num:9,checkpoints:[{topic:'Embeddings',detail:'text-embedding-3, sentence-transformers, cosine similarity, ANN search',hours:12},{topic:'Vector DBs',detail:'Pinecone, Weaviate, Qdrant, pgvector — indexing strategies (HNSW, IVF)',hours:14},{topic:'RAG pipeline',detail:'document chunking, metadata filtering, hybrid search (dense + BM25)',hours:18},{topic:'LangChain / LlamaIndex',detail:'document loaders, retrieval chains, re-rankers',hours:14},{topic:'Evaluation',detail:'RAGAS — faithfulness, answer relevance, context recall',hours:10},{topic:'Advanced RAG',detail:'query rewriting, HyDE, contextual compression, multi-hop retrieval',hours:16}],project:'Production RAG system over a custom knowledge base with RAGAS evaluation'},{title:'Fine-tuning & Model Customisation',num:10,checkpoints:[{topic:'Full fine-tuning',detail:'task-specific datasets, learning rate schedules, catastrophic forgetting',hours:14},{topic:'LoRA & QLoRA',detail:'low-rank adapter theory, quantisation, PEFT library',hours:16},{topic:'Instruction tuning',detail:'RLHF concepts, DPO, dataset curation with rejection sampling',hours:14},{topic:'Unsloth / Axolotl',detail:'fast fine-tuning frameworks, config files, GPU memory management',hours:12},{topic:'Evaluation',detail:'perplexity, BLEU, ROUGE, MT-Bench, LLM-as-judge pattern',hours:10},{topic:'Model serving',detail:'vLLM, llama.cpp, Ollama — batching, continuous batching, quantised inference',hours:14}],project:'Fine-tune a 7B model on a domain-specific dataset and serve it via an API'}]},{id:'s4',color:'#00ff9d',label:'Production AI',desc:'Multi-agent systems, MCP protocol, MLOps/LLMOps pipelines, and cloud deployment at scale.',months:[{title:'AI Agents & Multi-Agent Systems',num:11,checkpoints:[{topic:'Agent fundamentals',detail:'ReAct loop, tool calling, memory types (working, episodic, semantic)',hours:14},{topic:'Tool design',detail:'writing reliable tool schemas, handling errors, timeouts, retries',hours:10},{topic:'Frameworks',detail:'LangGraph, AutoGen, CrewAI — state machines vs graph-based orchestration',hours:16},{topic:'Multi-agent systems',detail:'role specialisation, supervisor patterns, parallelism, debate',hours:14},{topic:'MCP',detail:'Model Context Protocol — server/client architecture, resource and tool exposure',hours:12},{topic:'Safety & eval',detail:'agent evals, guardrails, prompt injection defences, human-in-the-loop',hours:10}],project:'Multi-agent research assistant — one planner, one searcher, one writer agent'},{title:'MLOps & LLMOps',num:12,checkpoints:[{topic:'ML pipelines',detail:'Prefect, Airflow, or ZenML — DAGs, triggers, artefact versioning',hours:14},{topic:'CI/CD for ML',detail:'GitHub Actions, DVC, automated re-training on data drift',hours:12},{topic:'Monitoring',detail:'data drift (Evidently), concept drift, LLM output monitoring, latency SLAs',hours:12},{topic:'LLMOps stack',detail:'LangSmith, Helicone, Langfuse — tracing, prompt versioning, cost tracking',hours:10},{topic:'Cloud deployment',detail:'AWS SageMaker / GCP Vertex / Modal — serverless GPU, auto-scaling',hours:18},{topic:'Infrastructure as code',detail:'Terraform basics, managed vector DB deployment, secrets management',hours:14}],project:'Deploy a full RAG + agent system to production with CI/CD, monitoring, and a public API'}]},{id:'s5',color:'#f97316',label:'Recommended Additions',isBonus:true,desc:'Critical skills missing from the core roadmap — SQL, cloud, distributed data, evals, k8s, and multimodal.',months:[{title:'SQL & Data Engineering',num:'B1',roleLabel:'All roles',checkpoints:[{topic:'SQL fundamentals',detail:'SELECT, WHERE, GROUP BY, HAVING, ORDER BY, subqueries',hours:12},{topic:'Window functions',detail:'ROW_NUMBER, RANK, LAG/LEAD, running totals, partitioning',hours:10},{topic:'CTEs & advanced queries',detail:'WITH clauses, recursive CTEs, query optimisation, EXPLAIN',hours:10},{topic:'Data modelling',detail:'star schema, fact/dimension tables, normalisation vs denormalisation',hours:8},{topic:'Database options',detail:'PostgreSQL, BigQuery, DuckDB — when to use each',hours:6},{topic:'ETL basics',detail:'batch vs streaming ingestion, dbt for transformations',hours:10}],project:'Build and query a star-schema analytics DB from raw CSV data using DuckDB + dbt'},{title:'Cloud Platforms (Hands-on)',num:'B2',roleLabel:'MLOps / Cloud',checkpoints:[{topic:'AWS core services',detail:'S3, EC2, Lambda, IAM roles, VPC basics, ECR',hours:14},{topic:'AWS ML services',detail:'SageMaker training jobs, endpoints, batch transform, Pipelines',hours:18},{topic:'GCP alternative',detail:'Vertex AI, Cloud Run, GCS, BigQuery ML',hours:10},{topic:'Serverless GPU',detail:'Modal, RunPod, vast.ai — cost-efficient GPU inference',hours:8},{topic:'Cost management',detail:'spot instances, reserved capacity, budget alerts, right-sizing',hours:6},{topic:'Secrets & config',detail:'AWS Secrets Manager, Parameter Store, environment management',hours:6}],project:'Deploy a fine-tuned model on SageMaker with auto-scaling and a CloudWatch dashboard'},{title:'Distributed Data & Spark',num:'B3',roleLabel:'Data / Scale',checkpoints:[{topic:'PySpark basics',detail:'RDDs vs DataFrames, transformations, actions, lazy evaluation',hours:14},{topic:'Spark SQL',detail:'SQL interface, schema inference, partitioning strategies',hours:10},{topic:'Streaming',detail:'Spark Structured Streaming vs Kafka — windowing, watermarks',hours:12},{topic:'Delta Lake',detail:'ACID transactions, time travel, schema evolution, merge operations',hours:10},{topic:'Databricks',detail:'notebooks, clusters, jobs, Unity Catalog basics',hours:10},{topic:'Performance tuning',detail:'skew handling, broadcast joins, caching, shuffle optimisation',hours:10}],project:'Build a Spark pipeline processing 10M+ rows, aggregating features, writing to Delta Lake'},{title:'LLM Evaluation & Safety',num:'B4',roleLabel:'LLM / AI',checkpoints:[{topic:'Eval frameworks',detail:'Braintrust, Inspect AI, HELM, custom eval harnesses',hours:10},{topic:'LLM-as-judge',detail:'pairwise comparison, rubric-based scoring, bias in judge models',hours:10},{topic:'Red-teaming',detail:'adversarial prompting, jailbreaks, systematic failure mode discovery',hours:10},{topic:'Hallucination detection',detail:'factuality scoring, RAG faithfulness, citation verification',hours:8},{topic:'Guardrails',detail:'NeMo Guardrails, Llama Guard, input/output filtering pipelines',hours:10},{topic:'Multimodal eval',detail:'vision-language benchmarks, VQA, image-text alignment scoring',hours:8}],project:'Build an eval suite for a RAG chatbot — automated scoring + human eval workflow'},{title:'Kubernetes & Production Infra',num:'B5',roleLabel:'MLOps / Cloud',checkpoints:[{topic:'K8s fundamentals',detail:'pods, deployments, services, namespaces, ConfigMaps, Secrets',hours:16},{topic:'ML workloads on k8s',detail:'resource requests/limits, GPU node pools, tolerations, affinity',hours:12},{topic:'Helm charts',detail:'packaging ML services, values files, chart repositories',hours:10},{topic:'Horizontal scaling',detail:'HPA, KEDA for event-driven autoscaling, KEDA + Kafka',hours:10},{topic:'Service mesh basics',detail:'Istio or Linkerd — traffic management, canary deployments',hours:8},{topic:'Observability',detail:'Prometheus, Grafana, distributed tracing with Jaeger/Tempo',hours:12}],project:'Deploy a multi-service ML system on a local k8s cluster with Helm'},{title:'Multimodal & Vision-Language',num:'B6',roleLabel:'LLM / AI',checkpoints:[{topic:'Vision transformers',detail:'ViT, DINOv2, CLIP — patch embeddings, contrastive learning',hours:14},{topic:'Vision-language models',detail:'LLaVA, Qwen-VL, PaliGemma, InternVL — architecture differences',hours:14},{topic:'Multimodal APIs',detail:'GPT-4o vision, Claude 3 vision, Gemini Pro Vision — use cases',hours:8},{topic:'Image generation',detail:'Stable Diffusion, FLUX, ControlNet — fine-tuning with DreamBooth',hours:12},{topic:'OCR & document AI',detail:'Tesseract, PaddleOCR, DocumentAI — layout-aware parsing',hours:10},{topic:'Video understanding',detail:'frame sampling, VideoLLaMA, temporal reasoning basics',hours:10}],project:'Build a document intelligence pipeline: ingest PDFs, extract tables, answer questions via VLM'}]}];
+
+function defaultState(){const s={};SECTIONS.forEach(sec=>{s[sec.id]=sec.months.map(m=>({checked:new Array(m.checkpoints.length).fill(false)}))});return s}
+
+// ── Firebase config — replace with YOUR values ──
+const FB_CONFIG = {
+  apiKey: "AIzaSyAqQ6_fMH6ZWUiUVft-lkrcq7PtGlVK0QQ",
+  authDomain: "roadmap-ai-engineer.firebaseapp.com",
+  databaseURL: "https://roadmap-ai-engineer-default-rtdb.firebaseio.com",
+  projectId: "roadmap-ai-engineer",
+  storageBucket: "roadmap-ai-engineer.firebasestorage.app",
+  messagingSenderId: "537772791154",
+  appId: "1:537772791154:web:d302ea03be43cc8c0379eb"
+};
+const FB_PATH = "roadmap/state"; // path in the Realtime Database
+
+let state = defaultState();
+let dbRef = null;
+let _ignoreNext = false; // prevent echo loop
+
+function setConnStatus(status, label){
+  const badge = document.getElementById('connBadge');
+  const lbl = document.getElementById('connLabel');
+  if(badge){ badge.className = 'conn-badge ' + status; }
+  if(lbl){ lbl.textContent = label; }
+}
+
+function initFirebase(){
+  try {
+    firebase.initializeApp(FB_CONFIG);
+    const db = firebase.database();
+    dbRef = db.ref(FB_PATH);
+
+    // Connection state
+    db.ref('.info/connected').on('value', snap => {
+      if(snap.val()) setConnStatus('online','live sync');
+      else setConnStatus('offline','offline');
+    });
+
+    // Listen for remote changes → update local state and re-render
+    dbRef.on('value', snap => {
+      const remote = snap.val();
+      if(!remote){ setConnStatus('online','live — no data yet'); return; }
+      // Merge: keep any sections not in remote (e.g. new sections added later)
+      SECTIONS.forEach(sec => {
+        if(remote[sec.id]){
+          sec.months.forEach((m, mi) => {
+            if(remote[sec.id][mi] && remote[sec.id][mi].checked){
+              state[sec.id][mi].checked = remote[sec.id][mi].checked;
+            }
+          });
+        }
+      });
+      buildSectionPages();
+      updateAll();
+      setConnStatus('online','live sync');
+    });
+
+  } catch(e) {
+    console.warn('Firebase init failed:', e);
+    setConnStatus('offline','local only');
+    // Fall back to localStorage
+    try{ state = JSON.parse(localStorage.getItem('mlv3')) || defaultState(); }catch{}
+  }
+}
+
+function save(){
+  // Always keep localStorage as fallback
+  try{ localStorage.setItem('mlv3', JSON.stringify(state)); }catch{}
+  // Push to Firebase
+  if(dbRef){
+    setConnStatus('syncing','saving...');
+    dbRef.set(state)
+      .then(()=> setConnStatus('online','live sync'))
+      .catch(()=> setConnStatus('offline','save failed'));
+  }
+}
+
+function secHours(secId){const sec=SECTIONS.find(s=>s.id===secId);const st=state[secId];let done=0,total=0;sec.months.forEach((m,mi)=>m.checkpoints.forEach((cp,ci)=>{total+=cp.hours;if(st[mi].checked[ci])done+=cp.hours}));return{done,total}}
+function secChecked(secId){const sec=SECTIONS.find(s=>s.id===secId);const st=state[secId];let done=0,total=0;sec.months.forEach((m,mi)=>m.checkpoints.forEach((_,ci)=>{total++;if(st[mi].checked[ci])done++}));return{done,total}}
+function secPct(secId){const h=secHours(secId);return h.total===0?0:Math.round(h.done/h.total*100)}
+function monthPct(secId,mi){const sec=SECTIONS.find(s=>s.id===secId);const st=state[secId][mi];const m=sec.months[mi];const done=m.checkpoints.reduce((s,cp,ci)=>s+(st.checked[ci]?cp.hours:0),0);const total=m.checkpoints.reduce((s,cp)=>s+cp.hours,0);return total===0?0:Math.round(done/total*100)}
+function globalStats(){let td=0,tt=0,hd=0,ht=0;SECTIONS.forEach(sec=>{const c=secChecked(sec.id);const h=secHours(sec.id);td+=c.done;tt+=c.total;hd+=h.done;ht+=h.total});return{topicsDone:td,topicsTotal:tt,hrsDone:hd,hrsTotal:ht,pct:ht===0?0:Math.round(hd/ht*100)}}
+
+function showPage(id){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
+  document.getElementById('page-'+id).classList.add('active');
+  document.querySelector(`.nav-item[data-page="${id}"]`).classList.add('active');
+  updateAll();
+}
+
+function buildSectionPages(){
+  const container=document.getElementById('section-pages');
+  SECTIONS.forEach(sec=>{
+    const page=document.createElement('div');
+    page.className='page';page.id='page-'+sec.id;
+    page.innerHTML=`
+      <div class="section-page-header">
+        <div>
+          <div class="sph-eyebrow" style="color:${sec.color}">${sec.isBonus?'✦ Recommended Additions':'● Section'}</div>
+          <div class="sph-title">${sec.label}</div>
+          <div class="sph-desc">${sec.desc}</div>
+        </div>
+        <div class="sph-right">
+          <div class="sph-pct-big" id="sph-pct-${sec.id}" style="color:${sec.color}">0%</div>
+          <div class="sph-time-left" id="sph-time-${sec.id}">—</div>
+        </div>
+      </div>
+      <div class="cards-grid" id="cards-${sec.id}"></div>`;
+    container.appendChild(page);
+    const grid=page.querySelector(`#cards-${sec.id}`);
+    sec.months.forEach((m,mi)=>grid.appendChild(buildCard(sec,mi)));
+  });
+}
+
+function buildCard(sec,mi){
+  const m=sec.months[mi];const isBonus=sec.isBonus;
+  const card=document.createElement('div');
+  card.className='topic-card';card.id=`card-${sec.id}-${mi}`;
+  const numLabel=typeof m.num==='number'?`Month ${m.num} · ${String(m.num).padStart(2,'0')}/12`:`Bonus ${m.num}`;
+  const pc=isBonus?'rgba(249,115,22,.1)':'rgba(124,58,237,.08)';
+  const pb=isBonus?'rgba(249,115,22,.22)':'rgba(124,58,237,.22)';
+  const pt=isBonus?'#f97316':'#a78bfa';
+  card.innerHTML=`
+    <div class="tc-header">
+      <div class="tc-stripe" id="stripe-${sec.id}-${mi}" style="background:${sec.color}"></div>
+      <div>
+        <div class="tc-num">${numLabel}${m.roleLabel?' · '+m.roleLabel:''}</div>
+        <div class="tc-title">${m.title}</div>
+      </div>
+      <div class="tc-badge badge-todo" id="badge-${sec.id}-${mi}">upcoming</div>
+    </div>
+    <div class="tc-body" id="body-${sec.id}-${mi}"></div>
+    <div class="project-tag" style="background:${pc};border-color:${pb};color:${pt}">▸ ${m.project}</div>
+    <div class="tc-footer">
+      <div class="tc-track"><div class="tc-fill" id="fill-${sec.id}-${mi}" style="background:${sec.color}"></div></div>
+      <div class="tc-pct-label" id="pct-${sec.id}-${mi}">0%</div>
+      <div class="tc-time-label" id="tlbl-${sec.id}-${mi}"></div>
+    </div>`;
+  const body=card.querySelector(`#body-${sec.id}-${mi}`);
+  m.checkpoints.forEach((cp,ci)=>{
+    const row=document.createElement('div');row.className='checkpoint-row';
+    row.innerHTML=`
+      <div class="ck-box${isBonus?' bonus-ck':''}" data-sec="${sec.id}" data-mi="${mi}" data-ci="${ci}"></div>
+      <div class="ck-content">
+        <div class="ck-topic">${cp.topic}</div>
+        <div class="ck-detail">${cp.detail}</div>
+      </div>
+      <div class="ck-time">~${cp.hours}h</div>`;
+    row.querySelector('.ck-box').addEventListener('click',e=>{
+      const{sec:sid,mi:m,ci:c}=e.target.dataset;
+      state[sid][+m].checked[+c]=!state[sid][+m].checked[+c];
+      save();updateAll();
+    });
+    body.appendChild(row);
+  });
+  return card;
+}
+
+function updateAll(){
+  const g=globalStats();
+  document.getElementById('sidebar-pct').textContent=g.pct+'%';
+  document.getElementById('sidebar-fill').style.width=g.pct+'%';
+  const _mpct=document.getElementById('mobile-pct');if(_mpct)_mpct.textContent=g.pct+'%';
+  SECTIONS.forEach(sec=>{
+    const pct=secPct(sec.id);
+    const el=document.getElementById('nav-pct-'+sec.id);
+    if(el)el.textContent=pct+'%';
+    sec.months.forEach((m,mi)=>{
+      const pct=monthPct(sec.id,mi);
+      const st=state[sec.id][mi];
+      const totalH=m.checkpoints.reduce((s,cp)=>s+cp.hours,0);
+      const doneH=m.checkpoints.reduce((s,cp,ci)=>s+(st.checked[ci]?cp.hours:0),0);
+      const fill=document.getElementById(`fill-${sec.id}-${mi}`);if(fill)fill.style.width=pct+'%';
+      const pctEl=document.getElementById(`pct-${sec.id}-${mi}`);if(pctEl)pctEl.textContent=pct+'%';
+      const tlbl=document.getElementById(`tlbl-${sec.id}-${mi}`);if(tlbl)tlbl.textContent=pct===100?`${totalH}h ✓`:`${totalH-doneH}h left`;
+      const badge=document.getElementById(`badge-${sec.id}-${mi}`);
+      if(badge){badge.className='tc-badge '+(pct===100?'badge-done':pct>0?'badge-wip':'badge-todo');badge.textContent=pct===100?'done':pct>0?'in progress':'upcoming'}
+      const card=document.getElementById(`card-${sec.id}-${mi}`);
+      if(card){card.className='topic-card '+(pct===100?'status-done':pct>0?'status-wip':'')}
+      m.checkpoints.forEach((_,ci)=>{
+        const box=document.querySelector(`.ck-box[data-sec="${sec.id}"][data-mi="${mi}"][data-ci="${ci}"]`);
+        if(box)box.classList.toggle('checked',!!st.checked[ci]);
+      });
+    });
+    const h=secHours(sec.id);const pct2=secPct(sec.id);
+    const sp=document.getElementById(`sph-pct-${sec.id}`);if(sp)sp.textContent=pct2+'%';
+    const st2=document.getElementById(`sph-time-${sec.id}`);if(st2)st2.textContent=`${h.done}h done · ${h.total-h.done}h remaining`;
+  });
+  updateDashboard(g);
+}
+
+function updateDashboard(g){
+  document.getElementById('d-overall-pct').textContent=g.pct+'%';
+  document.getElementById('d-hrs-done').textContent=g.hrsDone+'h';
+  document.getElementById('d-hrs-total').textContent=g.hrsTotal;
+  document.getElementById('d-topics-done').textContent=g.topicsDone;
+  document.getElementById('d-topics-sub').textContent=`of ${g.topicsTotal} total`;
+  document.getElementById('d-remaining-hrs').textContent=(g.hrsTotal-g.hrsDone)+'h';
+
+  // Section bars
+  const barsEl=document.getElementById('d-section-bars');barsEl.innerHTML='';
+  SECTIONS.forEach(sec=>{
+    const pct=secPct(sec.id);const h=secHours(sec.id);
+    barsEl.innerHTML+=`<div class="sbar-row">
+      <div class="sbar-header">
+        <div class="sbar-name" style="color:${sec.color}">${sec.label}</div>
+        <div class="sbar-meta">${pct}% · ${h.done}h / ${h.total}h</div>
+      </div>
+      <div class="sbar-track"><div class="sbar-fill" style="width:${pct}%;background:${sec.color}"></div></div>
+    </div>`;
+  });
+
+  // Time breakdown
+  const tbEl=document.getElementById('d-time-breakdown');tbEl.innerHTML='';
+  const maxH=Math.max(...SECTIONS.map(sec=>secHours(sec.id).total));
+  SECTIONS.forEach(sec=>{
+    const h=secHours(sec.id);
+    const wt=(h.total/maxH)*100,wd=(h.done/maxH)*100;
+    tbEl.innerHTML+=`<div class="tb-row">
+      <div class="tb-name" style="color:${sec.color}">${sec.label}</div>
+      <div class="tb-track">
+        <div class="tb-bg" style="width:${wt}%;background:${sec.color}22"></div>
+        <div class="tb-fill" style="width:${wd}%;background:${sec.color}"></div>
+      </div>
+      <div class="tb-hrs">${h.total}h</div>
+    </div>`;
+  });
+
+  // Heatmap
+  const hmEl=document.getElementById('d-heatmap');hmEl.innerHTML='';
+  let mi=0;
+  SECTIONS.filter(s=>!s.isBonus).forEach(sec=>{
+    sec.months.forEach((m,mii)=>{
+      mi++;const pct=monthPct(sec.id,mii);
+      const bg=pct===0?'var(--border)':pct<25?'#182818':pct<50?'#1e4a1e':pct<75?'#1a7a1a':pct<100?'#00cc66':'var(--c4)';
+      hmEl.innerHTML+=`<div class="hm-col">
+        <div class="hm-month-label">M${mi}</div>
+        <div class="hm-cell" style="background:${bg}" title="${m.title}: ${pct}%"></div>
+        <div style="font-size:7px;color:var(--muted);text-align:center">${pct}%</div>
+      </div>`;
+    });
+  });
+
+  // Overview cards
+  const ovEl=document.getElementById('d-sections-overview');ovEl.innerHTML='';
+  SECTIONS.forEach(sec=>{
+    const pct=secPct(sec.id);const h=secHours(sec.id);const c=secChecked(sec.id);
+    const bt=pct===100?'Complete':pct>0?'In Progress':'Not Started';
+    const bb=pct===100?'rgba(0,255,157,.1)':pct>0?'rgba(245,158,11,.1)':'rgba(86,86,128,.1)';
+    const bc=pct===100?'#00ff9d':pct>0?'#f59e0b':'#565680';
+    ovEl.innerHTML+=`<div class="overview-card" onclick="showPage('${sec.id}')">
+      <div class="oc-top">
+        <div class="oc-dot" style="background:${sec.color}"></div>
+        <div class="oc-badge" style="background:${bb};color:${bc}">${bt}</div>
+      </div>
+      <div class="oc-title">${sec.label}</div>
+      <div class="oc-meta">${sec.months.length} modules · ${h.total}h total</div>
+      <div class="oc-track"><div class="oc-fill" style="width:${pct}%;background:${sec.color}"></div></div>
+      <div class="oc-pct"><span style="color:${sec.color};font-weight:500">${pct}%</span><span>${c.done}/${c.total} topics</span></div>
+    </div>`;
+  });
+}
+
+buildSectionPages();
+updateAll();
+setConnStatus('', 'connecting...');
+initFirebase();
+
+// Mobile sidebar
+function toggleSidebar(){
+  const s=document.querySelector('.sidebar');
+  const o=document.getElementById('sidebarOverlay');
+  s.classList.toggle('open');
+  o.classList.toggle('open');
+}
+function closeSidebar(){
+  document.querySelector('.sidebar').classList.remove('open');
+  document.getElementById('sidebarOverlay').classList.remove('open');
+}
+
+// Close sidebar on nav item click (mobile)
+document.querySelectorAll('.nav-item').forEach(el=>{
+  el.addEventListener('click',()=>{ if(window.innerWidth<=768) closeSidebar(); });
+});
+
+
+</script>
+<div class="conn-badge" id="connBadge">
+  <div class="conn-dot" id="connDot"></div>
+  <span id="connLabel">connecting...</span>
+</div>
+</body>
+</html>
