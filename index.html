@@ -202,12 +202,12 @@ body::after{content:'';position:fixed;inset:0;background-image:url("data:image/s
 <div id="authGate">
   <div class="auth-box">
     <div class="auth-logo">ML / AI <span>Roadmap</span></div>
-    <div class="auth-sub">Private tracker · sign in to continue</div>
+    <div class="auth-sub">Sign in to track your personal progress</div>
     <button class="auth-btn" onclick="signInWithGoogle()">
       <svg width="18" height="18" viewBox="0 0 18 18"><path fill="#4285F4" d="M17.64 9.2c0-.637-.057-1.251-.164-1.84H9v3.481h4.844c-.209 1.125-.843 2.078-1.796 2.717v2.258h2.908c1.702-1.567 2.684-3.874 2.684-6.615z"/><path fill="#34A853" d="M9 18c2.43 0 4.467-.806 5.956-2.18l-2.908-2.259c-.806.54-1.837.86-3.048.86-2.344 0-4.328-1.584-5.036-3.711H.957v2.332A8.997 8.997 0 0 0 9 18z"/><path fill="#FBBC05" d="M3.964 10.71A5.41 5.41 0 0 1 3.682 9c0-.593.102-1.17.282-1.71V4.958H.957A8.996 8.996 0 0 0 0 9c0 1.452.348 2.827.957 4.042l3.007-2.332z"/><path fill="#EA4335" d="M9 3.58c1.321 0 2.508.454 3.44 1.345l2.582-2.58C13.463.891 11.426 0 9 0A8.997 8.997 0 0 0 .957 4.958L3.964 6.29C4.672 4.163 6.656 3.58 9 3.58z"/></svg>
       Sign in with Google
     </button>
-    <div class="auth-error" id="authError">Access denied. This tracker is private.</div>
+    <div class="auth-error" id="authError"></div>
   </div>
 </div>
 
@@ -262,6 +262,13 @@ body::after{content:'';position:fixed;inset:0;background-image:url("data:image/s
     <div class="sf-label">Overall Progress</div>
     <div class="sf-pct" id="sidebar-pct">0%</div>
     <div class="sf-track"><div class="sf-fill" id="sidebar-fill"></div></div>
+    <div style="margin-top:14px;padding-top:12px;border-top:1px solid var(--border);display:flex;align-items:center;gap:8px">
+      <img id="sidebar-avatar" src="" style="width:24px;height:24px;border-radius:50%;object-fit:cover;background:var(--border2);flex-shrink:0" onerror="this.style.display='none'">
+      <div style="flex:1;min-width:0">
+        <div id="sidebar-username" style="font-size:10px;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis"></div>
+      </div>
+      <div onclick="firebase.auth().signOut()" title="Sign out" style="cursor:pointer;color:var(--muted);font-size:10px;padding:3px 6px;border-radius:4px;border:1px solid var(--border);transition:all .15s" onmouseover="this.style.color='var(--text)'" onmouseout="this.style.color='var(--muted)'">out</div>
+    </div>
   </div>
 </nav>
 <div class="sidebar-overlay" id="sidebarOverlay" onclick="closeSidebar()"></div>
@@ -367,9 +374,6 @@ function setConnStatus(status, label){
 // ── Initialize Firebase App immediately ──
 firebase.initializeApp(FB_CONFIG);
 
-// ── ALLOWED EMAIL ──
-const ALLOWED_EMAIL = "faresayman12316@gmail.com"; // change to your email
-
 function signInWithGoogle(){
   const provider = new firebase.auth.GoogleAuthProvider();
   firebase.auth().signInWithPopup(provider).catch(err => {
@@ -379,20 +383,23 @@ function signInWithGoogle(){
 }
 
 firebase.auth().onAuthStateChanged(user => {
-  if(user && user.email === ALLOWED_EMAIL){
+  if(user){
     document.getElementById("authGate").classList.add("hidden");
-    initFirebase();
-  } else if(user) {
-    firebase.auth().signOut();
-    document.getElementById("authError").classList.add("show");
-    document.getElementById("authError").textContent = "Access denied. This tracker is private.";
+    // Show user info in sidebar
+    const uname = document.getElementById("sidebar-username");
+    const uavatar = document.getElementById("sidebar-avatar");
+    if(uname) uname.textContent = user.displayName || user.email;
+    if(uavatar) uavatar.src = user.photoURL || "";
+    // Store progress under user's unique ID
+    initFirebase(user.uid);
   }
 });
 
-function initFirebase(){
+function initFirebase(uid){
   try {
     const db = firebase.database();
-    dbRef = db.ref(FB_PATH);
+    const userPath = "roadmap/users/" + uid + "/state";
+    dbRef = db.ref(userPath);
 
     // Connection state
     db.ref('.info/connected').on('value', snap => {
