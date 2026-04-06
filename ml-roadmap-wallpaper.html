@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ML Roadmap — Wallpaper</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@300;400;500&family=Cabinet+Grotesk:wght@700;800;900&display=swap" rel="stylesheet">
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --bg:#080810;--surface:rgba(14,14,28,0.85);--border:rgba(26,26,53,0.8);
+  --text:#dde1f0;--muted:#565680;--muted2:#7878a8;
+  --c0:#00e5ff;--c1:#7c3aed;--c2:#ec4899;--c3:#f59e0b;--c4:#00ff9d;--c5:#f97316;
+}
+
+html,body{width:100%;height:100%;overflow:hidden;background:var(--bg)}
+
+/* Animated grid */
+body::before{
+  content:'';position:fixed;inset:0;
+  background-image:
+    linear-gradient(rgba(0,229,255,0.025) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(0,229,255,0.025) 1px,transparent 1px);
+  background-size:48px 48px;
+  animation:gridpulse 8s ease-in-out infinite;
+  pointer-events:none;
+}
+@keyframes gridpulse{0%,100%{opacity:.6}50%{opacity:1}}
+
+/* Floating particles */
+.particle{position:fixed;border-radius:50%;pointer-events:none;animation:float linear infinite}
+@keyframes float{0%{transform:translateY(100vh) scale(0);opacity:0}10%{opacity:1}90%{opacity:.3}100%{transform:translateY(-10vh) scale(1);opacity:0}}
+
+/* Main layout */
+.wallpaper{
+  width:100vw;height:100vh;
+  display:grid;
+  grid-template-rows:auto 1fr auto;
+  grid-template-columns:1fr;
+  padding:32px 36px;
+  gap:20px;
+  position:relative;z-index:1;
+}
+
+/* TOP BAR */
+.top-bar{
+  display:flex;align-items:center;justify-content:space-between;
+}
+
+.logo{
+  font-family:'Cabinet Grotesk',sans-serif;
+  font-size:13px;font-weight:900;letter-spacing:-.02em;
+  color:var(--muted2);
+}
+.logo span{color:var(--c0)}
+
+.top-center{
+  display:flex;align-items:center;gap:8px;
+}
+
+.overall-pct{
+  font-family:'Cabinet Grotesk',sans-serif;
+  font-size:clamp(36px,6vw,72px);
+  font-weight:900;
+  letter-spacing:-.04em;
+  color:var(--c4);
+  line-height:1;
+  text-shadow:0 0 40px rgba(0,255,157,.3);
+}
+
+.overall-label{
+  font-size:10px;color:var(--muted);
+  letter-spacing:.16em;text-transform:uppercase;
+  margin-top:4px;
+}
+
+.top-right{text-align:right}
+.time-stat{font-family:'Cabinet Grotesk',sans-serif;font-size:20px;font-weight:800;color:var(--c0)}
+.time-label{font-size:9px;color:var(--muted);letter-spacing:.1em;text-transform:uppercase;margin-top:2px}
+
+/* MIDDLE — Section cards */
+.sections-grid{
+  display:grid;
+  grid-template-columns:repeat(6,1fr);
+  gap:12px;
+  align-items:stretch;
+}
+
+.sec-card{
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:12px;
+  padding:16px 14px;
+  backdrop-filter:blur(8px);
+  display:flex;flex-direction:column;gap:10px;
+  position:relative;overflow:hidden;
+  transition:border-color .3s;
+}
+
+.sec-card::before{
+  content:'';position:absolute;
+  left:0;top:0;bottom:0;width:2px;
+  border-radius:1px;
+}
+
+.sec-label{
+  font-size:9px;letter-spacing:.14em;text-transform:uppercase;
+  font-weight:500;
+}
+
+.sec-name{
+  font-family:'Cabinet Grotesk',sans-serif;
+  font-size:13px;font-weight:800;line-height:1.2;
+  color:var(--text);
+}
+
+.sec-pct-big{
+  font-family:'Cabinet Grotesk',sans-serif;
+  font-size:clamp(28px,3.5vw,44px);
+  font-weight:900;line-height:1;
+  margin-top:auto;
+}
+
+.sec-track{
+  background:rgba(26,26,53,.8);
+  height:3px;border-radius:2px;overflow:hidden;
+}
+.sec-fill{height:100%;border-radius:2px;transition:width 1s cubic-bezier(.4,0,.2,1)}
+
+.sec-meta{font-size:9px;color:var(--muted);display:flex;justify-content:space-between}
+
+/* Month dots */
+.month-dots{display:flex;gap:3px;flex-wrap:wrap}
+.mdot{width:7px;height:7px;border-radius:2px;transition:background .5s}
+
+/* BOTTOM — Month heatmap + stats */
+.bottom-bar{
+  display:grid;
+  grid-template-columns:1fr auto;
+  gap:20px;
+  align-items:end;
+}
+
+.heatmap-wrap{
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:10px;
+  padding:14px 16px;
+  backdrop-filter:blur(8px);
+}
+
+.heatmap-title{
+  font-size:8px;letter-spacing:.16em;text-transform:uppercase;
+  color:var(--muted);margin-bottom:10px;
+}
+
+.hm-grid{display:flex;gap:6px;align-items:flex-end}
+.hm-col{display:flex;flex-direction:column;align-items:center;gap:3px}
+.hm-bar{
+  width:28px;border-radius:3px 3px 0 0;
+  transition:height .8s cubic-bezier(.4,0,.2,1), background .5s;
+  min-height:3px;
+}
+.hm-lbl{font-size:7px;color:var(--muted)}
+.hm-pct{font-size:7px;color:var(--muted2)}
+
+.stats-mini{
+  display:flex;flex-direction:column;gap:8px;
+  min-width:140px;
+}
+
+.stat-mini-box{
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:8px;
+  padding:10px 14px;
+  backdrop-filter:blur(8px);
+}
+.smb-label{font-size:8px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-bottom:3px}
+.smb-val{font-family:'Cabinet Grotesk',sans-serif;font-size:20px;font-weight:800;line-height:1}
+
+/* Sync dot */
+.sync-dot{
+  position:fixed;bottom:14px;right:16px;
+  display:flex;align-items:center;gap:5px;
+  font-size:9px;color:var(--muted);
+  font-family:'DM Mono',monospace;
+}
+.sdot{width:6px;height:6px;border-radius:50%;background:var(--muted)}
+.sync-dot.live .sdot{background:var(--c4);box-shadow:0 0 6px rgba(0,255,157,.5)}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
+.sync-dot.live .sdot{animation:blink 2s ease-in-out infinite}
+
+/* Loading */
+#loading{
+  position:fixed;inset:0;background:var(--bg);
+  display:flex;align-items:center;justify-content:center;
+  flex-direction:column;gap:12px;z-index:999;
+  transition:opacity .5s;
+}
+#loading.fade{opacity:0;pointer-events:none}
+.loading-ring{
+  width:40px;height:40px;border-radius:50%;
+  border:2px solid var(--border);
+  border-top-color:var(--c0);
+  animation:spin .8s linear infinite;
+}
+@keyframes spin{to{transform:rotate(360deg)}}
+.loading-txt{font-size:11px;color:var(--muted);letter-spacing:.1em}
+</style>
+</head>
+<body>
+
+<div id="loading">
+  <div class="loading-ring"></div>
+  <div class="loading-txt">syncing progress...</div>
+</div>
+
+<div class="wallpaper" id="wallpaper" style="opacity:0;transition:opacity .6s">
+
+  <!-- TOP -->
+  <div class="top-bar">
+    <div class="logo">ML / AI <span>Roadmap</span></div>
+    <div style="text-align:center">
+      <div class="overall-pct" id="w-overall-pct">0%</div>
+      <div class="overall-label">overall progress</div>
+    </div>
+    <div class="top-right">
+      <div class="time-stat" id="w-hrs-done" style="color:var(--c0)">0h</div>
+      <div class="time-label">hours done</div>
+      <div class="time-stat" id="w-hrs-left" style="color:var(--c5);margin-top:8px">0h</div>
+      <div class="time-label">remaining</div>
+    </div>
+  </div>
+
+  <!-- MIDDLE -->
+  <div class="sections-grid" id="w-sections"></div>
+
+  <!-- BOTTOM -->
+  <div class="bottom-bar">
+    <div class="heatmap-wrap">
+      <div class="heatmap-title">Month-by-Month Completion</div>
+      <div class="hm-grid" id="w-heatmap"></div>
+    </div>
+    <div class="stats-mini">
+      <div class="stat-mini-box">
+        <div class="smb-label">Topics Done</div>
+        <div class="smb-val" id="w-topics" style="color:var(--c1)">0/0</div>
+      </div>
+      <div class="stat-mini-box">
+        <div class="smb-label">Active Sections</div>
+        <div class="smb-val" id="w-active" style="color:var(--c3)">0</div>
+      </div>
+      <div class="stat-mini-box">
+        <div class="smb-label">Completed</div>
+        <div class="smb-val" id="w-completed" style="color:var(--c4)">0</div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<div class="sync-dot" id="syncDot">
+  <div class="sdot"></div>
+  <span id="syncLabel">connecting</span>
+</div>
+
+<script>
+// ── CONFIG ──────────────────────────────────────
+const FB_CONFIG = {
+  apiKey: "AIzaSyAqQ6_fMH6ZWUiUVft-lkrcq7PtGlVK0QQ",
+  authDomain: "roadmap-ai-engineer.firebaseapp.com",
+  databaseURL: "https://roadmap-ai-engineer-default-rtdb.firebaseio.com",
+  projectId: "roadmap-ai-engineer",
+  storageBucket: "roadmap-ai-engineer.firebasestorage.app",
+  messagingSenderId: "537772791154",
+  appId: "1:537772791154:web:d302ea03be43cc8c0379eb"
+};
+
+const USER_UID  = "MPUynfCFMlfzX3PVTZeTCqAJCQE2"; // Fares's UID — hardcoded
+const DB_PATH   = "roadmap/users/" + USER_UID + "/state";
+
+// ── SECTIONS (labels + colors + hour weights) ───
+const SECTIONS = [
+  { id:'s0', color:'#00e5ff', label:'Foundations',    months:4 },
+  { id:'s1', color:'#7c3aed', label:'Classical ML',   months:2 },
+  { id:'s2', color:'#ec4899', label:'Deep Learning',  months:2 },
+  { id:'s3', color:'#f59e0b', label:'LLMs & RAG',     months:3 },
+  { id:'s4', color:'#00ff9d', label:'Production AI',  months:2 },
+  { id:'s5', color:'#f97316', label:'Extras',         months:6 },
+];
+
+// Hour weights per section (mirrors main app)
+const SEC_HOURS = {
+  s0:{ total:206, months:[84,66,62] },   // Math+Python+DataPrep+SWE
+  s1:{ total:148, months:[76,72] },
+  s2:{ total:172, months:[88,76] },      // DL + Transformers (approx month totals)
+  s3:{ total:252, months:[70,84,80] },   // wait we need full month list
+  s4:{ total:152, months:[76,80] },
+  s5:{ total:368, months:[56,62,66,56,68,68] },
+};
+
+// Full months list for heatmap (12 core months)
+const CORE_MONTHS = [
+  {secId:'s0',mi:1,label:'M1'},{secId:'s0',mi:2,label:'M2'},{secId:'s0',mi:3,label:'M3'},
+  {secId:'s1',mi:0,label:'M4'},{secId:'s1',mi:1,label:'M5'},
+  {secId:'s2',mi:0,label:'M6'},{secId:'s2',mi:1,label:'M7'},
+  {secId:'s3',mi:0,label:'M8'},{secId:'s3',mi:1,label:'M9'},{secId:'s3',mi:2,label:'M10'},
+  {secId:'s4',mi:0,label:'M11'},{secId:'s4',mi:1,label:'M12'},
+];
+
+// ── PARTICLES ───────────────────────────────────
+function spawnParticles(){
+  const colors=['#00e5ff','#7c3aed','#00ff9d','#f59e0b','#ec4899'];
+  for(let i=0;i<18;i++){
+    const p=document.createElement('div');
+    p.className='particle';
+    const size=Math.random()*3+1;
+    p.style.cssText=`
+      width:${size}px;height:${size}px;
+      background:${colors[Math.floor(Math.random()*colors.length)]};
+      opacity:${Math.random()*.4+.1};
+      left:${Math.random()*100}%;
+      animation-duration:${Math.random()*20+15}s;
+      animation-delay:${Math.random()*15}s;
+    `;
+    document.body.appendChild(p);
+  }
+}
+spawnParticles();
+
+// ── STATE ────────────────────────────────────────
+let state = null;
+
+function getPct(secState, monthIdx){
+  if(!secState || !secState[monthIdx]) return 0;
+  const checks = secState[monthIdx].checked || [];
+  if(!checks.length) return 0;
+  return Math.round(checks.filter(Boolean).length / checks.length * 100);
+}
+
+function getSecPct(secId, secState){
+  if(!secState) return 0;
+  const months = secState;
+  let done=0,total=0;
+  months.forEach(m=>{ (m.checked||[]).forEach(c=>{ total++; if(c) done++; }); });
+  return total===0?0:Math.round(done/total*100);
+}
+
+function getSecHours(secId, secState){
+  if(!secState) return {done:0,total:0};
+  // Just use checkbox ratio × total hours
+  const s = SECTIONS.find(s=>s.id===secId);
+  const h = SEC_HOURS[secId];
+  const pct = getSecPct(secId, secState)/100;
+  return { done: Math.round(h.total*pct), total: h.total };
+}
+
+// ── RENDER ───────────────────────────────────────
+function render(st){
+  state = st || {};
+
+  let totalHrsDone=0, totalHrsTotal=0, topicsDone=0, topicsTotal=0;
+  let activeSections=0, completedSections=0;
+
+  // Section cards
+  const secGrid = document.getElementById('w-sections');
+  secGrid.innerHTML='';
+  SECTIONS.forEach(sec=>{
+    const secSt = state[sec.id] || [];
+    const pct = getSecPct(sec.id, secSt);
+    const h = getSecHours(sec.id, secSt);
+    totalHrsDone += h.done; totalHrsTotal += h.total;
+    secSt.forEach(m=>{ (m.checked||[]).forEach(c=>{ topicsTotal++; if(c) topicsDone++; }); });
+    if(pct===100) completedSections++;
+    else if(pct>0) activeSections++;
+
+    // Month dots for this section
+    const dotsHtml = secSt.map((_,mi)=>{
+      const mp = getPct(secSt, mi);
+      const bg = mp===0?'rgba(26,26,53,.8)':mp<50?sec.color+'55':mp<100?sec.color+'99':sec.color;
+      return `<div class="mdot" style="background:${bg}"></div>`;
+    }).join('');
+
+    secGrid.innerHTML += `
+      <div class="sec-card" style="border-color:${pct>0?sec.color+'33':'rgba(26,26,53,.8)'}">
+        <div class="sec-card" style="display:contents">
+          <div style="position:absolute;left:0;top:0;bottom:0;width:2px;background:${sec.color};border-radius:1px;opacity:${pct>0?1:.2}"></div>
+        </div>
+        <div class="sec-label" style="color:${sec.color}">${sec.label}</div>
+        <div class="sec-pct-big" style="color:${sec.color}">${pct}%</div>
+        <div class="sec-track"><div class="sec-fill" style="width:${pct}%;background:${sec.color}"></div></div>
+        <div class="month-dots">${dotsHtml}</div>
+        <div class="sec-meta">
+          <span>${h.done}h done</span>
+          <span style="color:var(--muted2)">${h.total}h total</span>
+        </div>
+      </div>
+    `;
+  });
+
+  // Overall
+  const overallPct = totalHrsTotal===0?0:Math.round(totalHrsDone/totalHrsTotal*100);
+  document.getElementById('w-overall-pct').textContent = overallPct+'%';
+  document.getElementById('w-hrs-done').textContent = totalHrsDone+'h';
+  document.getElementById('w-hrs-left').textContent = (totalHrsTotal-totalHrsDone)+'h';
+  document.getElementById('w-topics').textContent = topicsDone+'/'+topicsTotal;
+  document.getElementById('w-active').textContent = activeSections;
+  document.getElementById('w-completed').textContent = completedSections;
+
+  // Heatmap (core 12 months as bars)
+  const hmGrid = document.getElementById('w-heatmap');
+  hmGrid.innerHTML='';
+  const maxBarH = 60;
+  CORE_MONTHS.forEach(cm=>{
+    const secSt = state[cm.secId] || [];
+    const pct = getPct(secSt, cm.mi);
+    const sec = SECTIONS.find(s=>s.id===cm.secId);
+    const barH = Math.max(3, Math.round((pct/100)*maxBarH));
+    const bg = pct===0?'rgba(26,26,53,.8)':pct<50?sec.color+'66':pct<100?sec.color+'aa':sec.color;
+    hmGrid.innerHTML+=`
+      <div class="hm-col">
+        <div class="hm-pct">${pct>0?pct+'%':''}</div>
+        <div class="hm-bar" style="height:${barH}px;background:${bg}"></div>
+        <div class="hm-lbl">${cm.label}</div>
+      </div>
+    `;
+  });
+}
+
+// ── FIREBASE ─────────────────────────────────────
+firebase.initializeApp(FB_CONFIG);
+const db = firebase.database();
+
+// Show sync status
+const syncDot = document.getElementById('syncDot');
+const syncLabel = document.getElementById('syncLabel');
+
+db.ref('.info/connected').on('value', snap=>{
+  if(snap.val()){
+    syncDot.className='sync-dot live';
+    syncLabel.textContent='live';
+  } else {
+    syncDot.className='sync-dot';
+    syncLabel.textContent='offline';
+  }
+});
+
+// Listen for state changes in real time
+db.ref(DB_PATH).on('value', snap=>{
+  const data = snap.val();
+  render(data);
+
+  // Fade in on first load
+  const loading = document.getElementById('loading');
+  const wp = document.getElementById('wallpaper');
+  loading.classList.add('fade');
+  wp.style.opacity='1';
+  setTimeout(()=>loading.style.display='none', 600);
+});
+</script>
+</body>
+</html>
