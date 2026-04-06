@@ -10,455 +10,473 @@
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 :root{
-  --bg:#080810;--surface:rgba(14,14,28,0.85);--border:rgba(26,26,53,0.8);
-  --text:#dde1f0;--muted:#565680;--muted2:#7878a8;
+  --bg:#060610;--surface:rgba(12,12,26,0.7);--border:rgba(30,30,60,0.6);
+  --text:#dde1f0;--muted:#484870;--muted2:#6868a0;
   --c0:#00e5ff;--c1:#7c3aed;--c2:#ec4899;--c3:#f59e0b;--c4:#00ff9d;--c5:#f97316;
 }
+html,body{width:100%;height:100%;overflow:hidden;background:var(--bg);font-family:'DM Mono',monospace}
 
-html,body{width:100%;height:100%;overflow:hidden;background:var(--bg)}
+/* ── Layered background ── */
+.bg-layer{position:fixed;inset:0;pointer-events:none}
+
+/* Deep space gradient */
+.bg-gradient{
+  background:
+    radial-gradient(ellipse 80% 50% at 20% 30%, rgba(0,229,255,0.04) 0%, transparent 60%),
+    radial-gradient(ellipse 60% 40% at 80% 70%, rgba(124,58,237,0.05) 0%, transparent 60%),
+    radial-gradient(ellipse 50% 60% at 50% 50%, rgba(0,255,157,0.02) 0%, transparent 70%),
+    #060610;
+}
 
 /* Animated grid */
-body::before{
-  content:'';position:fixed;inset:0;
+.bg-grid{
   background-image:
-    linear-gradient(rgba(0,229,255,0.025) 1px,transparent 1px),
-    linear-gradient(90deg,rgba(0,229,255,0.025) 1px,transparent 1px);
-  background-size:48px 48px;
-  animation:gridpulse 8s ease-in-out infinite;
-  pointer-events:none;
+    linear-gradient(rgba(0,229,255,0.03) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(0,229,255,0.03) 1px,transparent 1px);
+  background-size:60px 60px;
+  animation:gridshift 20s ease-in-out infinite alternate;
 }
-@keyframes gridpulse{0%,100%{opacity:.6}50%{opacity:1}}
+@keyframes gridshift{0%{background-position:0 0}100%{background-position:30px 30px}}
 
-/* Floating particles */
-.particle{position:fixed;border-radius:50%;pointer-events:none;animation:float linear infinite}
-@keyframes float{0%{transform:translateY(100vh) scale(0);opacity:0}10%{opacity:1}90%{opacity:.3}100%{transform:translateY(-10vh) scale(1);opacity:0}}
+/* Scanlines */
+.bg-scan{
+  background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,0,0,0.03) 2px,rgba(0,0,0,0.03) 4px);
+}
 
-/* Main layout */
+/* ── Particles ── */
+.particle{position:fixed;border-radius:50%;pointer-events:none;animation:floatup linear infinite}
+@keyframes floatup{0%{transform:translateY(105vh) scale(0) rotate(0deg);opacity:0}5%{opacity:1}90%{opacity:.4}100%{transform:translateY(-5vh) scale(1) rotate(360deg);opacity:0}}
+
+/* ── Orbiting rings ── */
+.ring{position:fixed;border-radius:50%;border:1px solid;pointer-events:none;animation:orbit linear infinite}
+@keyframes orbit{from{transform:translate(-50%,-50%) rotate(0deg)}to{transform:translate(-50%,-50%) rotate(360deg)}}
+
+/* ── Main layout ── */
 .wallpaper{
   width:100vw;height:100vh;
   display:grid;
-  grid-template-rows:auto 1fr auto;
-  grid-template-columns:1fr;
-  padding:32px 36px;
-  gap:20px;
-  position:relative;z-index:1;
+  grid-template-rows:88px 1fr 130px;
+  padding:24px 32px 20px;
+  gap:16px;
+  position:relative;z-index:10;
 }
 
-/* TOP BAR */
-.top-bar{
-  display:flex;align-items:center;justify-content:space-between;
-}
+/* ── TOP BAR ── */
+.top-bar{display:flex;align-items:center;justify-content:space-between;gap:20px}
 
-.logo{
-  font-family:'Cabinet Grotesk',sans-serif;
-  font-size:13px;font-weight:900;letter-spacing:-.02em;
-  color:var(--muted2);
-}
-.logo span{color:var(--c0)}
+.logo-block{}
+.logo-name{font-family:'Cabinet Grotesk',sans-serif;font-size:11px;font-weight:900;letter-spacing:.08em;color:var(--muted2);text-transform:uppercase}
+.logo-name span{color:var(--c0)}
 
-.top-center{
-  display:flex;align-items:center;gap:8px;
-}
-
+/* Big center stat */
+.center-stat{text-align:center;position:relative}
 .overall-pct{
   font-family:'Cabinet Grotesk',sans-serif;
-  font-size:clamp(36px,6vw,72px);
-  font-weight:900;
-  letter-spacing:-.04em;
+  font-size:clamp(52px,7vw,90px);
+  font-weight:900;letter-spacing:-.05em;line-height:1;
   color:var(--c4);
-  line-height:1;
-  text-shadow:0 0 40px rgba(0,255,157,.3);
+  text-shadow:0 0 60px rgba(0,255,157,.4),0 0 120px rgba(0,255,157,.15);
+  position:relative;z-index:1;
+}
+.overall-label{font-size:9px;color:var(--muted);letter-spacing:.2em;text-transform:uppercase;margin-top:4px}
+
+/* Glow ring behind pct */
+.pct-glow{
+  position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
+  width:140px;height:140px;border-radius:50%;
+  background:radial-gradient(circle,rgba(0,255,157,.08) 0%,transparent 70%);
+  pointer-events:none;
 }
 
-.overall-label{
-  font-size:10px;color:var(--muted);
-  letter-spacing:.16em;text-transform:uppercase;
-  margin-top:4px;
+.top-right-stats{display:flex;gap:12px}
+.trs-box{
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:10px;padding:10px 16px;text-align:right;
+  backdrop-filter:blur(12px);
 }
+.trs-val{font-family:'Cabinet Grotesk',sans-serif;font-size:22px;font-weight:800;line-height:1}
+.trs-label{font-size:8px;color:var(--muted);letter-spacing:.12em;text-transform:uppercase;margin-top:3px}
 
-.top-right{text-align:right}
-.time-stat{font-family:'Cabinet Grotesk',sans-serif;font-size:20px;font-weight:800;color:var(--c0)}
-.time-label{font-size:9px;color:var(--muted);letter-spacing:.1em;text-transform:uppercase;margin-top:2px}
-
-/* MIDDLE — Section cards */
-.sections-grid{
+/* ── MIDDLE — Section cards ── */
+.sections-row{
   display:grid;
   grid-template-columns:repeat(6,1fr);
-  gap:12px;
-  align-items:stretch;
+  gap:10px;
 }
 
 .sec-card{
   background:var(--surface);
   border:1px solid var(--border);
-  border-radius:12px;
-  padding:16px 14px;
-  backdrop-filter:blur(8px);
-  display:flex;flex-direction:column;gap:10px;
+  border-radius:14px;
+  padding:14px 12px 12px;
+  backdrop-filter:blur(16px);
+  display:flex;flex-direction:column;gap:8px;
   position:relative;overflow:hidden;
-  transition:border-color .3s;
+  transition:border-color .6s;
 }
 
+/* Glow top edge */
 .sec-card::before{
   content:'';position:absolute;
-  left:0;top:0;bottom:0;width:2px;
+  top:0;left:10%;right:10%;height:1px;
   border-radius:1px;
+  opacity:0;transition:opacity .6s;
 }
 
-.sec-label{
-  font-size:9px;letter-spacing:.14em;text-transform:uppercase;
-  font-weight:500;
-}
+.sec-card.active::before{opacity:1}
 
-.sec-name{
-  font-family:'Cabinet Grotesk',sans-serif;
-  font-size:13px;font-weight:800;line-height:1.2;
-  color:var(--text);
-}
+/* Left accent bar */
+.sec-accent{position:absolute;left:0;top:8px;bottom:8px;width:2px;border-radius:1px}
 
-.sec-pct-big{
-  font-family:'Cabinet Grotesk',sans-serif;
-  font-size:clamp(28px,3.5vw,44px);
-  font-weight:900;line-height:1;
-  margin-top:auto;
-}
+.sec-tag{font-size:8px;letter-spacing:.14em;text-transform:uppercase;font-weight:600;padding-left:10px}
+.sec-name{font-family:'Cabinet Grotesk',sans-serif;font-size:clamp(11px,1.2vw,14px);font-weight:800;line-height:1.2;color:var(--text);padding-left:10px}
+.sec-pct{font-family:'Cabinet Grotesk',sans-serif;font-size:clamp(30px,3.5vw,46px);font-weight:900;line-height:1;padding-left:10px;margin-top:auto}
 
-.sec-track{
-  background:rgba(26,26,53,.8);
-  height:3px;border-radius:2px;overflow:hidden;
-}
-.sec-fill{height:100%;border-radius:2px;transition:width 1s cubic-bezier(.4,0,.2,1)}
+/* Segmented progress */
+.seg-track{display:flex;gap:2px;padding:0 10px}
+.seg{height:3px;border-radius:2px;flex:1;transition:background .5s}
 
-.sec-meta{font-size:9px;color:var(--muted);display:flex;justify-content:space-between}
+.sec-footer{display:flex;justify-content:space-between;padding:0 10px;font-size:8px;color:var(--muted)}
 
-/* Month dots */
-.month-dots{display:flex;gap:3px;flex-wrap:wrap}
-.mdot{width:7px;height:7px;border-radius:2px;transition:background .5s}
+/* Topic dots */
+.topic-dots{display:flex;gap:2px;flex-wrap:wrap;padding:0 10px}
+.tdot{width:6px;height:6px;border-radius:1px;transition:background .5s,box-shadow .5s}
 
-/* BOTTOM — Month heatmap + stats */
-.bottom-bar{
+/* ── BOTTOM ── */
+.bottom-row{
   display:grid;
   grid-template-columns:1fr auto;
-  gap:20px;
+  gap:12px;
   align-items:end;
 }
 
-.heatmap-wrap{
-  background:var(--surface);
-  border:1px solid var(--border);
-  border-radius:10px;
-  padding:14px 16px;
-  backdrop-filter:blur(8px);
+/* Heatmap */
+.heatmap-card{
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:12px;padding:14px 18px;
+  backdrop-filter:blur(16px);
 }
+.hm-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
+.hm-title{font-size:8px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted)}
+.hm-legend{display:flex;align-items:center;gap:6px;font-size:8px;color:var(--muted)}
+.hm-legend-dots{display:flex;gap:2px}
+.hm-leg-dot{width:8px;height:8px;border-radius:1px}
 
-.heatmap-title{
-  font-size:8px;letter-spacing:.16em;text-transform:uppercase;
-  color:var(--muted);margin-bottom:10px;
-}
-
-.hm-grid{display:flex;gap:6px;align-items:flex-end}
-.hm-col{display:flex;flex-direction:column;align-items:center;gap:3px}
+.hm-bars{display:flex;gap:8px;align-items:flex-end;height:70px}
+.hm-col{display:flex;flex-direction:column;align-items:center;gap:3px;flex:1}
 .hm-bar{
-  width:28px;border-radius:3px 3px 0 0;
-  transition:height .8s cubic-bezier(.4,0,.2,1), background .5s;
-  min-height:3px;
+  width:100%;border-radius:3px 3px 0 0;
+  transition:height .8s cubic-bezier(.4,0,.2,1),background .5s;
+  min-height:2px;position:relative;overflow:hidden;
 }
-.hm-lbl{font-size:7px;color:var(--muted)}
-.hm-pct{font-size:7px;color:var(--muted2)}
-
-.stats-mini{
-  display:flex;flex-direction:column;gap:8px;
-  min-width:140px;
+/* shimmer on complete bars */
+.hm-bar.done::after{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(90deg,transparent 0%,rgba(255,255,255,.15) 50%,transparent 100%);
+  animation:shimmer 2s ease-in-out infinite;
 }
+@keyframes shimmer{0%{transform:translateX(-100%)}100%{transform:translateX(100%)}}
+.hm-lbl{font-size:7px;color:var(--muted);letter-spacing:.04em}
+.hm-pct-lbl{font-size:7px;color:var(--muted2)}
 
-.stat-mini-box{
-  background:var(--surface);
-  border:1px solid var(--border);
-  border-radius:8px;
-  padding:10px 14px;
-  backdrop-filter:blur(8px);
+/* Right mini stats */
+.right-stats{display:flex;flex-direction:column;gap:8px;min-width:130px}
+.rstat{
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:10px;padding:10px 14px;
+  backdrop-filter:blur(12px);
 }
-.smb-label{font-size:8px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-bottom:3px}
-.smb-val{font-family:'Cabinet Grotesk',sans-serif;font-size:20px;font-weight:800;line-height:1}
+.rstat-label{font-size:7px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-bottom:4px}
+.rstat-val{font-family:'Cabinet Grotesk',sans-serif;font-size:22px;font-weight:800;line-height:1}
 
-/* Sync dot */
-.sync-dot{
-  position:fixed;bottom:14px;right:16px;
+/* ── Sync indicator ── */
+.sync-pill{
+  position:fixed;top:16px;right:20px;
   display:flex;align-items:center;gap:5px;
-  font-size:9px;color:var(--muted);
-  font-family:'DM Mono',monospace;
+  font-size:8px;color:var(--muted);letter-spacing:.1em;
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:100px;padding:4px 10px 4px 7px;
+  backdrop-filter:blur(8px);z-index:100;
 }
-.sdot{width:6px;height:6px;border-radius:50%;background:var(--muted)}
-.sync-dot.live .sdot{background:var(--c4);box-shadow:0 0 6px rgba(0,255,157,.5)}
-@keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
-.sync-dot.live .sdot{animation:blink 2s ease-in-out infinite}
+.sync-dot{width:5px;height:5px;border-radius:50%;background:var(--muted);transition:all .3s}
+.sync-pill.live .sync-dot{background:var(--c4);box-shadow:0 0 5px rgba(0,255,157,.6)}
+@keyframes pulse-dot{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(.7)}}
+.sync-pill.live .sync-dot{animation:pulse-dot 2s ease-in-out infinite}
 
-/* Loading */
+/* ── Loading ── */
 #loading{
   position:fixed;inset:0;background:var(--bg);
   display:flex;align-items:center;justify-content:center;
-  flex-direction:column;gap:12px;z-index:999;
-  transition:opacity .5s;
+  flex-direction:column;gap:14px;z-index:9999;
+  transition:opacity .7s;
 }
 #loading.fade{opacity:0;pointer-events:none}
-.loading-ring{
-  width:40px;height:40px;border-radius:50%;
-  border:2px solid var(--border);
-  border-top-color:var(--c0);
-  animation:spin .8s linear infinite;
-}
+.l-ring{width:36px;height:36px;border-radius:50%;border:2px solid rgba(0,229,255,.2);border-top-color:var(--c0);animation:spin .7s linear infinite}
 @keyframes spin{to{transform:rotate(360deg)}}
-.loading-txt{font-size:11px;color:var(--muted);letter-spacing:.1em}
+.l-txt{font-size:10px;color:var(--muted);letter-spacing:.12em}
+.l-sub{font-size:8px;color:var(--muted);opacity:.5}
 </style>
 </head>
 <body>
 
+<!-- Background layers -->
+<div class="bg-layer bg-gradient"></div>
+<div class="bg-layer bg-grid"></div>
+<div class="bg-layer bg-scan"></div>
+
 <div id="loading">
-  <div class="loading-ring"></div>
-  <div class="loading-txt">syncing progress...</div>
+  <div class="l-ring"></div>
+  <div class="l-txt">syncing progress</div>
+  <div class="l-sub">connecting to firebase...</div>
 </div>
 
-<div class="wallpaper" id="wallpaper" style="opacity:0;transition:opacity .6s">
-
-  <!-- TOP -->
-  <div class="top-bar">
-    <div class="logo">ML / AI <span>Roadmap</span></div>
-    <div style="text-align:center">
-      <div class="overall-pct" id="w-overall-pct">0%</div>
-      <div class="overall-label">overall progress</div>
-    </div>
-    <div class="top-right">
-      <div class="time-stat" id="w-hrs-done" style="color:var(--c0)">0h</div>
-      <div class="time-label">hours done</div>
-      <div class="time-stat" id="w-hrs-left" style="color:var(--c5);margin-top:8px">0h</div>
-      <div class="time-label">remaining</div>
-    </div>
-  </div>
-
-  <!-- MIDDLE -->
-  <div class="sections-grid" id="w-sections"></div>
-
-  <!-- BOTTOM -->
-  <div class="bottom-bar">
-    <div class="heatmap-wrap">
-      <div class="heatmap-title">Month-by-Month Completion</div>
-      <div class="hm-grid" id="w-heatmap"></div>
-    </div>
-    <div class="stats-mini">
-      <div class="stat-mini-box">
-        <div class="smb-label">Topics Done</div>
-        <div class="smb-val" id="w-topics" style="color:var(--c1)">0/0</div>
-      </div>
-      <div class="stat-mini-box">
-        <div class="smb-label">Active Sections</div>
-        <div class="smb-val" id="w-active" style="color:var(--c3)">0</div>
-      </div>
-      <div class="stat-mini-box">
-        <div class="smb-label">Completed</div>
-        <div class="smb-val" id="w-completed" style="color:var(--c4)">0</div>
-      </div>
-    </div>
-  </div>
-
-</div>
-
-<div class="sync-dot" id="syncDot">
-  <div class="sdot"></div>
+<div class="sync-pill" id="syncPill">
+  <div class="sync-dot" id="syncDot"></div>
   <span id="syncLabel">connecting</span>
 </div>
 
+<div class="wallpaper" id="wallpaper" style="opacity:0;transition:opacity .8s">
+
+  <!-- TOP -->
+  <div class="top-bar">
+    <div class="logo-block">
+      <div class="logo-name">ML / AI <span>Roadmap</span></div>
+    </div>
+
+    <div class="center-stat">
+      <div class="pct-glow"></div>
+      <div class="overall-pct" id="w-pct">0%</div>
+      <div class="overall-label">overall progress</div>
+    </div>
+
+    <div class="top-right-stats">
+      <div class="trs-box">
+        <div class="trs-val" id="w-hrs-done" style="color:var(--c0)">0h</div>
+        <div class="trs-label">hours done</div>
+      </div>
+      <div class="trs-box">
+        <div class="trs-val" id="w-topics" style="color:var(--c1)">0/0</div>
+        <div class="trs-label">topics done</div>
+      </div>
+      <div class="trs-box">
+        <div class="trs-val" id="w-remaining" style="color:var(--c5)">0h</div>
+        <div class="trs-label">remaining</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MIDDLE — Sections -->
+  <div class="sections-row" id="w-sections"></div>
+
+  <!-- BOTTOM -->
+  <div class="bottom-row">
+    <div class="heatmap-card">
+      <div class="hm-header">
+        <div class="hm-title">Month-by-Month Completion</div>
+        <div class="hm-legend">
+          <div class="hm-legend-dots">
+            <div class="hm-leg-dot" style="background:var(--border)"></div>
+            <div class="hm-leg-dot" style="background:#1a4a1a"></div>
+            <div class="hm-leg-dot" style="background:#1a8a1a"></div>
+            <div class="hm-leg-dot" style="background:var(--c4)"></div>
+          </div>
+          <span>0 → 100%</span>
+        </div>
+      </div>
+      <div class="hm-bars" id="w-heatmap"></div>
+    </div>
+
+    <div class="right-stats">
+      <div class="rstat">
+        <div class="rstat-label">Active Sections</div>
+        <div class="rstat-val" id="w-active" style="color:var(--c3)">0</div>
+      </div>
+      <div class="rstat">
+        <div class="rstat-label">Completed</div>
+        <div class="rstat-val" id="w-completed" style="color:var(--c4)">0</div>
+      </div>
+      <div class="rstat">
+        <div class="rstat-label">Sections Left</div>
+        <div class="rstat-val" id="w-left" style="color:var(--muted2)">0</div>
+      </div>
+    </div>
+  </div>
+</div>
+
 <script>
-// ── CONFIG ──────────────────────────────────────
-const FB_CONFIG = {
-  apiKey: "AIzaSyAqQ6_fMH6ZWUiUVft-lkrcq7PtGlVK0QQ",
-  authDomain: "roadmap-ai-engineer.firebaseapp.com",
-  databaseURL: "https://roadmap-ai-engineer-default-rtdb.firebaseio.com",
-  projectId: "roadmap-ai-engineer",
-  storageBucket: "roadmap-ai-engineer.firebasestorage.app",
-  messagingSenderId: "537772791154",
-  appId: "1:537772791154:web:d302ea03be43cc8c0379eb"
-};
+// ── Firebase config ──────────────────────────────
+const FB_CONFIG={apiKey:"AIzaSyAqQ6_fMH6ZWUiUVft-lkrcq7PtGlVK0QQ",authDomain:"roadmap-ai-engineer.firebaseapp.com",databaseURL:"https://roadmap-ai-engineer-default-rtdb.firebaseio.com",projectId:"roadmap-ai-engineer",storageBucket:"roadmap-ai-engineer.firebasestorage.app",messagingSenderId:"537772791154",appId:"1:537772791154:web:d302ea03be43cc8c0379eb"};
+const USER_UID="MPUynfCFMlfzX3PVTZeTCqAJCQE2";
+const DB_PATH="roadmap/users/"+USER_UID+"/state";
 
-const USER_UID  = "MPUynfCFMlfzX3PVTZeTCqAJCQE2"; // Fares's UID — hardcoded
-const DB_PATH   = "roadmap/users/" + USER_UID + "/state";
+// ── EXACT same SECTIONS data as main app ─────────
+const SECTIONS=[{id:'s0',color:'#00e5ff',label:'Foundations',desc:'The base layer — math, Python, data manipulation, and software engineering practices built for ML.',months:[{title:'Math for ML',num:'M0',checkpoints:[{topic:'Linear Algebra',detail:'vectors, matrices, dot product, matrix multiply, transpose, inverse, eigenvalues & eigenvectors',hours:20},{topic:'Calculus',detail:'derivatives, chain rule, partial derivatives, gradients — intuition for backprop',hours:16},{topic:'Probability & Statistics',detail:'distributions, Bayes theorem, expectation, variance, MLE, MAP estimation',hours:18},{topic:'Information Theory',detail:'entropy, cross-entropy, KL divergence — loss functions explained from first principles',hours:10},{topic:'Optimisation',detail:'gradient descent, learning rate, convexity, saddle points, momentum intuition',hours:12},{topic:'Notation & tools',detail:'numpy for linear algebra, sympy for symbolic math, matplotlib for plotting math concepts',hours:8}],project:'Implement gradient descent from scratch + derive softmax & cross-entropy loss by hand'},{title:'Python Foundations',num:1,checkpoints:[{topic:'Core syntax',detail:'variables, operators, type system, f-strings',hours:8},{topic:'Control flow',detail:'if/else, for/while loops, comprehensions',hours:6},{topic:'Data structures',detail:'lists, dicts, sets, tuples — and when to use each',hours:8},{topic:'Functions',detail:'args, kwargs, closures, decorators, lambda',hours:10},{topic:'OOP',detail:'classes, inheritance, dunder methods, dataclasses',hours:12},{topic:'Tooling',detail:'VS Code, virtual environments, pip, Jupyter notebooks',hours:6}],project:'Build a CLI data parser that reads, processes and outputs structured JSON'},{title:'Data Preprocessing & Feature Engineering',num:2,checkpoints:[{topic:'NumPy',detail:'arrays, vectorised ops, broadcasting, masking',hours:10},{topic:'Pandas',detail:'DataFrames, groupby, merge, pivot, time-series indexing',hours:16},{topic:'Cleaning',detail:'missing values, outliers, duplicate detection, dtype casting',hours:10},{topic:'Feature engineering',detail:'encoding, binning, log-transforms, interaction terms',hours:12},{topic:'Scaling',detail:'StandardScaler, MinMaxScaler, RobustScaler — and why it matters',hours:6},{topic:'EDA tools',detail:'Matplotlib, Seaborn, Plotly — correlation heatmaps, distribution plots',hours:12}],project:'Full preprocessing pipeline on a Kaggle tabular dataset'},{title:'Software Engineering for ML',num:3,checkpoints:[{topic:'Git & GitHub',detail:'branching, pull requests, rebasing, .gitignore for ML repos',hours:8},{topic:'APIs',detail:'REST fundamentals, JSON, HTTP methods, status codes, auth headers',hours:8},{topic:'FastAPI',detail:'routing, Pydantic models, async endpoints, dependency injection',hours:16},{topic:'Packaging',detail:'modules, packages, pyproject.toml, __init__.py structure',hours:6},{topic:'Testing',detail:'pytest, fixtures, mock, unit tests for data pipelines',hours:10},{topic:'Docker basics',detail:'Dockerfile, build, run, volumes — containerising a Python app',hours:14}],project:'Containerised FastAPI ML service with full test suite'}]},{id:'s1',color:'#7c3aed',label:'Classical ML',desc:'Core ML algorithms from linear models to gradient boosting, with full scikit-learn mastery.',months:[{title:'Core Machine Learning',num:4,checkpoints:[{topic:'Fundamentals',detail:'bias-variance tradeoff, overfitting, cross-validation, metrics',hours:14},{topic:'Supervised learning',detail:'linear/logistic regression, SVMs, k-NN — maths + intuition',hours:18},{topic:'Tree models',detail:'decision trees, CART algorithm, feature importance, pruning',hours:12},{topic:'Scikit-learn',detail:'Pipeline, ColumnTransformer, GridSearchCV, joblib persistence',hours:10},{topic:'Unsupervised',detail:'K-Means, DBSCAN, PCA, t-SNE, silhouette score',hours:14},{topic:'Imbalanced data',detail:'SMOTE, class weights, precision-recall AUC vs ROC-AUC',hours:8}],project:'End-to-end classification pipeline on a healthcare or finance dataset'},{title:'Ensemble Learning & Advanced ML',num:5,checkpoints:[{topic:'Bagging',detail:'Random Forest — bootstrap sampling, out-of-bag error, feature subspacing',hours:12},{topic:'Boosting',detail:'XGBoost, LightGBM, CatBoost — learning rates, tree depth, early stopping',hours:20},{topic:'Stacking & blending',detail:'meta-learners, holdout sets, avoiding data leakage',hours:10},{topic:'Hyperparameter tuning',detail:'Optuna, Bayesian optimisation, Hyperopt',hours:12},{topic:'SHAP',detail:'global and local feature explanations, waterfall plots, beeswarms',hours:10},{topic:'Feature selection',detail:'recursive elimination, permutation importance, mutual information',hours:8}],project:'Kaggle-style tabular competition — beat a strong XGBoost baseline with a stacked ensemble'}]},{id:'s2',color:'#ec4899',label:'Deep Learning',desc:'Neural networks from scratch, PyTorch, CNNs, RNNs, transformers, and experiment tracking.',months:[{title:'Deep Learning & Neural Networks',num:6,checkpoints:[{topic:'Foundations',detail:'perceptrons, backpropagation, chain rule, gradient descent (Adam, RMSProp)',hours:18},{topic:'PyTorch',detail:'tensors, autograd, Dataset, DataLoader, training loops',hours:20},{topic:'CNNs',detail:'convolution, pooling, ResNet, transfer learning with torchvision',hours:18},{topic:'RNNs & LSTMs',detail:'sequence modelling, vanishing gradients, BPTT',hours:14},{topic:'Regularisation',detail:'dropout, batch norm, weight decay, early stopping',hours:8},{topic:'Experiment tracking',detail:'Weights & Biases, MLflow — metrics, artefacts, model registry',hours:10}],project:'Image or time-series classifier trained and tracked with W&B'},{title:'Transformers & Large Language Models',num:7,checkpoints:[{topic:'Attention mechanism',detail:'self-attention, multi-head attention, positional encoding',hours:16},{topic:'Transformer architecture',detail:'encoder-decoder, BERT vs GPT paradigms, layer norm',hours:14},{topic:'Hugging Face',detail:'Transformers library, tokenisers, pipeline API, model hub',hours:12},{topic:'Key models',detail:'BERT, RoBERTa, GPT-2/3, Llama, Mistral — when to use each',hours:10},{topic:'Tokenisation',detail:'BPE, WordPiece, SentencePiece — vocabulary size tradeoffs',hours:8},{topic:'NLP tasks',detail:'classification, NER, summarisation, QA — fine-tuning examples',hours:16}],project:'Intent classification system using a pre-trained transformer'}]},{id:'s3',color:'#f59e0b',label:'LLMs & RAG',desc:'LLM APIs, advanced prompting, retrieval-augmented generation, vector databases, and fine-tuning.',months:[{title:'LLM APIs, Prompting & Context Engineering',num:8,checkpoints:[{topic:'OpenAI API',detail:'chat completions, function calling, vision, streaming, token management',hours:10},{topic:'Anthropic API',detail:'Messages API, system prompts, tool use, extended thinking',hours:10},{topic:'Prompt engineering',detail:'chain-of-thought, few-shot, role prompting, XML structuring',hours:14},{topic:'Context engineering',detail:'context window management, KV-cache awareness, prompt compression',hours:12},{topic:'Structured outputs',detail:'JSON mode, Pydantic with Instructor, schema enforcement',hours:8},{topic:'FastAPI + LLM',detail:'streaming inference endpoint with retry logic and rate limiting',hours:16}],project:'Multi-model chat API that routes prompts to the right model based on task type'},{title:'RAG & Vector Databases',num:9,checkpoints:[{topic:'Embeddings',detail:'text-embedding-3, sentence-transformers, cosine similarity, ANN search',hours:12},{topic:'Vector DBs',detail:'Pinecone, Weaviate, Qdrant, pgvector — indexing strategies (HNSW, IVF)',hours:14},{topic:'RAG pipeline',detail:'document chunking, metadata filtering, hybrid search (dense + BM25)',hours:18},{topic:'LangChain / LlamaIndex',detail:'document loaders, retrieval chains, re-rankers',hours:14},{topic:'Evaluation',detail:'RAGAS — faithfulness, answer relevance, context recall',hours:10},{topic:'Advanced RAG',detail:'query rewriting, HyDE, contextual compression, multi-hop retrieval',hours:16}],project:'Production RAG system over a custom knowledge base with RAGAS evaluation'},{title:'Fine-tuning & Model Customisation',num:10,checkpoints:[{topic:'Full fine-tuning',detail:'task-specific datasets, learning rate schedules, catastrophic forgetting',hours:14},{topic:'LoRA & QLoRA',detail:'low-rank adapter theory, quantisation, PEFT library',hours:16},{topic:'Instruction tuning',detail:'RLHF concepts, DPO, dataset curation with rejection sampling',hours:14},{topic:'Unsloth / Axolotl',detail:'fast fine-tuning frameworks, config files, GPU memory management',hours:12},{topic:'Evaluation',detail:'perplexity, BLEU, ROUGE, MT-Bench, LLM-as-judge pattern',hours:10},{topic:'Model serving',detail:'vLLM, llama.cpp, Ollama — batching, continuous batching, quantised inference',hours:14}],project:'Fine-tune a 7B model on a domain-specific dataset and serve it via an API'}]},{id:'s4',color:'#00ff9d',label:'Production AI',desc:'Multi-agent systems, MCP protocol, MLOps/LLMOps pipelines, and cloud deployment at scale.',months:[{title:'AI Agents & Multi-Agent Systems',num:11,checkpoints:[{topic:'Agent fundamentals',detail:'ReAct loop, tool calling, memory types (working, episodic, semantic)',hours:14},{topic:'Tool design',detail:'writing reliable tool schemas, handling errors, timeouts, retries',hours:10},{topic:'Frameworks',detail:'LangGraph, AutoGen, CrewAI — state machines vs graph-based orchestration',hours:16},{topic:'Multi-agent systems',detail:'role specialisation, supervisor patterns, parallelism, debate',hours:14},{topic:'MCP',detail:'Model Context Protocol — server/client architecture, resource and tool exposure',hours:12},{topic:'Safety & eval',detail:'agent evals, guardrails, prompt injection defences, human-in-the-loop',hours:10}],project:'Multi-agent research assistant — one planner, one searcher, one writer agent'},{title:'MLOps & LLMOps',num:12,checkpoints:[{topic:'ML pipelines',detail:'Prefect, Airflow, or ZenML — DAGs, triggers, artefact versioning',hours:14},{topic:'CI/CD for ML',detail:'GitHub Actions, DVC, automated re-training on data drift',hours:12},{topic:'Monitoring',detail:'data drift (Evidently), concept drift, LLM output monitoring, latency SLAs',hours:12},{topic:'LLMOps stack',detail:'LangSmith, Helicone, Langfuse — tracing, prompt versioning, cost tracking',hours:10},{topic:'Cloud deployment',detail:'AWS SageMaker / GCP Vertex / Modal — serverless GPU, auto-scaling',hours:18},{topic:'Infrastructure as code',detail:'Terraform basics, managed vector DB deployment, secrets management',hours:14}],project:'Deploy a full RAG + agent system to production with CI/CD, monitoring, and a public API'}]},{id:'s5',color:'#f97316',label:'Recommended Additions',isBonus:true,desc:'Critical skills missing from the core roadmap — SQL, cloud, distributed data, evals, k8s, and multimodal.',months:[{title:'SQL & Data Engineering',num:'B1',roleLabel:'All roles',checkpoints:[{topic:'SQL fundamentals',detail:'SELECT, WHERE, GROUP BY, HAVING, ORDER BY, subqueries',hours:12},{topic:'Window functions',detail:'ROW_NUMBER, RANK, LAG/LEAD, running totals, partitioning',hours:10},{topic:'CTEs & advanced queries',detail:'WITH clauses, recursive CTEs, query optimisation, EXPLAIN',hours:10},{topic:'Data modelling',detail:'star schema, fact/dimension tables, normalisation vs denormalisation',hours:8},{topic:'Database options',detail:'PostgreSQL, BigQuery, DuckDB — when to use each',hours:6},{topic:'ETL basics',detail:'batch vs streaming ingestion, dbt for transformations',hours:10}],project:'Build and query a star-schema analytics DB from raw CSV data using DuckDB + dbt'},{title:'Cloud Platforms (Hands-on)',num:'B2',roleLabel:'MLOps / Cloud',checkpoints:[{topic:'AWS core services',detail:'S3, EC2, Lambda, IAM roles, VPC basics, ECR',hours:14},{topic:'AWS ML services',detail:'SageMaker training jobs, endpoints, batch transform, Pipelines',hours:18},{topic:'GCP alternative',detail:'Vertex AI, Cloud Run, GCS, BigQuery ML',hours:10},{topic:'Serverless GPU',detail:'Modal, RunPod, vast.ai — cost-efficient GPU inference',hours:8},{topic:'Cost management',detail:'spot instances, reserved capacity, budget alerts, right-sizing',hours:6},{topic:'Secrets & config',detail:'AWS Secrets Manager, Parameter Store, environment management',hours:6}],project:'Deploy a fine-tuned model on SageMaker with auto-scaling and a CloudWatch dashboard'},{title:'Distributed Data & Spark',num:'B3',roleLabel:'Data / Scale',checkpoints:[{topic:'PySpark basics',detail:'RDDs vs DataFrames, transformations, actions, lazy evaluation',hours:14},{topic:'Spark SQL',detail:'SQL interface, schema inference, partitioning strategies',hours:10},{topic:'Streaming',detail:'Spark Structured Streaming vs Kafka — windowing, watermarks',hours:12},{topic:'Delta Lake',detail:'ACID transactions, time travel, schema evolution, merge operations',hours:10},{topic:'Databricks',detail:'notebooks, clusters, jobs, Unity Catalog basics',hours:10},{topic:'Performance tuning',detail:'skew handling, broadcast joins, caching, shuffle optimisation',hours:10}],project:'Build a Spark pipeline processing 10M+ rows, aggregating features, writing to Delta Lake'},{title:'LLM Evaluation & Safety',num:'B4',roleLabel:'LLM / AI',checkpoints:[{topic:'Eval frameworks',detail:'Braintrust, Inspect AI, HELM, custom eval harnesses',hours:10},{topic:'LLM-as-judge',detail:'pairwise comparison, rubric-based scoring, bias in judge models',hours:10},{topic:'Red-teaming',detail:'adversarial prompting, jailbreaks, systematic failure mode discovery',hours:10},{topic:'Hallucination detection',detail:'factuality scoring, RAG faithfulness, citation verification',hours:8},{topic:'Guardrails',detail:'NeMo Guardrails, Llama Guard, input/output filtering pipelines',hours:10},{topic:'Multimodal eval',detail:'vision-language benchmarks, VQA, image-text alignment scoring',hours:8}],project:'Build an eval suite for a RAG chatbot — automated scoring + human eval workflow'},{title:'Kubernetes & Production Infra',num:'B5',roleLabel:'MLOps / Cloud',checkpoints:[{topic:'K8s fundamentals',detail:'pods, deployments, services, namespaces, ConfigMaps, Secrets',hours:16},{topic:'ML workloads on k8s',detail:'resource requests/limits, GPU node pools, tolerations, affinity',hours:12},{topic:'Helm charts',detail:'packaging ML services, values files, chart repositories',hours:10},{topic:'Horizontal scaling',detail:'HPA, KEDA for event-driven autoscaling, KEDA + Kafka',hours:10},{topic:'Service mesh basics',detail:'Istio or Linkerd — traffic management, canary deployments',hours:8},{topic:'Observability',detail:'Prometheus, Grafana, distributed tracing with Jaeger/Tempo',hours:12}],project:'Deploy a multi-service ML system on a local k8s cluster with Helm'},{title:'Multimodal & Vision-Language',num:'B6',roleLabel:'LLM / AI',checkpoints:[{topic:'Vision transformers',detail:'ViT, DINOv2, CLIP — patch embeddings, contrastive learning',hours:14},{topic:'Vision-language models',detail:'LLaVA, Qwen-VL, PaliGemma, InternVL — architecture differences',hours:14},{topic:'Multimodal APIs',detail:'GPT-4o vision, Claude 3 vision, Gemini Pro Vision — use cases',hours:8},{topic:'Image generation',detail:'Stable Diffusion, FLUX, ControlNet — fine-tuning with DreamBooth',hours:12},{topic:'OCR & document AI',detail:'Tesseract, PaddleOCR, DocumentAI — layout-aware parsing',hours:10},{topic:'Video understanding',detail:'frame sampling, VideoLLaMA, temporal reasoning basics',hours:10}],project:'Build a document intelligence pipeline: ingest PDFs, extract tables, answer questions via VLM'}]}];;
 
-// ── SECTIONS (labels + colors + hour weights) ───
-const SECTIONS = [
-  { id:'s0', color:'#00e5ff', label:'Foundations',    months:4 },
-  { id:'s1', color:'#7c3aed', label:'Classical ML',   months:2 },
-  { id:'s2', color:'#ec4899', label:'Deep Learning',  months:2 },
-  { id:'s3', color:'#f59e0b', label:'LLMs & RAG',     months:3 },
-  { id:'s4', color:'#00ff9d', label:'Production AI',  months:2 },
-  { id:'s5', color:'#f97316', label:'Extras',         months:6 },
-];
-
-// Hour weights per section (mirrors main app)
-const SEC_HOURS = {
-  s0:{ total:206, months:[84,66,62] },   // Math+Python+DataPrep+SWE
-  s1:{ total:148, months:[76,72] },
-  s2:{ total:172, months:[88,76] },      // DL + Transformers (approx month totals)
-  s3:{ total:252, months:[70,84,80] },   // wait we need full month list
-  s4:{ total:152, months:[76,80] },
-  s5:{ total:368, months:[56,62,66,56,68,68] },
-};
-
-// Full months list for heatmap (12 core months)
-const CORE_MONTHS = [
-  {secId:'s0',mi:1,label:'M1'},{secId:'s0',mi:2,label:'M2'},{secId:'s0',mi:3,label:'M3'},
-  {secId:'s1',mi:0,label:'M4'},{secId:'s1',mi:1,label:'M5'},
-  {secId:'s2',mi:0,label:'M6'},{secId:'s2',mi:1,label:'M7'},
-  {secId:'s3',mi:0,label:'M8'},{secId:'s3',mi:1,label:'M9'},{secId:'s3',mi:2,label:'M10'},
-  {secId:'s4',mi:0,label:'M11'},{secId:'s4',mi:1,label:'M12'},
-];
-
-// ── PARTICLES ───────────────────────────────────
-function spawnParticles(){
-  const colors=['#00e5ff','#7c3aed','#00ff9d','#f59e0b','#ec4899'];
-  for(let i=0;i<18;i++){
-    const p=document.createElement('div');
-    p.className='particle';
-    const size=Math.random()*3+1;
-    p.style.cssText=`
-      width:${size}px;height:${size}px;
-      background:${colors[Math.floor(Math.random()*colors.length)]};
-      opacity:${Math.random()*.4+.1};
-      left:${Math.random()*100}%;
-      animation-duration:${Math.random()*20+15}s;
-      animation-delay:${Math.random()*15}s;
-    `;
+// ── Particles & effects ──────────────────────────
+(function spawnParticles(){
+  const colors=['#00e5ff22','#7c3aed22','#00ff9d22','#f59e0b22','#ec489922'];
+  for(let i=0;i<20;i++){
+    const p=document.createElement('div');p.className='particle';
+    const sz=Math.random()*2+1;
+    p.style.cssText=`width:${sz}px;height:${sz}px;background:${colors[i%colors.length]};left:${Math.random()*100}%;animation-duration:${Math.random()*25+20}s;animation-delay:${Math.random()*20}s`;
     document.body.appendChild(p);
   }
-}
-spawnParticles();
+})();
 
-// ── STATE ────────────────────────────────────────
-let state = null;
-
-function getPct(secState, monthIdx){
-  if(!secState || !secState[monthIdx]) return 0;
-  const checks = secState[monthIdx].checked || [];
-  if(!checks.length) return 0;
-  return Math.round(checks.filter(Boolean).length / checks.length * 100);
-}
-
-function getSecPct(secId, secState){
-  if(!secState) return 0;
-  const months = secState;
+// ── Computed helpers — IDENTICAL to main app ─────
+function secHours(secId, st){
+  const sec=SECTIONS.find(s=>s.id===secId);
+  if(!st) return {done:0,total:0};
   let done=0,total=0;
-  months.forEach(m=>{ (m.checked||[]).forEach(c=>{ total++; if(c) done++; }); });
+  sec.months.forEach((m,mi)=>{
+    m.checkpoints.forEach((cp,ci)=>{
+      total+=cp.hours;
+      if(st[mi]&&st[mi].checked&&st[mi].checked[ci]) done+=cp.hours;
+    });
+  });
+  return{done,total};
+}
+
+function secChecked(secId, st){
+  const sec=SECTIONS.find(s=>s.id===secId);
+  if(!st) return{done:0,total:0};
+  let done=0,total=0;
+  sec.months.forEach((m,mi)=>{
+    m.checkpoints.forEach((_,ci)=>{
+      total++;
+      if(st[mi]&&st[mi].checked&&st[mi].checked[ci]) done++;
+    });
+  });
+  return{done,total};
+}
+
+function monthPct(secId, mi, st){
+  const sec=SECTIONS.find(s=>s.id===secId);
+  if(!st||!st[mi]) return 0;
+  const m=sec.months[mi];
+  let done=0,total=0;
+  m.checkpoints.forEach((cp,ci)=>{
+    total+=cp.hours;
+    if(st[mi].checked&&st[mi].checked[ci]) done+=cp.hours;
+  });
   return total===0?0:Math.round(done/total*100);
 }
 
-function getSecHours(secId, secState){
-  if(!secState) return {done:0,total:0};
-  // Just use checkbox ratio × total hours
-  const s = SECTIONS.find(s=>s.id===secId);
-  const h = SEC_HOURS[secId];
-  const pct = getSecPct(secId, secState)/100;
-  return { done: Math.round(h.total*pct), total: h.total };
+function secPct(secId, st){
+  const h=secHours(secId,st);
+  return h.total===0?0:Math.round(h.done/h.total*100);
 }
 
-// ── RENDER ───────────────────────────────────────
-function render(st){
-  state = st || {};
-
-  let totalHrsDone=0, totalHrsTotal=0, topicsDone=0, topicsTotal=0;
-  let activeSections=0, completedSections=0;
-
-  // Section cards
-  const secGrid = document.getElementById('w-sections');
-  secGrid.innerHTML='';
-  SECTIONS.forEach(sec=>{
-    const secSt = state[sec.id] || [];
-    const pct = getSecPct(sec.id, secSt);
-    const h = getSecHours(sec.id, secSt);
-    totalHrsDone += h.done; totalHrsTotal += h.total;
-    secSt.forEach(m=>{ (m.checked||[]).forEach(c=>{ topicsTotal++; if(c) topicsDone++; }); });
-    if(pct===100) completedSections++;
-    else if(pct>0) activeSections++;
-
-    // Month dots for this section
-    const dotsHtml = secSt.map((_,mi)=>{
-      const mp = getPct(secSt, mi);
-      const bg = mp===0?'rgba(26,26,53,.8)':mp<50?sec.color+'55':mp<100?sec.color+'99':sec.color;
-      return `<div class="mdot" style="background:${bg}"></div>`;
-    }).join('');
-
-    secGrid.innerHTML += `
-      <div class="sec-card" style="border-color:${pct>0?sec.color+'33':'rgba(26,26,53,.8)'}">
-        <div class="sec-card" style="display:contents">
-          <div style="position:absolute;left:0;top:0;bottom:0;width:2px;background:${sec.color};border-radius:1px;opacity:${pct>0?1:.2}"></div>
-        </div>
-        <div class="sec-label" style="color:${sec.color}">${sec.label}</div>
-        <div class="sec-pct-big" style="color:${sec.color}">${pct}%</div>
-        <div class="sec-track"><div class="sec-fill" style="width:${pct}%;background:${sec.color}"></div></div>
-        <div class="month-dots">${dotsHtml}</div>
-        <div class="sec-meta">
-          <span>${h.done}h done</span>
-          <span style="color:var(--muted2)">${h.total}h total</span>
-        </div>
-      </div>
-    `;
-  });
-
-  // Overall
-  const overallPct = totalHrsTotal===0?0:Math.round(totalHrsDone/totalHrsTotal*100);
-  document.getElementById('w-overall-pct').textContent = overallPct+'%';
-  document.getElementById('w-hrs-done').textContent = totalHrsDone+'h';
-  document.getElementById('w-hrs-left').textContent = (totalHrsTotal-totalHrsDone)+'h';
-  document.getElementById('w-topics').textContent = topicsDone+'/'+topicsTotal;
-  document.getElementById('w-active').textContent = activeSections;
-  document.getElementById('w-completed').textContent = completedSections;
-
-  // Heatmap (core 12 months as bars)
-  const hmGrid = document.getElementById('w-heatmap');
-  hmGrid.innerHTML='';
-  const maxBarH = 60;
-  CORE_MONTHS.forEach(cm=>{
-    const secSt = state[cm.secId] || [];
-    const pct = getPct(secSt, cm.mi);
-    const sec = SECTIONS.find(s=>s.id===cm.secId);
-    const barH = Math.max(3, Math.round((pct/100)*maxBarH));
-    const bg = pct===0?'rgba(26,26,53,.8)':pct<50?sec.color+'66':pct<100?sec.color+'aa':sec.color;
-    hmGrid.innerHTML+=`
-      <div class="hm-col">
-        <div class="hm-pct">${pct>0?pct+'%':''}</div>
-        <div class="hm-bar" style="height:${barH}px;background:${bg}"></div>
-        <div class="hm-lbl">${cm.label}</div>
-      </div>
-    `;
-  });
-}
-
-// ── FIREBASE ─────────────────────────────────────
-firebase.initializeApp(FB_CONFIG);
-const db = firebase.database();
-
-// Show sync status
-const syncDot = document.getElementById('syncDot');
-const syncLabel = document.getElementById('syncLabel');
-
-db.ref('.info/connected').on('value', snap=>{
-  if(snap.val()){
-    syncDot.className='sync-dot live';
-    syncLabel.textContent='live';
-  } else {
-    syncDot.className='sync-dot';
-    syncLabel.textContent='offline';
-  }
+// ── Core months for heatmap ───────────────────────
+const CORE_MONTHS=[];
+SECTIONS.filter(s=>!s.isBonus).forEach(sec=>{
+  sec.months.forEach((_,mi)=>CORE_MONTHS.push({secId:sec.id,mi,color:sec.color}));
 });
 
-// Listen for state changes in real time
-db.ref(DB_PATH).on('value', snap=>{
-  const data = snap.val();
-  render(data);
+// ── Render ───────────────────────────────────────
+function render(state){
+  state=state||{};
+  let totalHrsDone=0,totalHrsTotal=0,topicsDone=0,topicsTotal=0;
+  let activeSec=0,completedSec=0;
 
-  // Fade in on first load
-  const loading = document.getElementById('loading');
-  const wp = document.getElementById('wallpaper');
-  loading.classList.add('fade');
-  wp.style.opacity='1';
-  setTimeout(()=>loading.style.display='none', 600);
+  // Section cards
+  const secRow=document.getElementById('w-sections');
+  secRow.innerHTML='';
+  SECTIONS.forEach(sec=>{
+    const st=state[sec.id]||[];
+    const pct=secPct(sec.id,st);
+    const h=secHours(sec.id,st);
+    const c=secChecked(sec.id,st);
+    totalHrsDone+=h.done;totalHrsTotal+=h.total;
+    topicsDone+=c.done;topicsTotal+=c.total;
+    if(pct===100)completedSec++;else if(pct>0)activeSec++;
+
+    // Per-month segment dots
+    const segs=sec.months.map((_,mi)=>{
+      const mp=monthPct(sec.id,mi,st);
+      const bg=mp===0?'rgba(30,30,60,.5)':mp<100?sec.color+'88':sec.color;
+      return `<div class="seg" style="background:${bg}"></div>`;
+    }).join('');
+
+    // Topic dots
+    const dots=[];
+    sec.months.forEach((m,mi)=>{
+      m.checkpoints.forEach((_,ci)=>{
+        const done=st[mi]&&st[mi].checked&&st[mi].checked[ci];
+        dots.push(`<div class="tdot" style="background:${done?sec.color:sec.color+'25'};${done?'box-shadow:0 0 4px '+sec.color+'88':''}" title="${m.checkpoints[ci]?.topic||''}"></div>`);
+      });
+    });
+
+    const isActive=pct>0&&pct<100;
+    const isDone=pct===100;
+
+    secRow.innerHTML+=`
+      <div class="sec-card ${isActive?'active':''}" style="border-color:${pct>0?sec.color+'40':'rgba(30,30,60,.6)'}">
+        <div class="sec-accent" style="background:${sec.color};opacity:${pct>0?1:.25}"></div>
+        <div class="sec-card::before" style="background:${sec.color}"></div>
+        <div class="sec-tag" style="color:${sec.color}">${sec.label}</div>
+        <div class="sec-pct" style="color:${sec.color};text-shadow:${isDone?'0 0 20px '+sec.color+'66':pct>0?'0 0 10px '+sec.color+'44':'none'}">${pct}%</div>
+        <div class="seg-track">${segs}</div>
+        <div class="topic-dots">${dots.join('')}</div>
+        <div class="sec-footer">
+          <span>${h.done}h done</span><span>${h.total-h.done}h left</span>
+        </div>
+      </div>`;
+  });
+
+  // Global stats
+  const overallPct=totalHrsTotal===0?0:Math.round(totalHrsDone/totalHrsTotal*100);
+  document.getElementById('w-pct').textContent=overallPct+'%';
+  document.getElementById('w-hrs-done').textContent=totalHrsDone+'h';
+  document.getElementById('w-remaining').textContent=(totalHrsTotal-totalHrsDone)+'h';
+  document.getElementById('w-topics').textContent=topicsDone+'/'+topicsTotal;
+  document.getElementById('w-active').textContent=activeSec;
+  document.getElementById('w-completed').textContent=completedSec;
+  document.getElementById('w-left').textContent=SECTIONS.length-completedSec;
+
+  // Heatmap bars
+  const hmEl=document.getElementById('w-heatmap');
+  hmEl.innerHTML='';
+  const maxH=68;
+  CORE_MONTHS.forEach((cm,i)=>{
+    const st=state[cm.secId]||[];
+    const pct=monthPct(cm.secId,cm.mi,st);
+    const barH=Math.max(2,Math.round(pct/100*maxH));
+    const isDone=pct===100;
+    const bg=pct===0?'rgba(26,26,53,.6)':pct<30?cm.color+'44':pct<70?cm.color+'88':pct<100?cm.color+'cc':cm.color;
+    hmEl.innerHTML+=`
+      <div class="hm-col">
+        <div class="hm-pct-lbl">${pct>0?pct+'%':''}</div>
+        <div class="hm-bar ${isDone?'done':''}" style="height:${barH}px;background:${bg};${isDone?'box-shadow:0 0 8px '+cm.color+'66':''}" title="Month ${i+1}: ${pct}%"></div>
+        <div class="hm-lbl">M${i+1}</div>
+      </div>`;
+  });
+}
+
+// ── Firebase ─────────────────────────────────────
+firebase.initializeApp(FB_CONFIG);
+const db=firebase.database();
+
+const syncPill=document.getElementById('syncPill');
+const syncLabel=document.getElementById('syncLabel');
+const syncDot=document.getElementById('syncDot');
+
+db.ref('.info/connected').on('value',snap=>{
+  if(snap.val()){syncPill.className='sync-pill live';syncLabel.textContent='live sync'}
+  else{syncPill.className='sync-pill';syncLabel.textContent='offline'}
+});
+
+let firstLoad=true;
+db.ref(DB_PATH).on('value',snap=>{
+  render(snap.val());
+  if(firstLoad){
+    firstLoad=false;
+    const loading=document.getElementById('loading');
+    const wp=document.getElementById('wallpaper');
+    loading.classList.add('fade');
+    wp.style.opacity='1';
+    setTimeout(()=>loading.style.display='none',800);
+  }
 });
 </script>
 </body>
