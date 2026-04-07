@@ -53,11 +53,11 @@ html,body{width:100%;height:100%;overflow:hidden;background:var(--bg);font-famil
 
 /* ── Main layout ── */
 .wallpaper{
-  width:100vw;height:100vh;
+  width:100vw;height:calc(100vh - 48px);
   display:grid;
   grid-template-rows:auto 1fr auto;
-  padding:20px 28px 16px;
-  gap:12px;
+  padding:16px 26px 14px;
+  gap:10px;
   position:relative;z-index:10;
   overflow:hidden;
 }
@@ -73,7 +73,7 @@ html,body{width:100%;height:100%;overflow:hidden;background:var(--bg);font-famil
 .center-stat{text-align:center;position:relative}
 .overall-pct{
   font-family:'Cabinet Grotesk',sans-serif;
-  font-size:clamp(40px,5.5vw,68px);
+  font-size:clamp(36px,5vw,62px);
   font-weight:900;letter-spacing:-.05em;line-height:1;
   color:var(--c4);
   text-shadow:0 0 60px rgba(0,255,157,.4),0 0 120px rgba(0,255,157,.15);
@@ -118,7 +118,7 @@ html,body{width:100%;height:100%;overflow:hidden;background:var(--bg);font-famil
   position:relative;overflow:hidden;
   transition:border-color .6s;
   height:100%;
-  justify-content:space-between;
+  justify-content:flex-start;
 }
 
 /* Glow top edge */
@@ -135,8 +135,10 @@ html,body{width:100%;height:100%;overflow:hidden;background:var(--bg);font-famil
 .sec-accent{position:absolute;left:0;top:8px;bottom:8px;width:2px;border-radius:1px}
 
 .sec-tag{font-size:8px;letter-spacing:.14em;text-transform:uppercase;font-weight:600;padding-left:10px}
+.sec-icon{font-size:22px;padding-left:10px;line-height:1;filter:drop-shadow(0 0 8px currentColor)}
+.sec-name{font-family:'Cabinet Grotesk',sans-serif;font-size:clamp(10px,1vw,12px);font-weight:700;line-height:1.2;color:var(--muted2);padding-left:10px;margin-top:2px}
 .sec-name{font-family:'Cabinet Grotesk',sans-serif;font-size:clamp(11px,1.2vw,14px);font-weight:800;line-height:1.2;color:var(--text);padding-left:10px}
-.sec-pct{font-family:'Cabinet Grotesk',sans-serif;font-size:clamp(26px,3vw,40px);font-weight:900;line-height:1;padding-left:10px}
+.sec-pct{font-family:'Cabinet Grotesk',sans-serif;font-size:clamp(28px,3.2vw,42px);font-weight:900;line-height:1;padding-left:10px;margin-top:auto;margin-bottom:4px}
 
 /* Segmented progress */
 .seg-track{display:flex;gap:2px;padding:0 10px}
@@ -388,6 +390,9 @@ function render(state){
   // Section cards
   const secRow=document.getElementById('w-sections');
   secRow.innerHTML='';
+  const SEC_ICONS={s0:'🧮',s1:'🌲',s2:'🧠',s3:'💬',s4:'🚀',s5:'⭐'};
+  const SEC_NAMES={s0:'Foundations',s1:'Classical ML',s2:'Deep Learning',s3:'LLMs & RAG',s4:'Production AI',s5:'Extras'};
+
   SECTIONS.forEach(sec=>{
     const st=state[sec.id]||[];
     const pct=secPct(sec.id,st);
@@ -397,7 +402,7 @@ function render(state){
     topicsDone+=c.done;topicsTotal+=c.total;
     if(pct===100)completedSec++;else if(pct>0)activeSec++;
 
-    // Per-month segment dots
+    // Per-month segment bars
     const segs=sec.months.map((_,mi)=>{
       const mp=monthPct(sec.id,mi,st);
       const bg=mp===0?'rgba(30,30,60,.5)':mp<100?sec.color+'88':sec.color;
@@ -409,23 +414,26 @@ function render(state){
     sec.months.forEach((m,mi)=>{
       m.checkpoints.forEach((_,ci)=>{
         const done=st[mi]&&st[mi].checked&&st[mi].checked[ci];
-        dots.push(`<div class="tdot" style="background:${done?sec.color:sec.color+'25'};${done?'box-shadow:0 0 4px '+sec.color+'88':''}" title="${m.checkpoints[ci]?.topic||''}"></div>`);
+        dots.push(`<div class="tdot" style="background:${done?sec.color:sec.color+'20'};${done?'box-shadow:0 0 4px '+sec.color+'88':''}" title="${m.checkpoints[ci]?.topic||''}"></div>`);
       });
     });
 
     const isActive=pct>0&&pct<100;
     const isDone=pct===100;
+    const glowColor=isDone?'0 0 24px '+sec.color+'88':isActive?'0 0 12px '+sec.color+'44':'none';
 
     secRow.innerHTML+=`
-      <div class="sec-card ${isActive?'active':''}" style="border-color:${pct>0?sec.color+'40':'rgba(30,30,60,.6)'}">
-        <div class="sec-accent" style="background:${sec.color};opacity:${pct>0?1:.25}"></div>
-        <div class="sec-card::before" style="background:${sec.color}"></div>
-        <div class="sec-tag" style="color:${sec.color}">${sec.label}</div>
-        <div class="sec-pct" style="color:${sec.color};text-shadow:${isDone?'0 0 20px '+sec.color+'66':pct>0?'0 0 10px '+sec.color+'44':'none'}">${pct}%</div>
+      <div class="sec-card ${isActive?'active':''}" style="border-color:${pct>0?sec.color+'50':'rgba(30,30,60,.5)'};box-shadow:${pct>0?'inset 0 0 30px '+sec.color+'08':'none'}">
+        <div class="sec-accent" style="background:${sec.color};opacity:${pct>0?1:.2}"></div>
+        <div class="sec-icon" style="color:${sec.color}">${SEC_ICONS[sec.id]||'📚'}</div>
+        <div class="sec-name">${SEC_NAMES[sec.id]||sec.label}</div>
+        <div class="sec-tag" style="color:${sec.color};padding-left:10px;margin-top:2px">${sec.months.length} modules · ${h.total}h</div>
+        <div class="sec-pct" style="color:${sec.color};text-shadow:${glowColor}">${pct}%</div>
         <div class="seg-track">${segs}</div>
         <div class="topic-dots">${dots.join('')}</div>
-        <div class="sec-footer">
-          <span>${h.done}h done</span><span>${h.total-h.done}h left</span>
+        <div class="sec-footer" style="margin-top:auto">
+          <span style="color:${sec.color}88">${h.done}h done</span>
+          <span>${h.total-h.done}h left</span>
         </div>
       </div>`;
   });
