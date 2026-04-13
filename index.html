@@ -364,20 +364,23 @@ body::after{content:'';position:fixed;inset:0;background-image:url("data:image/s
 </div>
 
 <script>
+// ── SECTIONS and SUBS injected below ──
 const SECTIONS=[{id:'s0',color:'#00e5ff',label:'Foundations',desc:'The base layer — math, Python, data manipulation, and software engineering practices built for ML.',months:[{title:'Math for ML',num:'M0',checkpoints:[{topic:'Linear Algebra',detail:'vectors, matrices, dot product, matrix multiply, transpose, inverse, eigenvalues \u0026 eigenvectors',hours:20},{topic:'Calculus',detail:'derivatives, chain rule, partial derivatives, gradients — intuition for backprop',hours:16},{topic:'Probability \u0026 Statistics',detail:'distributions, Bayes theorem, expectation, variance, MLE, MAP estimation',hours:18},{topic:'Information Theory',detail:'entropy, cross-entropy, KL divergence — loss functions explained from first principles',hours:10},{topic:'Optimisation',detail:'gradient descent, learning rate, convexity, saddle points, momentum intuition',hours:12},{topic:'Notation \u0026 tools',detail:'numpy for linear algebra, sympy for symbolic math, matplotlib for plotting math concepts',hours:8}],project:'Implement gradient descent from scratch + derive softmax \u0026 cross-entropy loss by hand'},{title:'Python Foundations',num:1,checkpoints:[{topic:'Core syntax',detail:'variables, operators, type system, f-strings',hours:8},{topic:'Control flow',detail:'if/else, for/while loops, comprehensions',hours:6},{topic:'Data structures',detail:'lists, dicts, sets, tuples — and when to use each',hours:8},{topic:'Functions',detail:'args, kwargs, closures, decorators, lambda',hours:10},{topic:'OOP',detail:'classes, inheritance, dunder methods, dataclasses',hours:12},{topic:'Tooling',detail:'VS Code, virtual environments, pip, Jupyter notebooks',hours:6}],project:'Build a CLI data parser that reads, processes and outputs structured JSON'},{title:'Data Preprocessing \u0026 Feature Engineering',num:2,checkpoints:[{topic:'NumPy',detail:'arrays, vectorised ops, broadcasting, masking',hours:10},{topic:'Pandas',detail:'DataFrames, groupby, merge, pivot, time-series indexing',hours:16},{topic:'Cleaning',detail:'missing values, outliers, duplicate detection, dtype casting',hours:10},{topic:'Feature engineering',detail:'encoding, binning, log-transforms, interaction terms',hours:12},{topic:'Scaling',detail:'StandardScaler, MinMaxScaler, RobustScaler — and why it matters',hours:6},{topic:'EDA tools',detail:'Matplotlib, Seaborn, Plotly — correlation heatmaps, distribution plots',hours:12}],project:'Full preprocessing pipeline on a Kaggle tabular dataset'},{title:'Software Engineering for ML',num:3,checkpoints:[{topic:'Git \u0026 GitHub',detail:'branching, pull requests, rebasing, .gitignore for ML repos',hours:8},{topic:'APIs',detail:'REST fundamentals, JSON, HTTP methods, status codes, auth headers',hours:8},{topic:'FastAPI',detail:'routing, Pydantic models, async endpoints, dependency injection',hours:16},{topic:'Packaging',detail:'modules, packages, pyproject.toml, __init__.py structure',hours:6},{topic:'Testing',detail:'pytest, fixtures, mock, unit tests for data pipelines',hours:10},{topic:'Docker basics',detail:'Dockerfile, build, run, volumes — containerising a Python app',hours:14}],project:'Containerised FastAPI ML service with full test suite'}]},{id:'s1',color:'#7c3aed',label:'Classical ML',desc:'Core ML algorithms from linear models to gradient boosting, with full scikit-learn mastery.',months:[{title:'Core Machine Learning',num:4,checkpoints:[{topic:'Fundamentals',detail:'bias-variance tradeoff, overfitting, cross-validation, metrics',hours:14},{topic:'Supervised learning',detail:'linear/logistic regression, SVMs, k-NN — maths + intuition',hours:18},{topic:'Tree models',detail:'decision trees, CART algorithm, feature importance, pruning',hours:12},{topic:'Scikit-learn',detail:'Pipeline, ColumnTransformer, GridSearchCV, joblib persistence',hours:10},{topic:'Unsupervised',detail:'K-Means, DBSCAN, PCA, t-SNE, silhouette score',hours:14},{topic:'Imbalanced data',detail:'SMOTE, class weights, precision-recall AUC vs ROC-AUC',hours:8}],project:'End-to-end classification pipeline on a healthcare or finance dataset'},{title:'Ensemble Learning \u0026 Advanced ML',num:5,checkpoints:[{topic:'Bagging',detail:'Random Forest — bootstrap sampling, out-of-bag error, feature subspacing',hours:12},{topic:'Boosting',detail:'XGBoost, LightGBM, CatBoost — learning rates, tree depth, early stopping',hours:20},{topic:'Stacking \u0026 blending',detail:'meta-learners, holdout sets, avoiding data leakage',hours:10},{topic:'Hyperparameter tuning',detail:'Optuna, Bayesian optimisation, Hyperopt',hours:12},{topic:'SHAP',detail:'global and local feature explanations, waterfall plots, beeswarms',hours:10},{topic:'Feature selection',detail:'recursive elimination, permutation importance, mutual information',hours:8}],project:'Kaggle-style tabular competition — beat a strong XGBoost baseline with a stacked ensemble'}]},{id:'s2',color:'#ec4899',label:'Deep Learning',desc:'Neural networks from scratch, PyTorch, CNNs, RNNs, transformers, and experiment tracking.',months:[{title:'Deep Learning \u0026 Neural Networks',num:6,checkpoints:[{topic:'Foundations',detail:'perceptrons, backpropagation, chain rule, gradient descent (Adam, RMSProp)',hours:18},{topic:'PyTorch',detail:'tensors, autograd, Dataset, DataLoader, training loops',hours:20},{topic:'CNNs',detail:'convolution, pooling, ResNet, transfer learning with torchvision',hours:18},{topic:'RNNs \u0026 LSTMs',detail:'sequence modelling, vanishing gradients, BPTT',hours:14},{topic:'Regularisation',detail:'dropout, batch norm, weight decay, early stopping',hours:8},{topic:'Experiment tracking',detail:'Weights \u0026 Biases, MLflow — metrics, artefacts, model registry',hours:10}],project:'Image or time-series classifier trained and tracked with W\u0026B'},{title:'Transformers \u0026 Large Language Models',num:7,checkpoints:[{topic:'Attention mechanism',detail:'self-attention, multi-head attention, positional encoding',hours:16},{topic:'Transformer architecture',detail:'encoder-decoder, BERT vs GPT paradigms, layer norm',hours:14},{topic:'Hugging Face',detail:'Transformers library, tokenisers, pipeline API, model hub',hours:12},{topic:'Key models',detail:'BERT, RoBERTa, GPT-2/3, Llama, Mistral — when to use each',hours:10},{topic:'Tokenisation',detail:'BPE, WordPiece, SentencePiece — vocabulary size tradeoffs',hours:8},{topic:'NLP tasks',detail:'classification, NER, summarisation, QA — fine-tuning examples',hours:16}],project:'Intent classification system using a pre-trained transformer'}]},{id:'s3',color:'#f59e0b',label:'LLMs \u0026 RAG',desc:'LLM APIs, advanced prompting, retrieval-augmented generation, vector databases, and fine-tuning.',months:[{title:'LLM APIs, Prompting \u0026 Context Engineering',num:8,checkpoints:[{topic:'OpenAI API',detail:'chat completions, function calling, vision, streaming, token management',hours:10},{topic:'Anthropic API',detail:'Messages API, system prompts, tool use, extended thinking',hours:10},{topic:'Prompt engineering',detail:'chain-of-thought, few-shot, role prompting, XML structuring',hours:14},{topic:'Context engineering',detail:'context window management, KV-cache awareness, prompt compression',hours:12},{topic:'Structured outputs',detail:'JSON mode, Pydantic with Instructor, schema enforcement',hours:8},{topic:'FastAPI + LLM',detail:'streaming inference endpoint with retry logic and rate limiting',hours:16}],project:'Multi-model chat API that routes prompts to the right model based on task type'},{title:'RAG \u0026 Vector Databases',num:9,checkpoints:[{topic:'Embeddings',detail:'text-embedding-3, sentence-transformers, cosine similarity, ANN search',hours:12},{topic:'Vector DBs',detail:'Pinecone, Weaviate, Qdrant, pgvector — indexing strategies (HNSW, IVF)',hours:14},{topic:'RAG pipeline',detail:'document chunking, metadata filtering, hybrid search (dense + BM25)',hours:18},{topic:'LangChain / LlamaIndex',detail:'document loaders, retrieval chains, re-rankers',hours:14},{topic:'Evaluation',detail:'RAGAS — faithfulness, answer relevance, context recall',hours:10},{topic:'Advanced RAG',detail:'query rewriting, HyDE, contextual compression, multi-hop retrieval',hours:16}],project:'Production RAG system over a custom knowledge base with RAGAS evaluation'},{title:'Fine-tuning \u0026 Model Customisation',num:10,checkpoints:[{topic:'Full fine-tuning',detail:'task-specific datasets, learning rate schedules, catastrophic forgetting',hours:14},{topic:'LoRA \u0026 QLoRA',detail:'low-rank adapter theory, quantisation, PEFT library',hours:16},{topic:'Instruction tuning',detail:'RLHF concepts, DPO, dataset curation with rejection sampling',hours:14},{topic:'Unsloth / Axolotl',detail:'fast fine-tuning frameworks, config files, GPU memory management',hours:12},{topic:'Evaluation',detail:'perplexity, BLEU, ROUGE, MT-Bench, LLM-as-judge pattern',hours:10},{topic:'Model serving',detail:'vLLM, llama.cpp, Ollama — batching, continuous batching, quantised inference',hours:14}],project:'Fine-tune a 7B model on a domain-specific dataset and serve it via an API'}]},{id:'s4',color:'#00ff9d',label:'Production AI',desc:'Multi-agent systems, MCP protocol, MLOps/LLMOps pipelines, and cloud deployment at scale.',months:[{title:'AI Agents \u0026 Multi-Agent Systems',num:11,checkpoints:[{topic:'Agent fundamentals',detail:'ReAct loop, tool calling, memory types (working, episodic, semantic)',hours:14},{topic:'Tool design',detail:'writing reliable tool schemas, handling errors, timeouts, retries',hours:10},{topic:'Frameworks',detail:'LangGraph, AutoGen, CrewAI — state machines vs graph-based orchestration',hours:16},{topic:'Multi-agent systems',detail:'role specialisation, supervisor patterns, parallelism, debate',hours:14},{topic:'MCP',detail:'Model Context Protocol — server/client architecture, resource and tool exposure',hours:12},{topic:'Safety \u0026 eval',detail:'agent evals, guardrails, prompt injection defences, human-in-the-loop',hours:10}],project:'Multi-agent research assistant — one planner, one searcher, one writer agent'},{title:'MLOps \u0026 LLMOps',num:12,checkpoints:[{topic:'ML pipelines',detail:'Prefect, Airflow, or ZenML — DAGs, triggers, artefact versioning',hours:14},{topic:'CI/CD for ML',detail:'GitHub Actions, DVC, automated re-training on data drift',hours:12},{topic:'Monitoring',detail:'data drift (Evidently), concept drift, LLM output monitoring, latency SLAs',hours:12},{topic:'LLMOps stack',detail:'LangSmith, Helicone, Langfuse — tracing, prompt versioning, cost tracking',hours:10},{topic:'Cloud deployment',detail:'AWS SageMaker / GCP Vertex / Modal — serverless GPU, auto-scaling',hours:18},{topic:'Infrastructure as code',detail:'Terraform basics, managed vector DB deployment, secrets management',hours:14}],project:'Deploy a full RAG + agent system to production with CI/CD, monitoring, and a public API'}]},{id:'s5',color:'#f97316',label:'Recommended Additions',isBonus:true,desc:'Critical skills missing from the core roadmap — SQL, cloud, distributed data, evals, k8s, and multimodal.',months:[{title:'SQL \u0026 Data Engineering',num:'B1',roleLabel:'All roles',checkpoints:[{topic:'SQL fundamentals',detail:'SELECT, WHERE, GROUP BY, HAVING, ORDER BY, subqueries',hours:12},{topic:'Window functions',detail:'ROW_NUMBER, RANK, LAG/LEAD, running totals, partitioning',hours:10},{topic:'CTEs \u0026 advanced queries',detail:'WITH clauses, recursive CTEs, query optimisation, EXPLAIN',hours:10},{topic:'Data modelling',detail:'star schema, fact/dimension tables, normalisation vs denormalisation',hours:8},{topic:'Database options',detail:'PostgreSQL, BigQuery, DuckDB — when to use each',hours:6},{topic:'ETL basics',detail:'batch vs streaming ingestion, dbt for transformations',hours:10}],project:'Build and query a star-schema analytics DB from raw CSV data using DuckDB + dbt'},{title:'Cloud Platforms (Hands-on)',num:'B2',roleLabel:'MLOps / Cloud',checkpoints:[{topic:'AWS core services',detail:'S3, EC2, Lambda, IAM roles, VPC basics, ECR',hours:14},{topic:'AWS ML services',detail:'SageMaker training jobs, endpoints, batch transform, Pipelines',hours:18},{topic:'GCP alternative',detail:'Vertex AI, Cloud Run, GCS, BigQuery ML',hours:10},{topic:'Serverless GPU',detail:'Modal, RunPod, vast.ai — cost-efficient GPU inference',hours:8},{topic:'Cost management',detail:'spot instances, reserved capacity, budget alerts, right-sizing',hours:6},{topic:'Secrets \u0026 config',detail:'AWS Secrets Manager, Parameter Store, environment management',hours:6}],project:'Deploy a fine-tuned model on SageMaker with auto-scaling and a CloudWatch dashboard'},{title:'Distributed Data \u0026 Spark',num:'B3',roleLabel:'Data / Scale',checkpoints:[{topic:'PySpark basics',detail:'RDDs vs DataFrames, transformations, actions, lazy evaluation',hours:14},{topic:'Spark SQL',detail:'SQL interface, schema inference, partitioning strategies',hours:10},{topic:'Streaming',detail:'Spark Structured Streaming vs Kafka — windowing, watermarks',hours:12},{topic:'Delta Lake',detail:'ACID transactions, time travel, schema evolution, merge operations',hours:10},{topic:'Databricks',detail:'notebooks, clusters, jobs, Unity Catalog basics',hours:10},{topic:'Performance tuning',detail:'skew handling, broadcast joins, caching, shuffle optimisation',hours:10}],project:'Build a Spark pipeline processing 10M+ rows, aggregating features, writing to Delta Lake'},{title:'LLM Evaluation \u0026 Safety',num:'B4',roleLabel:'LLM / AI',checkpoints:[{topic:'Eval frameworks',detail:'Braintrust, Inspect AI, HELM, custom eval harnesses',hours:10},{topic:'LLM-as-judge',detail:'pairwise comparison, rubric-based scoring, bias in judge models',hours:10},{topic:'Red-teaming',detail:'adversarial prompting, jailbreaks, systematic failure mode discovery',hours:10},{topic:'Hallucination detection',detail:'factuality scoring, RAG faithfulness, citation verification',hours:8},{topic:'Guardrails',detail:'NeMo Guardrails, Llama Guard, input/output filtering pipelines',hours:10},{topic:'Multimodal eval',detail:'vision-language benchmarks, VQA, image-text alignment scoring',hours:8}],project:'Build an eval suite for a RAG chatbot — automated scoring + human eval workflow'},{title:'Kubernetes \u0026 Production Infra',num:'B5',roleLabel:'MLOps / Cloud',checkpoints:[{topic:'K8s fundamentals',detail:'pods, deployments, services, namespaces, ConfigMaps, Secrets',hours:16},{topic:'ML workloads on k8s',detail:'resource requests/limits, GPU node pools, tolerations, affinity',hours:12},{topic:'Helm charts',detail:'packaging ML services, values files, chart repositories',hours:10},{topic:'Horizontal scaling',detail:'HPA, KEDA for event-driven autoscaling, KEDA + Kafka',hours:10},{topic:'Service mesh basics',detail:'Istio or Linkerd — traffic management, canary deployments',hours:8},{topic:'Observability',detail:'Prometheus, Grafana, distributed tracing with Jaeger/Tempo',hours:12}],project:'Deploy a multi-service ML system on a local k8s cluster with Helm'},{title:'Multimodal \u0026 Vision-Language',num:'B6',roleLabel:'LLM / AI',checkpoints:[{topic:'Vision transformers',detail:'ViT, DINOv2, CLIP — patch embeddings, contrastive learning',hours:14},{topic:'Vision-language models',detail:'LLaVA, Qwen-VL, PaliGemma, InternVL — architecture differences',hours:14},{topic:'Multimodal APIs',detail:'GPT-4o vision, Claude 3 vision, Gemini Pro Vision — use cases',hours:8},{topic:'Image generation',detail:'Stable Diffusion, FLUX, ControlNet — fine-tuning with DreamBooth',hours:12},{topic:'OCR \u0026 document AI',detail:'Tesseract, PaddleOCR, DocumentAI — layout-aware parsing',hours:10},{topic:'Video understanding',detail:'frame sampling, VideoLLaMA, temporal reasoning basics',hours:10}],project:'Build a document intelligence pipeline: ingest PDFs, extract tables, answer questions via VLM'}]}];
+const SUBS={"s0": [[{"b": {"c": "Vectors, scalars, dot product, matrix addition \u0026 multiplication", "h": 7}, "i": {"c": "Matrix inverse, transpose, rank, null space, linear independence", "h": 7}, "a": {"c": "Eigenvalues \u0026 eigenvectors, SVD, matrix decomposition from scratch", "h": 6}}, {"b": {"c": "Derivatives, chain rule, product rule — intuition \u0026 practice", "h": 5}, "i": {"c": "Partial derivatives, gradients, directional derivatives, Jacobians", "h": 6}, "a": {"c": "Hessians, second-order optimisation, Lagrangians, constraint optimisation", "h": 5}}, {"b": {"c": "Probability rules, Bayes theorem, conditional probability, distributions", "h": 6}, "i": {"c": "Expectation, variance, covariance, MLE derivation, CLT", "h": 6}, "a": {"c": "MAP estimation, conjugate priors, hypothesis testing, MCMC intuition", "h": 6}}, {"b": {"c": "Information content, Shannon entropy, intuition \u0026 examples", "h": 3}, "i": {"c": "Cross-entropy loss derivation, KL divergence, mutual information", "h": 4}, "a": {"c": "ELBO, variational inference intuition, information bottleneck", "h": 3}}, {"b": {"c": "Gradient descent mechanics, learning rate effects, visualisation", "h": 4}, "i": {"c": "Momentum, RMSProp — why they work, convergence intuition", "h": 4}, "a": {"c": "Adam derivation, convexity, saddle points, loss landscape analysis", "h": 4}}, {"b": {"c": "NumPy for linear algebra: dot, matmul, einsum, solve", "h": 3}, "i": {"c": "SymPy for symbolic differentiation, matplotlib for function plotting", "h": 3}, "a": {"c": "JAX autograd, einops notation, tensors as computation graphs", "h": 2}}], [{"b": {"c": "Variables, operators, int/float/str/bool, basic expressions", "h": 3}, "i": {"c": "f-strings, type hints, walrus operator, string methods", "h": 3}, "a": {"c": "Type system internals, __slots__, descriptor protocol", "h": 2}}, {"b": {"c": "if/else, for loops, while loops, break/continue", "h": 2}, "i": {"c": "List/dict/set comprehensions, nested comprehensions, conditionals inside", "h": 2}, "a": {"c": "Generators, itertools, yield from, recursive patterns", "h": 2}}, {"b": {"c": "Lists: indexing, slicing, append, pop, sort", "h": 3}, "i": {"c": "Dicts \u0026 sets: when to use each, dict methods, set operations", "h": 3}, "a": {"c": "collections: deque, defaultdict, Counter, OrderedDict, namedtuple", "h": 2}}, {"b": {"c": "def, args, kwargs, return values, scope (LEGB)", "h": 3}, "i": {"c": "*args/**kwargs patterns, closures, nonlocal, inner functions", "h": 4}, "a": {"c": "Decorators, functools.wraps, lambda, partial, map/filter", "h": 3}}, {"b": {"c": "class, __init__, instance vs class attributes, basic methods", "h": 4}, "i": {"c": "Inheritance, super(), dunder methods (__str__, __repr__, __len__)", "h": 4}, "a": {"c": "@dataclass, abstract base classes, mixins, __slots__ optimisation", "h": 4}}, {"b": {"c": "VS Code setup, Python extension, virtual environments with venv", "h": 2}, "i": {"c": "pip, requirements.txt, .env files, Jupyter notebooks \u0026 kernels", "h": 2}, "a": {"c": "pyenv for Python versions, Poetry, pre-commit hooks, Makefile", "h": 2}}], [{"b": {"c": "ndarray creation, indexing, slicing, basic arithmetic", "h": 3}, "i": {"c": "Vectorised ops, broadcasting rules, boolean masking", "h": 4}, "a": {"c": "Advanced indexing, memory layout (C vs F order), strides, np.einsum", "h": 3}}, {"b": {"c": "Series, DataFrame, read_csv, head/tail, info, describe", "h": 5}, "i": {"c": "groupby, merge (inner/left/right/outer), pivot_table, melt", "h": 6}, "a": {"c": "Time-series indexing, resample, rolling, multi-index, apply with lambda", "h": 5}}, {"b": {"c": "isnull, dropna, fillna strategies (mean/median/forward fill)", "h": 3}, "i": {"c": "Outlier detection (IQR, z-score), duplicate detection \u0026 removal", "h": 4}, "a": {"c": "dtype casting, custom imputation pipelines, schema validation", "h": 3}}, {"b": {"c": "One-hot encoding, label encoding, pd.get_dummies", "h": 4}, "i": {"c": "Binning (cut/qcut), log-transforms, sqrt transforms", "h": 4}, "a": {"c": "Interaction terms, polynomial features, target encoding, frequency encoding", "h": 4}}, {"b": {"c": "StandardScaler, MinMaxScaler — fit vs transform vs fit_transform", "h": 2}, "i": {"c": "RobustScaler for outliers, why scaling matters for gradient descent", "h": 2}, "a": {"c": "Custom scalers, scaling inside Pipeline, leakage-free scaling", "h": 2}}, {"b": {"c": "matplotlib basics: line, bar, scatter, hist, subplots", "h": 4}, "i": {"c": "Seaborn: heatmap, pairplot, violin, distribution plots", "h": 4}, "a": {"c": "Plotly interactive charts, correlation analysis, EDA report with ydata-profiling", "h": 4}}], [{"b": {"c": "git init, add, commit, push, pull, status, log", "h": 3}, "i": {"c": "Branching, checkout, merge, pull requests, code review", "h": 3}, "a": {"c": "Rebasing, cherry-pick, conflict resolution, .gitignore for ML repos", "h": 2}}, {"b": {"c": "HTTP methods (GET/POST/PUT/DELETE), status codes, curl basics", "h": 3}, "i": {"c": "REST principles, JSON structure, auth headers (Bearer, API key)", "h": 3}, "a": {"c": "Rate limiting, pagination, OAuth2 flow, versioning best practices", "h": 2}}, {"b": {"c": "Basic FastAPI app, routing, path/query params, response models", "h": 5}, "i": {"c": "Pydantic models, request body validation, HTTPException handling", "h": 6}, "a": {"c": "Async endpoints, dependency injection, middleware, background tasks", "h": 5}}, {"b": {"c": "Python modules, packages, __init__.py, relative imports", "h": 2}, "i": {"c": "pyproject.toml, setup.cfg, editable installs, __all__", "h": 2}, "a": {"c": "Namespace packages, publishing to PyPI, monorepo structure", "h": 2}}, {"b": {"c": "pytest basics, assert, test discovery, running tests", "h": 3}, "i": {"c": "fixtures, parametrize, conftest.py, test organisation", "h": 4}, "a": {"c": "mock, patch, testing data pipelines, coverage reports", "h": 3}}, {"b": {"c": "Dockerfile syntax, FROM/RUN/COPY/CMD, docker build \u0026 run", "h": 5}, "i": {"c": "Volumes, port mapping, .dockerignore, docker-compose basics", "h": 5}, "a": {"c": "Multi-stage builds, optimising layers, slim images, health checks", "h": 4}}]], "s1": [[{"b": {"c": "Train/test split, holdout strategy, underfitting vs overfitting", "h": 5}, "i": {"c": "k-fold cross-validation, stratified split, metrics (accuracy/F1/AUC)", "h": 5}, "a": {"c": "Bias-variance tradeoff theorem, learning curves, validation curves", "h": 4}}, {"b": {"c": "Linear regression: least squares, MSE, R², gradient derivation", "h": 6}, "i": {"c": "Logistic regression: sigmoid, BCE loss, decision boundary, SVMs", "h": 6}, "a": {"c": "k-NN: distance metrics, curse of dimensionality, kernel SVM, SVM margin", "h": 6}}, {"b": {"c": "Decision tree: splits, information gain, Gini impurity", "h": 4}, "i": {"c": "CART algorithm, max_depth, min_samples_split, visualisation", "h": 4}, "a": {"c": "Feature importance, post-pruning, cost-complexity (ccp_alpha)", "h": 4}}, {"b": {"c": "fit/predict/transform pattern, train/test with sklearn", "h": 3}, "i": {"c": "Pipeline, ColumnTransformer, make_pipeline, preprocessing steps", "h": 4}, "a": {"c": "GridSearchCV, RandomizedSearchCV, custom estimators, joblib persistence", "h": 3}}, {"b": {"c": "K-Means: algorithm, elbow method, inertia, centroids", "h": 5}, "i": {"c": "DBSCAN: epsilon/minPts, noise handling, PCA: explained variance", "h": 5}, "a": {"c": "t-SNE for visualisation, silhouette score, GMM, hierarchical clustering", "h": 4}}, {"b": {"c": "Understanding class imbalance, class_weight parameter", "h": 3}, "i": {"c": "SMOTE, oversampling, undersampling, balanced accuracy", "h": 3}, "a": {"c": "Precision-recall AUC vs ROC-AUC, threshold optimisation, cost-sensitive", "h": 2}}], [{"b": {"c": "Bootstrap sampling concept, bagging intuition, variance reduction", "h": 4}, "i": {"c": "Random Forest: training multiple trees, OOB error estimate", "h": 4}, "a": {"c": "Feature subspacing (max_features), RF vs single tree, parallelisation", "h": 4}}, {"b": {"c": "AdaBoost: sequential weighting, weak learners, boosting intuition", "h": 6}, "i": {"c": "XGBoost: objective function, regularisation, tree building algorithm", "h": 8}, "a": {"c": "LightGBM leaf-wise growth, CatBoost categorical handling, early stopping", "h": 6}}, {"b": {"c": "Blending: train base models, average predictions", "h": 3}, "i": {"c": "Stacking: meta-learner, holdout sets, sklearn StackingClassifier", "h": 4}, "a": {"c": "Avoiding data leakage in stacks, nested CV, multi-layer stacks", "h": 3}}, {"b": {"c": "Manual search, grid search — when to use, search space design", "h": 4}, "i": {"c": "Optuna: define_by_run, pruning, study visualisation", "h": 4}, "a": {"c": "Bayesian optimisation theory, TPE sampler, Hyperopt, multi-objective", "h": 4}}, {"b": {"c": "Feature importance (MDI) in tree models, bar plots", "h": 3}, "i": {"c": "SHAP TreeExplainer, waterfall plots, force plots", "h": 4}, "a": {"c": "Global SHAP (beeswarm), interaction values, SHAP for neural nets", "h": 3}}, {"b": {"c": "Correlation-based removal, variance threshold", "h": 3}, "i": {"c": "Recursive Feature Elimination (RFE), SelectFromModel", "h": 3}, "a": {"c": "Permutation importance, mutual information, Boruta algorithm", "h": 2}}]], "s2": [[{"b": {"c": "Perceptrons, activation functions (ReLU/sigmoid/tanh), XOR problem", "h": 6}, "i": {"c": "Backpropagation step-by-step, chain rule applied to NNs", "h": 6}, "a": {"c": "Gradient descent variants: SGD, Adam, RMSProp — derivations \u0026 intuition", "h": 6}}, {"b": {"c": "Tensors: creation, ops, reshaping, dtype, device", "h": 6}, "i": {"c": "autograd: backward(), grad, no_grad, Dataset \u0026 DataLoader", "h": 7}, "a": {"c": "Custom training loops, GPU transfer, mixed precision, torch.compile", "h": 7}}, {"b": {"c": "Convolution operation, filters, feature maps, pooling layers", "h": 6}, "i": {"c": "ResNet architecture, skip connections, batch norm, receptive field", "h": 6}, "a": {"c": "Transfer learning: freeze/unfreeze, fine-tuning with torchvision", "h": 6}}, {"b": {"c": "Sequence modelling need, basic RNN: hidden state, unrolling", "h": 5}, "i": {"c": "LSTM: cell state, gates (input/forget/output), GRU comparison", "h": 5}, "a": {"c": "Vanishing gradient problem, BPTT, gradient clipping, bidirectional", "h": 4}}, {"b": {"c": "Dropout: training vs inference, dropout rate effect", "h": 3}, "i": {"c": "Batch normalisation: how it works, train vs eval mode", "h": 3}, "a": {"c": "Weight decay (L2), label smoothing, early stopping implementation", "h": 2}}, {"b": {"c": "Manual metric logging, matplotlib training curves", "h": 3}, "i": {"c": "Weights \u0026 Biases: setup, run tracking, config logging, sweeps", "h": 4}, "a": {"c": "MLflow: experiment tracking, model registry, artefacts management", "h": 3}}], [{"b": {"c": "Attention intuition: queries, keys, values, dot-product similarity", "h": 5}, "i": {"c": "Self-attention mechanism, scaled dot-product, multi-head attention", "h": 6}, "a": {"c": "Positional encoding (sinusoidal \u0026 learned), relative attention, RoPE", "h": 5}}, {"b": {"c": "Encoder block: self-attention + FFN + residual + layer norm", "h": 5}, "i": {"c": "BERT (encoder-only) vs GPT (decoder-only), cross-attention in seq2seq", "h": 5}, "a": {"c": "Pre-norm vs post-norm, scaling laws, model size vs data tradeoffs", "h": 4}}, {"b": {"c": "pipeline() API: text-classification, ner, summarisation", "h": 4}, "i": {"c": "AutoTokenizer, AutoModel, tokenisation pipeline, model hub", "h": 4}, "a": {"c": "Trainer API, TrainingArguments, custom datasets, data collators", "h": 4}}, {"b": {"c": "BERT: masked LM pre-training, [CLS] token, sentence classification", "h": 3}, "i": {"c": "RoBERTa improvements, Llama architecture, rotary embeddings", "h": 4}, "a": {"c": "Mistral: sliding window attention, grouped query attention, when to pick each", "h": 3}}, {"b": {"c": "Subword tokenisation motivation, vocabulary building", "h": 3}, "i": {"c": "BPE algorithm step-by-step, WordPiece, special tokens", "h": 3}, "a": {"c": "SentencePiece, vocabulary size vs performance tradeoffs, token healing", "h": 2}}, {"b": {"c": "Text classification: fine-tune BERT on custom dataset", "h": 5}, "i": {"c": "NER with token classification, summarisation with seq2seq", "h": 6}, "a": {"c": "Extractive QA, fine-tuning GPT-2, PEFT-based task adaptation", "h": 5}}]], "s3": [[{"b": {"c": "OpenAI chat completions API, messages array, basic call", "h": 3}, "i": {"c": "Function calling (tools), streaming responses, system prompts", "h": 4}, "a": {"c": "Vision inputs, token counting, tiktoken, batching \u0026 async calls", "h": 3}}, {"b": {"c": "Anthropic Messages API, basic request/response structure", "h": 3}, "i": {"c": "System prompts design, multi-turn conversation, tool use", "h": 4}, "a": {"c": "Extended thinking mode, prompt caching, streaming with SSE", "h": 3}}, {"b": {"c": "Zero-shot prompting, clear instructions, output format specification", "h": 4}, "i": {"c": "Few-shot examples, chain-of-thought (CoT), role prompting", "h": 5}, "a": {"c": "XML structuring, tree-of-thought, self-consistency, DSPy optimisation", "h": 5}}, {"b": {"c": "Context window concept, what fits, what gets cut", "h": 4}, "i": {"c": "KV-cache awareness, token budgeting, sliding window strategies", "h": 4}, "a": {"c": "Prompt compression (LLMLingua), hierarchical summarisation, memory management", "h": 4}}, {"b": {"c": "JSON mode, response_format, basic structured output", "h": 3}, "i": {"c": "Pydantic models, Instructor library, schema definition", "h": 3}, "a": {"c": "Validation chains, retry on schema failure, nested schemas, enum types", "h": 2}}, {"b": {"c": "Basic FastAPI LLM endpoint, sync call, return response", "h": 5}, "i": {"c": "Streaming with Server-Sent Events, async endpoint, generator pattern", "h": 6}, "a": {"c": "Retry logic with tenacity, rate limiting, circuit breaker, fallback models", "h": 5}}], [{"b": {"c": "Embedding concept, word2vec intuition, vector space", "h": 4}, "i": {"c": "sentence-transformers, cosine similarity, dot product for retrieval", "h": 4}, "a": {"c": "ANN search (FAISS), fine-tuning embeddings, matryoshka representations", "h": 4}}, {"b": {"c": "Vector DB concept, why not RDBMS, basic CRUD in Qdrant", "h": 5}, "i": {"c": "Pinecone setup, Weaviate schema, collection management", "h": 5}, "a": {"c": "HNSW vs IVF indexing, pgvector, filtering + vector search hybrid", "h": 4}}, {"b": {"c": "Basic RAG: chunk text, embed, store, retrieve, generate", "h": 6}, "i": {"c": "Metadata filtering, parent-child chunking, retrieval tuning", "h": 6}, "a": {"c": "Hybrid search (dense + BM25 with RRF), late interaction (ColBERT)", "h": 6}}, {"b": {"c": "LangChain document loaders: PDF, web, CSV, text", "h": 5}, "i": {"c": "Retrieval chain, ConversationalRetrievalChain, memory", "h": 5}, "a": {"c": "LlamaIndex re-rankers, cross-encoder scoring, custom retrievers", "h": 4}}, {"b": {"c": "Manual evaluation: reading outputs, spotting hallucinations", "h": 3}, "i": {"c": "RAGAS setup, faithfulness score, dataset preparation", "h": 4}, "a": {"c": "Answer relevance, context recall, context precision — tuning thresholds", "h": 3}}, {"b": {"c": "Query rewriting: paraphrase, back-translation, step-back prompting", "h": 5}, "i": {"c": "HyDE (hypothetical document embeddings), contextual compression", "h": 6}, "a": {"c": "Multi-hop retrieval, iterative RAG, agentic retrieval with tool use", "h": 5}}], [{"b": {"c": "Dataset formats for fine-tuning: JSONL, conversation format", "h": 5}, "i": {"c": "Learning rate schedules: warmup, cosine decay, linear", "h": 5}, "a": {"c": "Catastrophic forgetting: EWC, task vectors, continual learning", "h": 4}}, {"b": {"c": "LoRA concept: low-rank decomposition, trainable parameters", "h": 5}, "i": {"c": "QLoRA: 4-bit quantisation (NF4), bnb integration, memory savings", "h": 6}, "a": {"c": "PEFT library: LoraConfig, adapter merging, multi-adapter inference", "h": 5}}, {"b": {"c": "Instruction tuning dataset: format, quality, diversity", "h": 5}, "i": {"c": "DPO: preference data, loss function, vs PPO", "h": 5}, "a": {"c": "RLHF pipeline: reward model, PPO training, rejection sampling", "h": 4}}, {"b": {"c": "Unsloth setup, model loading, basic training config", "h": 4}, "i": {"c": "Axolotl YAML config, dataset config, training run monitoring", "h": 4}, "a": {"c": "Gradient checkpointing, Flash Attention, GPU memory optimisation", "h": 4}}, {"b": {"c": "Perplexity: what it measures, lower = better intuition", "h": 3}, "i": {"c": "BLEU, ROUGE: n-gram overlap, MT evaluation", "h": 4}, "a": {"c": "MT-Bench, LLM-as-judge: GPT-4 scoring, pairwise comparison", "h": 3}}, {"b": {"c": "Ollama: pull, run, basic local serving", "h": 5}, "i": {"c": "vLLM: PagedAttention, continuous batching, OpenAI-compatible API", "h": 5}, "a": {"c": "llama.cpp: GGUF format, quantisation levels, llama-server, inference speed", "h": 4}}]], "s4": [[{"b": {"c": "ReAct loop: reason → act → observe cycle, basic agent", "h": 5}, "i": {"c": "Tool calling: schema design, function calling API, result handling", "h": 5}, "a": {"c": "Memory types: working (context), episodic (conversation), semantic (VectorDB)", "h": 4}}, {"b": {"c": "Tool schema: name, description, parameters, JSON Schema", "h": 3}, "i": {"c": "Error handling: try/catch in tools, informative error messages", "h": 4}, "a": {"c": "Timeouts, retries with backoff, graceful degradation, observability", "h": 3}}, {"b": {"c": "LangChain agents: AgentExecutor, basic tool integration", "h": 5}, "i": {"c": "LangGraph: StateGraph, nodes, edges, conditional routing", "h": 6}, "a": {"c": "AutoGen: ConversableAgent, CrewAI: crew/tasks/agents, graph vs FSM", "h": 5}}, {"b": {"c": "Role specialisation: why agents need specific personas", "h": 5}, "i": {"c": "Supervisor pattern: orchestrator agent, worker agents, task routing", "h": 5}, "a": {"c": "Parallelism: async agents, debate pattern, voting consensus", "h": 4}}, {"b": {"c": "MCP concept: server exposes tools/resources to LLM client", "h": 4}, "i": {"c": "MCP server setup: resources, tools, prompts, SSE transport", "h": 4}, "a": {"c": "Custom MCP server with FastMCP, security, authentication, sampling", "h": 4}}, {"b": {"c": "Basic guardrails: input validation, output filtering", "h": 3}, "i": {"c": "Prompt injection detection, jailbreak patterns, NeMo Guardrails", "h": 4}, "a": {"c": "Agent evals: trajectories, tool use accuracy, human-in-the-loop checkpoints", "h": 3}}], [{"b": {"c": "DAG concept: directed acyclic graph, task dependencies", "h": 5}, "i": {"c": "Prefect: flows, tasks, deployments, scheduling", "h": 5}, "a": {"c": "Airflow DAGs, ZenML steps/pipelines, artefact versioning", "h": 4}}, {"b": {"c": "GitHub Actions: workflow syntax, triggers, jobs, steps", "h": 4}, "i": {"c": "DVC: data versioning, dvc.yaml pipeline, remote storage", "h": 4}, "a": {"c": "Automated re-training on data drift, model promotion gates", "h": 4}}, {"b": {"c": "Logging: structured logs, metric tracking, dashboards", "h": 4}, "i": {"c": "Evidently: data drift reports, column drift, dataset drift", "h": 4}, "a": {"c": "Concept drift detection, LLM output monitoring, latency SLA alerts", "h": 4}}, {"b": {"c": "LangSmith: trace logging, run metadata, dataset creation", "h": 3}, "i": {"c": "Prompt versioning, A/B testing prompts, annotation queues", "h": 4}, "a": {"c": "Langfuse cost tracking, Helicone analytics, multi-LLM observability", "h": 3}}, {"b": {"c": "AWS S3 for model artefacts, EC2 for training, IAM roles", "h": 6}, "i": {"c": "SageMaker: training jobs, model registry, real-time endpoints", "h": 7}, "a": {"c": "Modal/RunPod serverless GPU, auto-scaling, spot instance training", "h": 5}}, {"b": {"c": "Terraform basics: providers, resources, plan/apply/destroy", "h": 5}, "i": {"c": "Managed vector DB deployment, container orchestration basics", "h": 5}, "a": {"c": "Secrets management, GitHub OIDC, infrastructure drift detection", "h": 4}}]], "s5": [[{"b": {"c": "SELECT, WHERE, GROUP BY, aggregate functions (COUNT, SUM, AVG)", "h": 4}, "i": {"c": "HAVING, ORDER BY, aliases, multi-table JOINs (inner/left/right)", "h": 4}, "a": {"c": "Complex subqueries, CASE expressions, UNION, query optimisation", "h": 4}}, {"b": {"c": "ROW_NUMBER(), RANK(), DENSE_RANK() — basic ranking", "h": 3}, "i": {"c": "LAG/LEAD for time comparisons, SUM OVER for running totals", "h": 4}, "a": {"c": "PARTITION BY deep-dive, ROWS vs RANGE frames, advanced analytics", "h": 3}}, {"b": {"c": "WITH clause: basic CTE structure, readability benefits", "h": 3}, "i": {"c": "Multiple CTEs, referencing CTEs, recursive CTE structure", "h": 4}, "a": {"c": "EXPLAIN ANALYZE, query planning, index usage, optimisation", "h": 3}}, {"b": {"c": "1NF/2NF/3NF normalisation, primary keys, foreign keys", "h": 3}, "i": {"c": "Star schema: fact table, dimension tables, surrogate keys", "h": 3}, "a": {"c": "Denormalisation for analytics, slowly changing dimensions (SCD)", "h": 2}}, {"b": {"c": "PostgreSQL: setup, psql CLI, basic admin", "h": 2}, "i": {"c": "BigQuery: SQL dialect, partitioned tables, clustering", "h": 2}, "a": {"c": "DuckDB: in-process analytics, Parquet files, motherduck", "h": 2}}, {"b": {"c": "Batch ingestion concept, pandas to SQL, basic ETL script", "h": 3}, "i": {"c": "dbt: models, refs, sources, transformations, tests", "h": 4}, "a": {"c": "Streaming ingestion, Kafka basics, CDC patterns", "h": 3}}], [{"b": {"c": "AWS console navigation, S3 buckets, EC2 instances basics", "h": 5}, "i": {"c": "IAM roles/policies, Lambda functions, VPC basics, ECR registry", "h": 5}, "a": {"c": "Advanced networking, security groups, NACLs, CloudFormation basics", "h": 4}}, {"b": {"c": "SageMaker Studio: notebooks, experiments, data Wrangler", "h": 6}, "i": {"c": "Training jobs: estimator, hyperparameters, distributed training", "h": 7}, "a": {"c": "SageMaker Pipelines: steps, conditions, artefacts, batch transform", "h": 5}}, {"b": {"c": "GCS buckets, Cloud Run for containers, gcloud CLI basics", "h": 3}, "i": {"c": "Vertex AI: training jobs, custom containers, model registry", "h": 4}, "a": {"c": "BigQuery ML: CREATE MODEL, PREDICT, feature engineering in SQL", "h": 3}}, {"b": {"c": "Modal: @app.function decorator, volumes, basic GPU function", "h": 3}, "i": {"c": "RunPod: pod setup, template configuration, SSH access", "h": 3}, "a": {"c": "Cost comparison, spot interruption handling, vast.ai", "h": 2}}, {"b": {"c": "AWS Cost Explorer, billing alerts, budget setup", "h": 2}, "i": {"c": "Spot instances: request, interruption handling, savings", "h": 2}, "a": {"c": "Reserved capacity, FinOps practices, right-sizing, savings plans", "h": 2}}, {"b": {"c": "Environment variables, .env files, never commit secrets", "h": 2}, "i": {"c": "AWS Secrets Manager: create, retrieve in code, rotation", "h": 2}, "a": {"c": "Parameter Store, GitHub OIDC, secret scanning, audit logs", "h": 2}}], [{"b": {"c": "Spark architecture: driver, executors, RDD concept", "h": 5}, "i": {"c": "DataFrame API: select, filter, groupBy, agg, join", "h": 5}, "a": {"c": "Lazy evaluation, DAG visualisation, catalyst optimiser", "h": 4}}, {"b": {"c": "spark.sql() interface, createOrReplaceTempView", "h": 3}, "i": {"c": "Schema inference, StructType definition, complex types", "h": 4}, "a": {"c": "Partitioning strategies, coalesce vs repartition, bucketing", "h": 3}}, {"b": {"c": "Structured Streaming basics: readStream, writeStream", "h": 4}, "i": {"c": "Windowing operations, watermarks for late data", "h": 4}, "a": {"c": "Kafka source/sink, exactly-once semantics, checkpoint recovery", "h": 4}}, {"b": {"c": "Delta Lake: what ACID means, basic read/write", "h": 3}, "i": {"c": "MERGE INTO, UPDATE, DELETE, time travel with VERSION AS OF", "h": 4}, "a": {"c": "Schema evolution, constraints, Delta sharing, Liquid clustering", "h": 3}}, {"b": {"c": "Databricks workspace, clusters, notebooks, job runs", "h": 3}, "i": {"c": "Workflows, job clusters, Unity Catalog basics, access control", "h": 4}, "a": {"c": "Delta Live Tables, DLT expectations, Auto Loader", "h": 3}}, {"b": {"c": "Caching: cache(), persist(), storage levels", "h": 3}, "i": {"c": "Broadcast joins, avoid shuffles, partition pruning", "h": 4}, "a": {"c": "Skew handling: salting, AQE (Adaptive Query Execution)", "h": 3}}], [{"b": {"c": "Manual evaluation: criteria, rubrics, sampling strategy", "h": 3}, "i": {"c": "Braintrust: datasets, experiments, scoring functions", "h": 4}, "a": {"c": "Inspect AI, HELM benchmarks, custom eval harness from scratch", "h": 3}}, {"b": {"c": "LLM-as-judge concept: why use GPT-4 to evaluate", "h": 3}, "i": {"c": "Pairwise comparison: win/tie/loss, position bias mitigation", "h": 4}, "a": {"c": "Rubric-based scoring, calibration, multi-judge ensembles", "h": 3}}, {"b": {"c": "Basic adversarial prompts: ignore previous instructions", "h": 3}, "i": {"c": "Systematic jailbreak taxonomy, prompt injection via data", "h": 4}, "a": {"c": "Automated red-teaming with Garak, vulnerability taxonomy", "h": 3}}, {"b": {"c": "Hallucination types: intrinsic vs extrinsic, examples", "h": 3}, "i": {"c": "Factuality scoring: NLI-based, retrieval-augmented verification", "h": 3}, "a": {"c": "Citation verification pipeline, FActScore, FactBench", "h": 2}}, {"b": {"c": "Input filtering: keyword blocklists, regex patterns", "h": 3}, "i": {"c": "NeMo Guardrails: rails config, topical, safety, jailbreak", "h": 4}, "a": {"c": "Llama Guard: fine-tuned classifier, custom policy guardrails", "h": 3}}, {"b": {"c": "VQA datasets: VQAv2, basic evaluation setup", "h": 3}, "i": {"c": "Vision-language benchmarks: MMBench, MMMU", "h": 3}, "a": {"c": "Image-text alignment scoring, CLIP score, BLIP evaluation", "h": 2}}], [{"b": {"c": "Pods: smallest unit, spec, containers, restart policy", "h": 5}, "i": {"c": "Deployments, ReplicaSets, Services (ClusterIP/NodePort/LB)", "h": 6}, "a": {"c": "Namespaces, RBAC (roles/bindings), ConfigMaps, Secrets", "h": 5}}, {"b": {"c": "Resource requests vs limits, CPU/memory units", "h": 4}, "i": {"c": "GPU node pools, nodeSelector, tolerations for GPU nodes", "h": 4}, "a": {"c": "Pod affinity/anti-affinity, topology spread constraints", "h": 4}}, {"b": {"c": "Helm install/upgrade/rollback, chart structure basics", "h": 3}, "i": {"c": "values.yaml customisation, templating with {{ .Values }}", "h": 4}, "a": {"c": "Chart repositories, chart museum, Helmfile for multi-chart", "h": 3}}, {"b": {"c": "HPA: CPU-based scaling, kubectl autoscale", "h": 3}, "i": {"c": "KEDA: ScaledObject, custom metrics, Kafka lag scaling", "h": 4}, "a": {"c": "VPA, cluster autoscaler, event-driven at scale", "h": 3}}, {"b": {"c": "Istio: sidecar injection, basic traffic routing", "h": 3}, "i": {"c": "VirtualService, DestinationRule, traffic splitting", "h": 3}, "a": {"c": "Canary deployments with Flagger, circuit breaking, mTLS", "h": 2}}, {"b": {"c": "Prometheus: metrics format, PromQL basics, scraping", "h": 4}, "i": {"c": "Grafana: datasources, dashboards, alert rules", "h": 4}, "a": {"c": "Distributed tracing: Jaeger/Tempo, OpenTelemetry instrumentation", "h": 4}}], [{"b": {"c": "ViT: image patches, position embeddings, classification token", "h": 5}, "i": {"c": "DINOv2: self-supervised training, feature extraction", "h": 5}, "a": {"c": "CLIP: contrastive pre-training, zero-shot classification, embeddings", "h": 4}}, {"b": {"c": "LLaVA: architecture, visual instruction tuning, basic usage", "h": 5}, "i": {"c": "Qwen-VL: multi-image, video understanding, Chinese support", "h": 5}, "a": {"c": "PaliGemma, InternVL, architecture comparison, when to use each", "h": 4}}, {"b": {"c": "GPT-4o vision: image input format, basic VQA", "h": 3}, "i": {"c": "Claude 3 vision: document understanding, chart reading", "h": 3}, "a": {"c": "Gemini Pro Vision, batch processing, cost optimisation", "h": 2}}, {"b": {"c": "Stable Diffusion: U-Net, VAE, CLIP text encoder, sampling", "h": 4}, "i": {"c": "FLUX architecture, ControlNet for conditioning", "h": 4}, "a": {"c": "DreamBooth fine-tuning, LoRA for diffusion, SDXL training", "h": 4}}, {"b": {"c": "Tesseract: basic OCR, language packs, image preprocessing", "h": 3}, "i": {"c": "PaddleOCR: detection + recognition pipeline, table extraction", "h": 4}, "a": {"c": "DocumentAI: layout-aware parsing, form extraction, invoice processing", "h": 3}}, {"b": {"c": "Frame sampling strategies: uniform, keyframe detection", "h": 3}, "i": {"c": "VideoLLaMA: video encoding, temporal features, QA", "h": 4}, "a": {"c": "Temporal reasoning, video captioning, action recognition", "h": 3}}]]};
 
+// ── State ──────────────────────────────────────────────
 function defaultState(){
   const s={};
   SECTIONS.forEach(sec=>{
-    s[sec.id]=sec.months.map((m,mi)=>({
+    s[sec.id]=sec.months.map((m)=>({
       checked:new Array(m.checkpoints.length).fill(false),
-      subs:m.checkpoints.map((cp,ci)=>[false,false,false])
+      subs:m.checkpoints.map(()=>[false,false,false])
     }));
   });
   return s;
 }
+
 function migrateState(st){
-  // Add subs array if missing (upgrade from old format)
   SECTIONS.forEach(sec=>{
     if(!st[sec.id]) st[sec.id]=defaultState()[sec.id];
     sec.months.forEach((m,mi)=>{
@@ -389,148 +392,101 @@ function migrateState(st){
         if(!Array.isArray(st[sec.id][mi].subs[ci])){
           st[sec.id][mi].subs[ci]=[false,false,false];
         }
+        // Auto-sync parent checked from subs
+        if(st[sec.id][mi].subs[ci].every(Boolean)){
+          st[sec.id][mi].checked[ci]=true;
+        }
       });
     });
   });
   return st;
 }
 
-// ── Firebase config — replace with YOUR values ──
-const FB_CONFIG = {
-  apiKey: "AIzaSyAqQ6_fMH6ZWUiUVft-lkrcq7PtGlVK0QQ",
-  authDomain: "roadmap-ai-engineer.firebaseapp.com",
-  databaseURL: "https://roadmap-ai-engineer-default-rtdb.firebaseio.com",
-  projectId: "roadmap-ai-engineer",
-  storageBucket: "roadmap-ai-engineer.firebasestorage.app",
-  messagingSenderId: "537772791154",
-  appId: "1:537772791154:web:d302ea03be43cc8c0379eb"
-};
-const FB_PATH = "roadmap/state"; // path in the Realtime Database
+let state=migrateState((()=>{
+  try{ return JSON.parse(localStorage.getItem('mlv3'))||defaultState(); }
+  catch{ return defaultState(); }
+})());
 
-let state = defaultState();
-let dbRef = null;
-let _ignoreNext = false; // prevent echo loop
-
-function setConnStatus(status, label){
-  const badge = document.getElementById('connBadge');
-  const lbl = document.getElementById('connLabel');
-  if(badge){ badge.className = 'conn-badge ' + status; }
-  if(lbl){ lbl.textContent = label; }
-}
-
-// ── Initialize Firebase App immediately ──
-firebase.initializeApp(FB_CONFIG);
-
-function signInWithGoogle(){
-  const provider = new firebase.auth.GoogleAuthProvider();
-  firebase.auth().signInWithPopup(provider).catch(err => {
-    document.getElementById("authError").classList.add("show");
-    document.getElementById("authError").textContent = err.message;
-  });
-}
-
-firebase.auth().onAuthStateChanged(user => {
-  if(user){
-    document.getElementById("authGate").classList.add("hidden");
-    // Show user info in sidebar
-    const uname = document.getElementById("sidebar-username");
-    const uavatar = document.getElementById("sidebar-avatar");
-    if(uname) uname.textContent = user.displayName || user.email;
-    if(uavatar) uavatar.src = user.photoURL || "";
-    // Store progress under user's unique ID
-    initFirebase(user.uid);
-  }
-});
-
-function initFirebase(uid){
-  try {
-    const db = firebase.database();
-    const userPath = "roadmap/users/" + uid + "/state";
-    dbRef = db.ref(userPath);
-
-    // Connection state
-    db.ref('.info/connected').on('value', snap => {
-      if(snap.val()) setConnStatus('online','live sync');
-      else setConnStatus('offline','offline');
-    });
-
-    // Listen for remote changes → update local state and re-render
-    dbRef.on('value', snap => {
-      const remote = snap.val();
-      if(!remote){
-        setConnStatus('online','live — no data yet');
-      } else {
-        // Merge: keep any sections not in remote (e.g. new sections added later)
-        SECTIONS.forEach(sec => {
-          if(remote[sec.id]){
-            sec.months.forEach((m, mi) => {
-              if(remote[sec.id][mi] && remote[sec.id][mi].checked){
-                state[sec.id][mi].checked = remote[sec.id][mi].checked;
-              }
-            });
-          }
-        });
-      }
-      const SUBS={"s0": [[{"b": {"c": "Vectors, scalars, dot product, matrix addition \u0026 multiplication", "h": 7}, "i": {"c": "Matrix inverse, transpose, rank, null space, linear independence", "h": 7}, "a": {"c": "Eigenvalues \u0026 eigenvectors, SVD, matrix decomposition from scratch", "h": 6}}, {"b": {"c": "Derivatives, chain rule, product rule — intuition \u0026 practice", "h": 5}, "i": {"c": "Partial derivatives, gradients, directional derivatives, Jacobians", "h": 6}, "a": {"c": "Hessians, second-order optimisation, Lagrangians, constraint optimisation", "h": 5}}, {"b": {"c": "Probability rules, Bayes theorem, conditional probability, distributions", "h": 6}, "i": {"c": "Expectation, variance, covariance, MLE derivation, CLT", "h": 6}, "a": {"c": "MAP estimation, conjugate priors, hypothesis testing, MCMC intuition", "h": 6}}, {"b": {"c": "Information content, Shannon entropy, intuition \u0026 examples", "h": 3}, "i": {"c": "Cross-entropy loss derivation, KL divergence, mutual information", "h": 4}, "a": {"c": "ELBO, variational inference intuition, information bottleneck", "h": 3}}, {"b": {"c": "Gradient descent mechanics, learning rate effects, visualisation", "h": 4}, "i": {"c": "Momentum, RMSProp — why they work, convergence intuition", "h": 4}, "a": {"c": "Adam derivation, convexity, saddle points, loss landscape analysis", "h": 4}}, {"b": {"c": "NumPy for linear algebra: dot, matmul, einsum, solve", "h": 3}, "i": {"c": "SymPy for symbolic differentiation, matplotlib for function plotting", "h": 3}, "a": {"c": "JAX autograd, einops notation, tensors as computation graphs", "h": 2}}], [{"b": {"c": "Variables, operators, int/float/str/bool, basic expressions", "h": 3}, "i": {"c": "f-strings, type hints, walrus operator, string methods", "h": 3}, "a": {"c": "Type system internals, __slots__, descriptor protocol", "h": 2}}, {"b": {"c": "if/else, for loops, while loops, break/continue", "h": 2}, "i": {"c": "List/dict/set comprehensions, nested comprehensions, conditionals inside", "h": 2}, "a": {"c": "Generators, itertools, yield from, recursive patterns", "h": 2}}, {"b": {"c": "Lists: indexing, slicing, append, pop, sort", "h": 3}, "i": {"c": "Dicts \u0026 sets: when to use each, dict methods, set operations", "h": 3}, "a": {"c": "collections: deque, defaultdict, Counter, OrderedDict, namedtuple", "h": 2}}, {"b": {"c": "def, args, kwargs, return values, scope (LEGB)", "h": 3}, "i": {"c": "*args/**kwargs patterns, closures, nonlocal, inner functions", "h": 4}, "a": {"c": "Decorators, functools.wraps, lambda, partial, map/filter", "h": 3}}, {"b": {"c": "class, __init__, instance vs class attributes, basic methods", "h": 4}, "i": {"c": "Inheritance, super(), dunder methods (__str__, __repr__, __len__)", "h": 4}, "a": {"c": "@dataclass, abstract base classes, mixins, __slots__ optimisation", "h": 4}}, {"b": {"c": "VS Code setup, Python extension, virtual environments with venv", "h": 2}, "i": {"c": "pip, requirements.txt, .env files, Jupyter notebooks \u0026 kernels", "h": 2}, "a": {"c": "pyenv for Python versions, Poetry, pre-commit hooks, Makefile", "h": 2}}], [{"b": {"c": "ndarray creation, indexing, slicing, basic arithmetic", "h": 3}, "i": {"c": "Vectorised ops, broadcasting rules, boolean masking", "h": 4}, "a": {"c": "Advanced indexing, memory layout (C vs F order), strides, np.einsum", "h": 3}}, {"b": {"c": "Series, DataFrame, read_csv, head/tail, info, describe", "h": 5}, "i": {"c": "groupby, merge (inner/left/right/outer), pivot_table, melt", "h": 6}, "a": {"c": "Time-series indexing, resample, rolling, multi-index, apply with lambda", "h": 5}}, {"b": {"c": "isnull, dropna, fillna strategies (mean/median/forward fill)", "h": 3}, "i": {"c": "Outlier detection (IQR, z-score), duplicate detection \u0026 removal", "h": 4}, "a": {"c": "dtype casting, custom imputation pipelines, schema validation", "h": 3}}, {"b": {"c": "One-hot encoding, label encoding, pd.get_dummies", "h": 4}, "i": {"c": "Binning (cut/qcut), log-transforms, sqrt transforms", "h": 4}, "a": {"c": "Interaction terms, polynomial features, target encoding, frequency encoding", "h": 4}}, {"b": {"c": "StandardScaler, MinMaxScaler — fit vs transform vs fit_transform", "h": 2}, "i": {"c": "RobustScaler for outliers, why scaling matters for gradient descent", "h": 2}, "a": {"c": "Custom scalers, scaling inside Pipeline, leakage-free scaling", "h": 2}}, {"b": {"c": "matplotlib basics: line, bar, scatter, hist, subplots", "h": 4}, "i": {"c": "Seaborn: heatmap, pairplot, violin, distribution plots", "h": 4}, "a": {"c": "Plotly interactive charts, correlation analysis, EDA report with ydata-profiling", "h": 4}}], [{"b": {"c": "git init, add, commit, push, pull, status, log", "h": 3}, "i": {"c": "Branching, checkout, merge, pull requests, code review", "h": 3}, "a": {"c": "Rebasing, cherry-pick, conflict resolution, .gitignore for ML repos", "h": 2}}, {"b": {"c": "HTTP methods (GET/POST/PUT/DELETE), status codes, curl basics", "h": 3}, "i": {"c": "REST principles, JSON structure, auth headers (Bearer, API key)", "h": 3}, "a": {"c": "Rate limiting, pagination, OAuth2 flow, versioning best practices", "h": 2}}, {"b": {"c": "Basic FastAPI app, routing, path/query params, response models", "h": 5}, "i": {"c": "Pydantic models, request body validation, HTTPException handling", "h": 6}, "a": {"c": "Async endpoints, dependency injection, middleware, background tasks", "h": 5}}, {"b": {"c": "Python modules, packages, __init__.py, relative imports", "h": 2}, "i": {"c": "pyproject.toml, setup.cfg, editable installs, __all__", "h": 2}, "a": {"c": "Namespace packages, publishing to PyPI, monorepo structure", "h": 2}}, {"b": {"c": "pytest basics, assert, test discovery, running tests", "h": 3}, "i": {"c": "fixtures, parametrize, conftest.py, test organisation", "h": 4}, "a": {"c": "mock, patch, testing data pipelines, coverage reports", "h": 3}}, {"b": {"c": "Dockerfile syntax, FROM/RUN/COPY/CMD, docker build \u0026 run", "h": 5}, "i": {"c": "Volumes, port mapping, .dockerignore, docker-compose basics", "h": 5}, "a": {"c": "Multi-stage builds, optimising layers, slim images, health checks", "h": 4}}]], "s1": [[{"b": {"c": "Train/test split, holdout strategy, underfitting vs overfitting", "h": 5}, "i": {"c": "k-fold cross-validation, stratified split, metrics (accuracy/F1/AUC)", "h": 5}, "a": {"c": "Bias-variance tradeoff theorem, learning curves, validation curves", "h": 4}}, {"b": {"c": "Linear regression: least squares, MSE, R², gradient derivation", "h": 6}, "i": {"c": "Logistic regression: sigmoid, BCE loss, decision boundary, SVMs", "h": 6}, "a": {"c": "k-NN: distance metrics, curse of dimensionality, kernel SVM, SVM margin", "h": 6}}, {"b": {"c": "Decision tree: splits, information gain, Gini impurity", "h": 4}, "i": {"c": "CART algorithm, max_depth, min_samples_split, visualisation", "h": 4}, "a": {"c": "Feature importance, post-pruning, cost-complexity (ccp_alpha)", "h": 4}}, {"b": {"c": "fit/predict/transform pattern, train/test with sklearn", "h": 3}, "i": {"c": "Pipeline, ColumnTransformer, make_pipeline, preprocessing steps", "h": 4}, "a": {"c": "GridSearchCV, RandomizedSearchCV, custom estimators, joblib persistence", "h": 3}}, {"b": {"c": "K-Means: algorithm, elbow method, inertia, centroids", "h": 5}, "i": {"c": "DBSCAN: epsilon/minPts, noise handling, PCA: explained variance", "h": 5}, "a": {"c": "t-SNE for visualisation, silhouette score, GMM, hierarchical clustering", "h": 4}}, {"b": {"c": "Understanding class imbalance, class_weight parameter", "h": 3}, "i": {"c": "SMOTE, oversampling, undersampling, balanced accuracy", "h": 3}, "a": {"c": "Precision-recall AUC vs ROC-AUC, threshold optimisation, cost-sensitive", "h": 2}}], [{"b": {"c": "Bootstrap sampling concept, bagging intuition, variance reduction", "h": 4}, "i": {"c": "Random Forest: training multiple trees, OOB error estimate", "h": 4}, "a": {"c": "Feature subspacing (max_features), RF vs single tree, parallelisation", "h": 4}}, {"b": {"c": "AdaBoost: sequential weighting, weak learners, boosting intuition", "h": 6}, "i": {"c": "XGBoost: objective function, regularisation, tree building algorithm", "h": 8}, "a": {"c": "LightGBM leaf-wise growth, CatBoost categorical handling, early stopping", "h": 6}}, {"b": {"c": "Blending: train base models, average predictions", "h": 3}, "i": {"c": "Stacking: meta-learner, holdout sets, sklearn StackingClassifier", "h": 4}, "a": {"c": "Avoiding data leakage in stacks, nested CV, multi-layer stacks", "h": 3}}, {"b": {"c": "Manual search, grid search — when to use, search space design", "h": 4}, "i": {"c": "Optuna: define_by_run, pruning, study visualisation", "h": 4}, "a": {"c": "Bayesian optimisation theory, TPE sampler, Hyperopt, multi-objective", "h": 4}}, {"b": {"c": "Feature importance (MDI) in tree models, bar plots", "h": 3}, "i": {"c": "SHAP TreeExplainer, waterfall plots, force plots", "h": 4}, "a": {"c": "Global SHAP (beeswarm), interaction values, SHAP for neural nets", "h": 3}}, {"b": {"c": "Correlation-based removal, variance threshold", "h": 3}, "i": {"c": "Recursive Feature Elimination (RFE), SelectFromModel", "h": 3}, "a": {"c": "Permutation importance, mutual information, Boruta algorithm", "h": 2}}]], "s2": [[{"b": {"c": "Perceptrons, activation functions (ReLU/sigmoid/tanh), XOR problem", "h": 6}, "i": {"c": "Backpropagation step-by-step, chain rule applied to NNs", "h": 6}, "a": {"c": "Gradient descent variants: SGD, Adam, RMSProp — derivations \u0026 intuition", "h": 6}}, {"b": {"c": "Tensors: creation, ops, reshaping, dtype, device", "h": 6}, "i": {"c": "autograd: backward(), grad, no_grad, Dataset \u0026 DataLoader", "h": 7}, "a": {"c": "Custom training loops, GPU transfer, mixed precision, torch.compile", "h": 7}}, {"b": {"c": "Convolution operation, filters, feature maps, pooling layers", "h": 6}, "i": {"c": "ResNet architecture, skip connections, batch norm, receptive field", "h": 6}, "a": {"c": "Transfer learning: freeze/unfreeze, fine-tuning with torchvision", "h": 6}}, {"b": {"c": "Sequence modelling need, basic RNN: hidden state, unrolling", "h": 5}, "i": {"c": "LSTM: cell state, gates (input/forget/output), GRU comparison", "h": 5}, "a": {"c": "Vanishing gradient problem, BPTT, gradient clipping, bidirectional", "h": 4}}, {"b": {"c": "Dropout: training vs inference, dropout rate effect", "h": 3}, "i": {"c": "Batch normalisation: how it works, train vs eval mode", "h": 3}, "a": {"c": "Weight decay (L2), label smoothing, early stopping implementation", "h": 2}}, {"b": {"c": "Manual metric logging, matplotlib training curves", "h": 3}, "i": {"c": "Weights \u0026 Biases: setup, run tracking, config logging, sweeps", "h": 4}, "a": {"c": "MLflow: experiment tracking, model registry, artefacts management", "h": 3}}], [{"b": {"c": "Attention intuition: queries, keys, values, dot-product similarity", "h": 5}, "i": {"c": "Self-attention mechanism, scaled dot-product, multi-head attention", "h": 6}, "a": {"c": "Positional encoding (sinusoidal \u0026 learned), relative attention, RoPE", "h": 5}}, {"b": {"c": "Encoder block: self-attention + FFN + residual + layer norm", "h": 5}, "i": {"c": "BERT (encoder-only) vs GPT (decoder-only), cross-attention in seq2seq", "h": 5}, "a": {"c": "Pre-norm vs post-norm, scaling laws, model size vs data tradeoffs", "h": 4}}, {"b": {"c": "pipeline() API: text-classification, ner, summarisation", "h": 4}, "i": {"c": "AutoTokenizer, AutoModel, tokenisation pipeline, model hub", "h": 4}, "a": {"c": "Trainer API, TrainingArguments, custom datasets, data collators", "h": 4}}, {"b": {"c": "BERT: masked LM pre-training, [CLS] token, sentence classification", "h": 3}, "i": {"c": "RoBERTa improvements, Llama architecture, rotary embeddings", "h": 4}, "a": {"c": "Mistral: sliding window attention, grouped query attention, when to pick each", "h": 3}}, {"b": {"c": "Subword tokenisation motivation, vocabulary building", "h": 3}, "i": {"c": "BPE algorithm step-by-step, WordPiece, special tokens", "h": 3}, "a": {"c": "SentencePiece, vocabulary size vs performance tradeoffs, token healing", "h": 2}}, {"b": {"c": "Text classification: fine-tune BERT on custom dataset", "h": 5}, "i": {"c": "NER with token classification, summarisation with seq2seq", "h": 6}, "a": {"c": "Extractive QA, fine-tuning GPT-2, PEFT-based task adaptation", "h": 5}}]], "s3": [[{"b": {"c": "OpenAI chat completions API, messages array, basic call", "h": 3}, "i": {"c": "Function calling (tools), streaming responses, system prompts", "h": 4}, "a": {"c": "Vision inputs, token counting, tiktoken, batching \u0026 async calls", "h": 3}}, {"b": {"c": "Anthropic Messages API, basic request/response structure", "h": 3}, "i": {"c": "System prompts design, multi-turn conversation, tool use", "h": 4}, "a": {"c": "Extended thinking mode, prompt caching, streaming with SSE", "h": 3}}, {"b": {"c": "Zero-shot prompting, clear instructions, output format specification", "h": 4}, "i": {"c": "Few-shot examples, chain-of-thought (CoT), role prompting", "h": 5}, "a": {"c": "XML structuring, tree-of-thought, self-consistency, DSPy optimisation", "h": 5}}, {"b": {"c": "Context window concept, what fits, what gets cut", "h": 4}, "i": {"c": "KV-cache awareness, token budgeting, sliding window strategies", "h": 4}, "a": {"c": "Prompt compression (LLMLingua), hierarchical summarisation, memory management", "h": 4}}, {"b": {"c": "JSON mode, response_format, basic structured output", "h": 3}, "i": {"c": "Pydantic models, Instructor library, schema definition", "h": 3}, "a": {"c": "Validation chains, retry on schema failure, nested schemas, enum types", "h": 2}}, {"b": {"c": "Basic FastAPI LLM endpoint, sync call, return response", "h": 5}, "i": {"c": "Streaming with Server-Sent Events, async endpoint, generator pattern", "h": 6}, "a": {"c": "Retry logic with tenacity, rate limiting, circuit breaker, fallback models", "h": 5}}], [{"b": {"c": "Embedding concept, word2vec intuition, vector space", "h": 4}, "i": {"c": "sentence-transformers, cosine similarity, dot product for retrieval", "h": 4}, "a": {"c": "ANN search (FAISS), fine-tuning embeddings, matryoshka representations", "h": 4}}, {"b": {"c": "Vector DB concept, why not RDBMS, basic CRUD in Qdrant", "h": 5}, "i": {"c": "Pinecone setup, Weaviate schema, collection management", "h": 5}, "a": {"c": "HNSW vs IVF indexing, pgvector, filtering + vector search hybrid", "h": 4}}, {"b": {"c": "Basic RAG: chunk text, embed, store, retrieve, generate", "h": 6}, "i": {"c": "Metadata filtering, parent-child chunking, retrieval tuning", "h": 6}, "a": {"c": "Hybrid search (dense + BM25 with RRF), late interaction (ColBERT)", "h": 6}}, {"b": {"c": "LangChain document loaders: PDF, web, CSV, text", "h": 5}, "i": {"c": "Retrieval chain, ConversationalRetrievalChain, memory", "h": 5}, "a": {"c": "LlamaIndex re-rankers, cross-encoder scoring, custom retrievers", "h": 4}}, {"b": {"c": "Manual evaluation: reading outputs, spotting hallucinations", "h": 3}, "i": {"c": "RAGAS setup, faithfulness score, dataset preparation", "h": 4}, "a": {"c": "Answer relevance, context recall, context precision — tuning thresholds", "h": 3}}, {"b": {"c": "Query rewriting: paraphrase, back-translation, step-back prompting", "h": 5}, "i": {"c": "HyDE (hypothetical document embeddings), contextual compression", "h": 6}, "a": {"c": "Multi-hop retrieval, iterative RAG, agentic retrieval with tool use", "h": 5}}], [{"b": {"c": "Dataset formats for fine-tuning: JSONL, conversation format", "h": 5}, "i": {"c": "Learning rate schedules: warmup, cosine decay, linear", "h": 5}, "a": {"c": "Catastrophic forgetting: EWC, task vectors, continual learning", "h": 4}}, {"b": {"c": "LoRA concept: low-rank decomposition, trainable parameters", "h": 5}, "i": {"c": "QLoRA: 4-bit quantisation (NF4), bnb integration, memory savings", "h": 6}, "a": {"c": "PEFT library: LoraConfig, adapter merging, multi-adapter inference", "h": 5}}, {"b": {"c": "Instruction tuning dataset: format, quality, diversity", "h": 5}, "i": {"c": "DPO: preference data, loss function, vs PPO", "h": 5}, "a": {"c": "RLHF pipeline: reward model, PPO training, rejection sampling", "h": 4}}, {"b": {"c": "Unsloth setup, model loading, basic training config", "h": 4}, "i": {"c": "Axolotl YAML config, dataset config, training run monitoring", "h": 4}, "a": {"c": "Gradient checkpointing, Flash Attention, GPU memory optimisation", "h": 4}}, {"b": {"c": "Perplexity: what it measures, lower = better intuition", "h": 3}, "i": {"c": "BLEU, ROUGE: n-gram overlap, MT evaluation", "h": 4}, "a": {"c": "MT-Bench, LLM-as-judge: GPT-4 scoring, pairwise comparison", "h": 3}}, {"b": {"c": "Ollama: pull, run, basic local serving", "h": 5}, "i": {"c": "vLLM: PagedAttention, continuous batching, OpenAI-compatible API", "h": 5}, "a": {"c": "llama.cpp: GGUF format, quantisation levels, llama-server, inference speed", "h": 4}}]], "s4": [[{"b": {"c": "ReAct loop: reason → act → observe cycle, basic agent", "h": 5}, "i": {"c": "Tool calling: schema design, function calling API, result handling", "h": 5}, "a": {"c": "Memory types: working (context), episodic (conversation), semantic (VectorDB)", "h": 4}}, {"b": {"c": "Tool schema: name, description, parameters, JSON Schema", "h": 3}, "i": {"c": "Error handling: try/catch in tools, informative error messages", "h": 4}, "a": {"c": "Timeouts, retries with backoff, graceful degradation, observability", "h": 3}}, {"b": {"c": "LangChain agents: AgentExecutor, basic tool integration", "h": 5}, "i": {"c": "LangGraph: StateGraph, nodes, edges, conditional routing", "h": 6}, "a": {"c": "AutoGen: ConversableAgent, CrewAI: crew/tasks/agents, graph vs FSM", "h": 5}}, {"b": {"c": "Role specialisation: why agents need specific personas", "h": 5}, "i": {"c": "Supervisor pattern: orchestrator agent, worker agents, task routing", "h": 5}, "a": {"c": "Parallelism: async agents, debate pattern, voting consensus", "h": 4}}, {"b": {"c": "MCP concept: server exposes tools/resources to LLM client", "h": 4}, "i": {"c": "MCP server setup: resources, tools, prompts, SSE transport", "h": 4}, "a": {"c": "Custom MCP server with FastMCP, security, authentication, sampling", "h": 4}}, {"b": {"c": "Basic guardrails: input validation, output filtering", "h": 3}, "i": {"c": "Prompt injection detection, jailbreak patterns, NeMo Guardrails", "h": 4}, "a": {"c": "Agent evals: trajectories, tool use accuracy, human-in-the-loop checkpoints", "h": 3}}], [{"b": {"c": "DAG concept: directed acyclic graph, task dependencies", "h": 5}, "i": {"c": "Prefect: flows, tasks, deployments, scheduling", "h": 5}, "a": {"c": "Airflow DAGs, ZenML steps/pipelines, artefact versioning", "h": 4}}, {"b": {"c": "GitHub Actions: workflow syntax, triggers, jobs, steps", "h": 4}, "i": {"c": "DVC: data versioning, dvc.yaml pipeline, remote storage", "h": 4}, "a": {"c": "Automated re-training on data drift, model promotion gates", "h": 4}}, {"b": {"c": "Logging: structured logs, metric tracking, dashboards", "h": 4}, "i": {"c": "Evidently: data drift reports, column drift, dataset drift", "h": 4}, "a": {"c": "Concept drift detection, LLM output monitoring, latency SLA alerts", "h": 4}}, {"b": {"c": "LangSmith: trace logging, run metadata, dataset creation", "h": 3}, "i": {"c": "Prompt versioning, A/B testing prompts, annotation queues", "h": 4}, "a": {"c": "Langfuse cost tracking, Helicone analytics, multi-LLM observability", "h": 3}}, {"b": {"c": "AWS S3 for model artefacts, EC2 for training, IAM roles", "h": 6}, "i": {"c": "SageMaker: training jobs, model registry, real-time endpoints", "h": 7}, "a": {"c": "Modal/RunPod serverless GPU, auto-scaling, spot instance training", "h": 5}}, {"b": {"c": "Terraform basics: providers, resources, plan/apply/destroy", "h": 5}, "i": {"c": "Managed vector DB deployment, container orchestration basics", "h": 5}, "a": {"c": "Secrets management, GitHub OIDC, infrastructure drift detection", "h": 4}}]], "s5": [[{"b": {"c": "SELECT, WHERE, GROUP BY, aggregate functions (COUNT, SUM, AVG)", "h": 4}, "i": {"c": "HAVING, ORDER BY, aliases, multi-table JOINs (inner/left/right)", "h": 4}, "a": {"c": "Complex subqueries, CASE expressions, UNION, query optimisation", "h": 4}}, {"b": {"c": "ROW_NUMBER(), RANK(), DENSE_RANK() — basic ranking", "h": 3}, "i": {"c": "LAG/LEAD for time comparisons, SUM OVER for running totals", "h": 4}, "a": {"c": "PARTITION BY deep-dive, ROWS vs RANGE frames, advanced analytics", "h": 3}}, {"b": {"c": "WITH clause: basic CTE structure, readability benefits", "h": 3}, "i": {"c": "Multiple CTEs, referencing CTEs, recursive CTE structure", "h": 4}, "a": {"c": "EXPLAIN ANALYZE, query planning, index usage, optimisation", "h": 3}}, {"b": {"c": "1NF/2NF/3NF normalisation, primary keys, foreign keys", "h": 3}, "i": {"c": "Star schema: fact table, dimension tables, surrogate keys", "h": 3}, "a": {"c": "Denormalisation for analytics, slowly changing dimensions (SCD)", "h": 2}}, {"b": {"c": "PostgreSQL: setup, psql CLI, basic admin", "h": 2}, "i": {"c": "BigQuery: SQL dialect, partitioned tables, clustering", "h": 2}, "a": {"c": "DuckDB: in-process analytics, Parquet files, motherduck", "h": 2}}, {"b": {"c": "Batch ingestion concept, pandas to SQL, basic ETL script", "h": 3}, "i": {"c": "dbt: models, refs, sources, transformations, tests", "h": 4}, "a": {"c": "Streaming ingestion, Kafka basics, CDC patterns", "h": 3}}], [{"b": {"c": "AWS console navigation, S3 buckets, EC2 instances basics", "h": 5}, "i": {"c": "IAM roles/policies, Lambda functions, VPC basics, ECR registry", "h": 5}, "a": {"c": "Advanced networking, security groups, NACLs, CloudFormation basics", "h": 4}}, {"b": {"c": "SageMaker Studio: notebooks, experiments, data Wrangler", "h": 6}, "i": {"c": "Training jobs: estimator, hyperparameters, distributed training", "h": 7}, "a": {"c": "SageMaker Pipelines: steps, conditions, artefacts, batch transform", "h": 5}}, {"b": {"c": "GCS buckets, Cloud Run for containers, gcloud CLI basics", "h": 3}, "i": {"c": "Vertex AI: training jobs, custom containers, model registry", "h": 4}, "a": {"c": "BigQuery ML: CREATE MODEL, PREDICT, feature engineering in SQL", "h": 3}}, {"b": {"c": "Modal: @app.function decorator, volumes, basic GPU function", "h": 3}, "i": {"c": "RunPod: pod setup, template configuration, SSH access", "h": 3}, "a": {"c": "Cost comparison, spot interruption handling, vast.ai", "h": 2}}, {"b": {"c": "AWS Cost Explorer, billing alerts, budget setup", "h": 2}, "i": {"c": "Spot instances: request, interruption handling, savings", "h": 2}, "a": {"c": "Reserved capacity, FinOps practices, right-sizing, savings plans", "h": 2}}, {"b": {"c": "Environment variables, .env files, never commit secrets", "h": 2}, "i": {"c": "AWS Secrets Manager: create, retrieve in code, rotation", "h": 2}, "a": {"c": "Parameter Store, GitHub OIDC, secret scanning, audit logs", "h": 2}}], [{"b": {"c": "Spark architecture: driver, executors, RDD concept", "h": 5}, "i": {"c": "DataFrame API: select, filter, groupBy, agg, join", "h": 5}, "a": {"c": "Lazy evaluation, DAG visualisation, catalyst optimiser", "h": 4}}, {"b": {"c": "spark.sql() interface, createOrReplaceTempView", "h": 3}, "i": {"c": "Schema inference, StructType definition, complex types", "h": 4}, "a": {"c": "Partitioning strategies, coalesce vs repartition, bucketing", "h": 3}}, {"b": {"c": "Structured Streaming basics: readStream, writeStream", "h": 4}, "i": {"c": "Windowing operations, watermarks for late data", "h": 4}, "a": {"c": "Kafka source/sink, exactly-once semantics, checkpoint recovery", "h": 4}}, {"b": {"c": "Delta Lake: what ACID means, basic read/write", "h": 3}, "i": {"c": "MERGE INTO, UPDATE, DELETE, time travel with VERSION AS OF", "h": 4}, "a": {"c": "Schema evolution, constraints, Delta sharing, Liquid clustering", "h": 3}}, {"b": {"c": "Databricks workspace, clusters, notebooks, job runs", "h": 3}, "i": {"c": "Workflows, job clusters, Unity Catalog basics, access control", "h": 4}, "a": {"c": "Delta Live Tables, DLT expectations, Auto Loader", "h": 3}}, {"b": {"c": "Caching: cache(), persist(), storage levels", "h": 3}, "i": {"c": "Broadcast joins, avoid shuffles, partition pruning", "h": 4}, "a": {"c": "Skew handling: salting, AQE (Adaptive Query Execution)", "h": 3}}], [{"b": {"c": "Manual evaluation: criteria, rubrics, sampling strategy", "h": 3}, "i": {"c": "Braintrust: datasets, experiments, scoring functions", "h": 4}, "a": {"c": "Inspect AI, HELM benchmarks, custom eval harness from scratch", "h": 3}}, {"b": {"c": "LLM-as-judge concept: why use GPT-4 to evaluate", "h": 3}, "i": {"c": "Pairwise comparison: win/tie/loss, position bias mitigation", "h": 4}, "a": {"c": "Rubric-based scoring, calibration, multi-judge ensembles", "h": 3}}, {"b": {"c": "Basic adversarial prompts: ignore previous instructions", "h": 3}, "i": {"c": "Systematic jailbreak taxonomy, prompt injection via data", "h": 4}, "a": {"c": "Automated red-teaming with Garak, vulnerability taxonomy", "h": 3}}, {"b": {"c": "Hallucination types: intrinsic vs extrinsic, examples", "h": 3}, "i": {"c": "Factuality scoring: NLI-based, retrieval-augmented verification", "h": 3}, "a": {"c": "Citation verification pipeline, FActScore, FactBench", "h": 2}}, {"b": {"c": "Input filtering: keyword blocklists, regex patterns", "h": 3}, "i": {"c": "NeMo Guardrails: rails config, topical, safety, jailbreak", "h": 4}, "a": {"c": "Llama Guard: fine-tuned classifier, custom policy guardrails", "h": 3}}, {"b": {"c": "VQA datasets: VQAv2, basic evaluation setup", "h": 3}, "i": {"c": "Vision-language benchmarks: MMBench, MMMU", "h": 3}, "a": {"c": "Image-text alignment scoring, CLIP score, BLIP evaluation", "h": 2}}], [{"b": {"c": "Pods: smallest unit, spec, containers, restart policy", "h": 5}, "i": {"c": "Deployments, ReplicaSets, Services (ClusterIP/NodePort/LB)", "h": 6}, "a": {"c": "Namespaces, RBAC (roles/bindings), ConfigMaps, Secrets", "h": 5}}, {"b": {"c": "Resource requests vs limits, CPU/memory units", "h": 4}, "i": {"c": "GPU node pools, nodeSelector, tolerations for GPU nodes", "h": 4}, "a": {"c": "Pod affinity/anti-affinity, topology spread constraints", "h": 4}}, {"b": {"c": "Helm install/upgrade/rollback, chart structure basics", "h": 3}, "i": {"c": "values.yaml customisation, templating with {{ .Values }}", "h": 4}, "a": {"c": "Chart repositories, chart museum, Helmfile for multi-chart", "h": 3}}, {"b": {"c": "HPA: CPU-based scaling, kubectl autoscale", "h": 3}, "i": {"c": "KEDA: ScaledObject, custom metrics, Kafka lag scaling", "h": 4}, "a": {"c": "VPA, cluster autoscaler, event-driven at scale", "h": 3}}, {"b": {"c": "Istio: sidecar injection, basic traffic routing", "h": 3}, "i": {"c": "VirtualService, DestinationRule, traffic splitting", "h": 3}, "a": {"c": "Canary deployments with Flagger, circuit breaking, mTLS", "h": 2}}, {"b": {"c": "Prometheus: metrics format, PromQL basics, scraping", "h": 4}, "i": {"c": "Grafana: datasources, dashboards, alert rules", "h": 4}, "a": {"c": "Distributed tracing: Jaeger/Tempo, OpenTelemetry instrumentation", "h": 4}}], [{"b": {"c": "ViT: image patches, position embeddings, classification token", "h": 5}, "i": {"c": "DINOv2: self-supervised training, feature extraction", "h": 5}, "a": {"c": "CLIP: contrastive pre-training, zero-shot classification, embeddings", "h": 4}}, {"b": {"c": "LLaVA: architecture, visual instruction tuning, basic usage", "h": 5}, "i": {"c": "Qwen-VL: multi-image, video understanding, Chinese support", "h": 5}, "a": {"c": "PaliGemma, InternVL, architecture comparison, when to use each", "h": 4}}, {"b": {"c": "GPT-4o vision: image input format, basic VQA", "h": 3}, "i": {"c": "Claude 3 vision: document understanding, chart reading", "h": 3}, "a": {"c": "Gemini Pro Vision, batch processing, cost optimisation", "h": 2}}, {"b": {"c": "Stable Diffusion: U-Net, VAE, CLIP text encoder, sampling", "h": 4}, "i": {"c": "FLUX architecture, ControlNet for conditioning", "h": 4}, "a": {"c": "DreamBooth fine-tuning, LoRA for diffusion, SDXL training", "h": 4}}, {"b": {"c": "Tesseract: basic OCR, language packs, image preprocessing", "h": 3}, "i": {"c": "PaddleOCR: detection + recognition pipeline, table extraction", "h": 4}, "a": {"c": "DocumentAI: layout-aware parsing, form extraction, invoice processing", "h": 3}}, {"b": {"c": "Frame sampling strategies: uniform, keyframe detection", "h": 3}, "i": {"c": "VideoLLaMA: video encoding, temporal features, QA", "h": 4}, "a": {"c": "Temporal reasoning, video captioning, action recognition", "h": 3}}]]};
-
-buildSectionPages();
-      updateAll();
-      setConnStatus('online','live sync');
-    });
-
-  } catch(e) {
-    console.warn('Firebase init failed:', e);
-    setConnStatus('offline','local only');
-    // Fall back to localStorage
-    try{ state = JSON.parse(localStorage.getItem('mlv3')) || defaultState(); }catch{}
-  }
-}
+let dbRef=null;
 
 function save(){
-  // Always keep localStorage as fallback
-  try{ localStorage.setItem('mlv3', JSON.stringify(state)); }catch{}
-  // Push to Firebase
+  try{ localStorage.setItem('mlv3',JSON.stringify(state)); }catch{}
   if(dbRef){
     setConnStatus('syncing','saving...');
     dbRef.set(state)
-      .then(()=> setConnStatus('online','live sync'))
-      .catch(()=> setConnStatus('offline','save failed'));
+      .then(()=>setConnStatus('online','live sync'))
+      .catch(()=>setConnStatus('offline','save failed'));
   }
 }
 
-function subHoursForCheckpoint(cp,si,mi,ci){
-  const subData=SUBS[si]&&SUBS[si][mi]&&SUBS[si][mi][ci];
-  if(!subData) return [{h:Math.round(cp.hours*.3)},{h:Math.round(cp.hours*.35)},{h:cp.hours-Math.round(cp.hours*.3)-Math.round(cp.hours*.35)}];
-  return [subData.b,subData.i,subData.a];
+// ── Computed ────────────────────────────────────────────
+function subDataFor(secId,mi,ci){
+  return SUBS[secId]&&SUBS[secId][mi]&&SUBS[secId][mi][ci];
 }
+
+function subHours(secId,mi,ci){
+  const sd=subDataFor(secId,mi,ci);
+  const cp=SECTIONS.find(s=>s.id===secId).months[mi].checkpoints[ci];
+  if(!sd) return [Math.round(cp.hours*.3),Math.round(cp.hours*.35),cp.hours-Math.round(cp.hours*.3)-Math.round(cp.hours*.35)];
+  return [sd.b.h,sd.i.h,sd.a.h];
+}
+
 function secHours(secId){
-  const sec=SECTIONS.find(s=>s.id===secId);const st=state[secId];
+  const sec=SECTIONS.find(s=>s.id===secId);
+  const st=state[secId];
   let done=0,total=0;
   sec.months.forEach((m,mi)=>m.checkpoints.forEach((cp,ci)=>{
-    const subs=subHoursForCheckpoint(cp,secId,mi,ci);
-    subs.forEach((s,si)=>{
-      total+=s.h;
-      if(st[mi].subs&&st[mi].subs[ci]&&st[mi].subs[ci][si]) done+=s.h;
+    const sh=subHours(secId,mi,ci);
+    sh.forEach((h,si)=>{
+      total+=h;
+      if(st[mi].subs&&st[mi].subs[ci]&&st[mi].subs[ci][si]) done+=h;
     });
   }));
   return{done,total};
 }
-function secChecked(secId){const sec=SECTIONS.find(s=>s.id===secId);const st=state[secId];let done=0,total=0;sec.months.forEach((m,mi)=>m.checkpoints.forEach((_,ci)=>{total++;if(st[mi].checked[ci])done++}));return{done,total}}
-function secPct(secId){const h=secHours(secId);return h.total===0?0:Math.round(h.done/h.total*100)}
+
+function secChecked(secId){
+  const sec=SECTIONS.find(s=>s.id===secId);
+  const st=state[secId];
+  let done=0,total=0;
+  sec.months.forEach((m,mi)=>m.checkpoints.forEach((_,ci)=>{
+    total+=3;
+    if(st[mi].subs&&st[mi].subs[ci]) done+=st[mi].subs[ci].filter(Boolean).length;
+  }));
+  return{done,total};
+}
+
+function secPct(secId){
+  const h=secHours(secId);
+  return h.total===0?0:Math.round(h.done/h.total*100);
+}
+
 function monthPct(secId,mi){
-  const sec=SECTIONS.find(s=>s.id===secId);const st=state[secId][mi];const m=sec.months[mi];
+  const sec=SECTIONS.find(s=>s.id===secId);
+  const st=state[secId][mi];
+  const m=sec.months[mi];
   let done=0,total=0;
   m.checkpoints.forEach((cp,ci)=>{
-    const subs=subHoursForCheckpoint(cp,secId,mi,ci);
-    subs.forEach((s,si)=>{
-      total+=s.h;
-      if(st.subs&&st.subs[ci]&&st.subs[ci][si]) done+=s.h;
+    const sh=subHours(secId,mi,ci);
+    sh.forEach((h,si)=>{
+      total+=h;
+      if(st.subs&&st.subs[ci]&&st.subs[ci][si]) done+=h;
     });
   });
   return total===0?0:Math.round(done/total*100);
 }
-function globalStats(){let td=0,tt=0,hd=0,ht=0;SECTIONS.forEach(sec=>{const c=secChecked(sec.id);const h=secHours(sec.id);td+=c.done;tt+=c.total;hd+=h.done;ht+=h.total});return{topicsDone:td,topicsTotal:tt,hrsDone:hd,hrsTotal:ht,pct:ht===0?0:Math.round(hd/ht*100)}}
 
+function globalStats(){
+  let td=0,tt=0,hd=0,ht=0;
+  SECTIONS.forEach(sec=>{
+    const c=secChecked(sec.id);
+    const h=secHours(sec.id);
+    td+=c.done;tt+=c.total;hd+=h.done;ht+=h.total;
+  });
+  return{topicsDone:td,topicsTotal:tt,hrsDone:hd,hrsTotal:ht,pct:ht===0?0:Math.round(hd/ht*100)};
+}
+
+// ── Navigation ──────────────────────────────────────────
 function showPage(id){
   document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
   document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
@@ -539,8 +495,10 @@ function showPage(id){
   updateAll();
 }
 
+// ── Build section pages ─────────────────────────────────
 function buildSectionPages(){
   const container=document.getElementById('section-pages');
+  container.innerHTML='';
   SECTIONS.forEach(sec=>{
     const page=document.createElement('div');
     page.className='page';page.id='page-'+sec.id;
@@ -559,15 +517,21 @@ function buildSectionPages(){
       <div class="cards-grid" id="cards-${sec.id}"></div>`;
     container.appendChild(page);
     const grid=page.querySelector(`#cards-${sec.id}`);
-    sec.months.forEach((m,mi)=>grid.appendChild(buildCard(sec,mi)));
+    sec.months.forEach((_,mi)=>grid.appendChild(buildCard(sec,mi)));
   });
 }
 
+const SUB_LEVELS=[
+  {key:'b',label:'Beginner',color:'#22c55e'},
+  {key:'i',label:'Intermediate',color:'#f59e0b'},
+  {key:'a',label:'Advanced',color:'#ec4899'}
+];
+
 function buildCard(sec,mi){
-  const m=sec.months[mi];const isBonus=sec.isBonus;
+  const m=sec.months[mi];const isBonus=!!sec.isBonus;
   const card=document.createElement('div');
   card.className='topic-card';card.id=`card-${sec.id}-${mi}`;
-  const numLabel=typeof m.num==='number'?`Month ${m.num} · ${String(m.num).padStart(2,'0')}/12`:`Bonus ${m.num}`;
+  const numLabel=typeof m.num==='number'?`Month ${m.num} \u00B7 ${String(m.num).padStart(2,'0')}/12`:`Bonus ${m.num}`;
   const pc=isBonus?'rgba(249,115,22,.1)':'rgba(124,58,237,.08)';
   const pb=isBonus?'rgba(249,115,22,.22)':'rgba(124,58,237,.22)';
   const pt=isBonus?'#f97316':'#a78bfa';
@@ -575,233 +539,328 @@ function buildCard(sec,mi){
     <div class="tc-header">
       <div class="tc-stripe" id="stripe-${sec.id}-${mi}" style="background:${sec.color}"></div>
       <div>
-        <div class="tc-num">${numLabel}${m.roleLabel?' · '+m.roleLabel:''}</div>
+        <div class="tc-num">${numLabel}${m.roleLabel?' \u00B7 '+m.roleLabel:''}</div>
         <div class="tc-title">${m.title}</div>
       </div>
       <div class="tc-badge badge-todo" id="badge-${sec.id}-${mi}">upcoming</div>
     </div>
     <div class="tc-body" id="body-${sec.id}-${mi}"></div>
-    <div class="project-tag" style="background:${pc};border-color:${pb};color:${pt}">▸ ${m.project}</div>
+    <div class="project-tag" style="background:${pc};border-color:${pb};color:${pt}">\u25B8 ${m.project}</div>
     <div class="tc-footer">
       <div class="tc-track"><div class="tc-fill" id="fill-${sec.id}-${mi}" style="background:${sec.color}"></div></div>
       <div class="tc-pct-label" id="pct-${sec.id}-${mi}">0%</div>
       <div class="tc-time-label" id="tlbl-${sec.id}-${mi}"></div>
     </div>`;
-  const body=card.querySelector(`#body-${sec.id}-${mi}`);
-  const LEVELS=[
-    {key:'b',label:'Beginner',color:'#22c55e'},
-    {key:'i',label:'Intermediate',color:'#f59e0b'},
-    {key:'a',label:'Advanced',color:'#ec4899'}
-  ];
-  m.checkpoints.forEach((cp,ci)=>{
-    const subData=SUBS[sec.id]&&SUBS[sec.id][mi]&&SUBS[sec.id][mi][ci];
-    const wrap=document.createElement('div');wrap.className='ck-expand-wrap';
+  renderCardBody(sec,mi,card);
+  return card;
+}
 
-    // Header row — clickable to expand
-    const header=document.createElement('div');header.className='ck-expand';
-    const totalSubH=subData?LEVELS.reduce((s,l)=>s+subData[l.key].h,0):cp.hours;
-    const doneSubs=state[sec.id][mi].subs&&state[sec.id][mi].subs[ci]?state[sec.id][mi].subs[ci].filter(Boolean).length:0;
-    const allDone=doneSubs===3;
-    const pips=LEVELS.map((l,li)=>{
+function renderCardBody(sec,mi,card){
+  const m=sec.months[mi];const isBonus=!!sec.isBonus;
+  const body=card?card.querySelector(`#body-${sec.id}-${mi}`):document.getElementById(`body-${sec.id}-${mi}`);
+  if(!body) return;
+  body.innerHTML='';
+  m.checkpoints.forEach((cp,ci)=>{
+    const sd=subDataFor(sec.id,mi,ci);
+    const sh=subHours(sec.id,mi,ci);
+    const totalH=sh.reduce((a,b)=>a+b,0);
+    const subsDone=(state[sec.id][mi].subs&&state[sec.id][mi].subs[ci])?state[sec.id][mi].subs[ci].filter(Boolean).length:0;
+    const allDone=subsDone===3;
+
+    const pips=SUB_LEVELS.map((l,li)=>{
       const done=state[sec.id][mi].subs&&state[sec.id][mi].subs[ci]&&state[sec.id][mi].subs[ci][li];
       return `<div class="sub-pip" style="background:${done?l.color:l.color+'33'}"></div>`;
     }).join('');
+
+    const wrap=document.createElement('div');
+    wrap.className='ck-expand-wrap';
+    const header=document.createElement('div');
+    header.className='ck-expand';
     header.innerHTML=`
-      <div class="ck-expand-arrow" id="arrow-${sec.id}-${mi}-${ci}">▶</div>
+      <div class="ck-expand-arrow" id="arrow-${sec.id}-${mi}-${ci}">\u25B6</div>
       <div class="ck-content" style="flex:1">
         <div class="ck-topic" style="${allDone?'text-decoration:line-through;opacity:.5':''}">${cp.topic}</div>
         <div class="ck-detail">${cp.detail}</div>
-        <div class="sub-progress" style="margin-top:5px">${pips}</div>
+        <div class="sub-progress">${pips}</div>
       </div>
-      <div class="ck-time">~${totalSubH}h · ${doneSubs}/3</div>`;
+      <div class="ck-time" id="cktime-${sec.id}-${mi}-${ci}">~${totalH}h \u00B7 ${subsDone}/3</div>`;
 
-    // Sub rows container
-    const subRows=document.createElement('div');subRows.className='sub-rows';subRows.id=`subs-${sec.id}-${mi}-${ci}`;
+    const subRows=document.createElement('div');
+    subRows.className='sub-rows';
+    subRows.id=`subs-${sec.id}-${mi}-${ci}`;
 
-    if(subData){
-      LEVELS.forEach((level,li)=>{
-        const sub=subData[level.key];
-        const isDone=state[sec.id][mi].subs&&state[sec.id][mi].subs[ci]&&state[sec.id][mi].subs[ci][li];
-        const subRow=document.createElement('div');subRow.className='sub-row';
-        subRow.innerHTML=`
-          <div class="sub-box${isBonus?' bonus-ck':''}" data-sec="${sec.id}" data-mi="${mi}" data-ci="${ci}" data-si="${li}" style="color:${level.color};${isDone?'background:'+level.color+';border-color:'+level.color:'border-color:'+level.color+'66'}">
-            ${isDone?'<span style="font-size:7px;color:#000;font-weight:700">✓</span>':''}
-          </div>
-          <div class="sub-badge" style="background:${level.color}22;color:${level.color}">${level.label}</div>
-          <div class="sub-content">
-            <div class="sub-concept" style="${isDone?'text-decoration:line-through;opacity:.5':''}">${sub.c}</div>
-          </div>
-          <div class="sub-hrs">~${sub.h}h</div>`;
-        subRow.querySelector('.sub-box').addEventListener('click',e=>{
-          const{sec:sid,mi:m,ci:c,si:s}=e.target.closest('[data-sec]').dataset;
-          const mi2=+m,ci2=+c,si2=+s;
-          if(!state[sid][mi2].subs) state[sid][mi2].subs=SECTIONS.find(x=>x.id===sid).months[mi2].checkpoints.map(()=>[false,false,false]);
-          state[sid][mi2].subs[ci2][si2]=!state[sid][mi2].subs[ci2][si2];
-          // Auto-check parent if all 3 done
-          state[sid][mi2].checked[ci2]=state[sid][mi2].subs[ci2].every(Boolean);
-          save();updateAll();
-        });
-        subRows.appendChild(subRow);
+    SUB_LEVELS.forEach((level,li)=>{
+      const subInfo=sd?sd[level.key]:{c:'',h:sh[li]};
+      const isDone=state[sec.id][mi].subs&&state[sec.id][mi].subs[ci]&&state[sec.id][mi].subs[ci][li];
+      const subRow=document.createElement('div');
+      subRow.className='sub-row';
+      const boxClass=isBonus?'sub-box bonus-ck':'sub-box';
+      subRow.innerHTML=`
+        <div class="${boxClass}" data-sec="${sec.id}" data-mi="${mi}" data-ci="${ci}" data-si="${li}"
+          style="border-color:${level.color}66;${isDone?'background:'+level.color+';border-color:'+level.color:''}">
+          ${isDone?'<span style="font-size:7px;color:#000;font-weight:700">\u2713</span>':''}
+        </div>
+        <div class="sub-badge" style="background:${level.color}22;color:${level.color}">${level.label}</div>
+        <div class="sub-content">
+          <div class="sub-concept" style="${isDone?'text-decoration:line-through;opacity:.5':''}">${subInfo.c}</div>
+        </div>
+        <div class="sub-hrs">~${subInfo.h}h</div>`;
+      subRow.querySelector('.sub-box').addEventListener('click',e=>{
+        const el=e.currentTarget;
+        const sid=el.dataset.sec,mi2=+el.dataset.mi,ci2=+el.dataset.ci,si2=+el.dataset.si;
+        if(!state[sid][mi2].subs) state[sid][mi2].subs=SECTIONS.find(x=>x.id===sid).months[mi2].checkpoints.map(()=>[false,false,false]);
+        state[sid][mi2].subs[ci2][si2]=!state[sid][mi2].subs[ci2][si2];
+        state[sid][mi2].checked[ci2]=state[sid][mi2].subs[ci2].every(Boolean);
+        save();updateAll();
       });
-    }
+      subRows.appendChild(subRow);
+    });
 
-    // Toggle expand on header click
     header.addEventListener('click',()=>{
-      const arrow=document.getElementById(`arrow-${sec.id}-${mi}-${ci}`);
       const isOpen=subRows.classList.toggle('open');
-      if(arrow){arrow.classList.toggle('open',isOpen);arrow.style.color=isOpen?sec.color:'';}
+      const arrow=document.getElementById(`arrow-${sec.id}-${mi}-${ci}`);
+      if(arrow){arrow.classList.toggle('open',isOpen);if(isOpen)arrow.style.color=sec.color;else arrow.style.color='';}
     });
 
     wrap.appendChild(header);
     wrap.appendChild(subRows);
     body.appendChild(wrap);
   });
-  return card;
 }
 
+// ── updateAll ───────────────────────────────────────────
 function updateAll(){
   const g=globalStats();
+  // Sidebar
   document.getElementById('sidebar-pct').textContent=g.pct+'%';
   document.getElementById('sidebar-fill').style.width=g.pct+'%';
   const _mpct=document.getElementById('mobile-pct');if(_mpct)_mpct.textContent=g.pct+'%';
+
   SECTIONS.forEach(sec=>{
     const pct=secPct(sec.id);
-    const el=document.getElementById('nav-pct-'+sec.id);
-    if(el)el.textContent=pct+'%';
+    const navPct=document.getElementById('nav-pct-'+sec.id);
+    if(navPct) navPct.textContent=pct+'%';
+
     sec.months.forEach((m,mi)=>{
-      const pct=monthPct(sec.id,mi);
+      const pct2=monthPct(sec.id,mi);
       const st=state[sec.id][mi];
-      const totalH=m.checkpoints.reduce((s,cp)=>s+cp.hours,0);
-      const doneH=m.checkpoints.reduce((s,cp,ci)=>s+(st.checked[ci]?cp.hours:0),0);
-      const fill=document.getElementById(`fill-${sec.id}-${mi}`);if(fill)fill.style.width=pct+'%';
-      const pctEl=document.getElementById(`pct-${sec.id}-${mi}`);if(pctEl)pctEl.textContent=pct+'%';
-      const tlbl=document.getElementById(`tlbl-${sec.id}-${mi}`);if(tlbl)tlbl.textContent=pct===100?`${totalH}h ✓`:`${totalH-doneH}h left`;
+      const sh_total=m.checkpoints.reduce((s,cp,ci)=>s+subHours(sec.id,mi,ci).reduce((a,b)=>a+b,0),0);
+      const sh_done=m.checkpoints.reduce((s,cp,ci)=>{
+        const sh=subHours(sec.id,mi,ci);
+        return s+sh.reduce((a,h,si)=>a+(st.subs&&st.subs[ci]&&st.subs[ci][si]?h:0),0);
+      },0);
+
+      const fill=document.getElementById(`fill-${sec.id}-${mi}`);if(fill)fill.style.width=pct2+'%';
+      const pctEl=document.getElementById(`pct-${sec.id}-${mi}`);if(pctEl)pctEl.textContent=pct2+'%';
+      const tlbl=document.getElementById(`tlbl-${sec.id}-${mi}`);if(tlbl)tlbl.textContent=pct2===100?`${sh_total}h \u2713`:`${sh_total-sh_done}h left`;
+
       const badge=document.getElementById(`badge-${sec.id}-${mi}`);
-      if(badge){badge.className='tc-badge '+(pct===100?'badge-done':pct>0?'badge-wip':'badge-todo');badge.textContent=pct===100?'done':pct>0?'in progress':'upcoming'}
+      if(badge){badge.className='tc-badge '+(pct2===100?'badge-done':pct2>0?'badge-wip':'badge-todo');badge.textContent=pct2===100?'done':pct2>0?'in progress':'upcoming';}
+
       const card=document.getElementById(`card-${sec.id}-${mi}`);
-      if(card){card.className='topic-card '+(pct===100?'status-done':pct>0?'status-wip':'')}
-      // rebuild card body on update
-      const body=document.getElementById(`body-${sec.id}-${mi}`);
-      if(body){
-        m.checkpoints.forEach((cp,ci)=>{
-          const LEVELS=[{key:'b',color:'#22c55e'},{key:'i',color:'#f59e0b'},{key:'a',color:'#ec4899'}];
-          const subData=SUBS[sec.id]&&SUBS[sec.id][mi]&&SUBS[sec.id][mi][ci];
-          const doneSubs=st.subs&&st.subs[ci]?st.subs[ci].filter(Boolean).length:0;
-          const allDone=doneSubs===3;
-          // Update pip colors
-          const wrap=body.querySelectorAll('.ck-expand-wrap')[ci];
-          if(!wrap) return;
+      if(card) card.className='topic-card '+(pct2===100?'status-done':pct2>0?'status-wip':'');
+
+      // Update sub-checkboxes in-place
+      m.checkpoints.forEach((cp,ci)=>{
+        const subsDone=(st.subs&&st.subs[ci])?st.subs[ci].filter(Boolean).length:0;
+        const allDone=subsDone===3;
+        const sh=subHours(sec.id,mi,ci);
+        const totalH=sh.reduce((a,b)=>a+b,0);
+
+        const timeEl=document.getElementById(`cktime-${sec.id}-${mi}-${ci}`);
+        if(timeEl) timeEl.textContent=`~${totalH}h \u00B7 ${subsDone}/3`;
+
+        const arrow=document.getElementById(`arrow-${sec.id}-${mi}-${ci}`);
+        const wrap=arrow?arrow.closest('.ck-expand-wrap'):null;
+        if(wrap){
+          const topic=wrap.querySelector('.ck-topic');
+          if(topic) topic.style=allDone?'text-decoration:line-through;opacity:.5':'';
           const pips=wrap.querySelectorAll('.sub-pip');
           pips.forEach((pip,li)=>{
             const done=st.subs&&st.subs[ci]&&st.subs[ci][li];
-            pip.style.background=done?LEVELS[li].color:LEVELS[li].color+'33';
+            pip.style.background=done?SUB_LEVELS[li].color:SUB_LEVELS[li].color+'33';
           });
-          // Update topic strikethrough
-          const topic=wrap.querySelector('.ck-topic');
-          if(topic) topic.style=allDone?'text-decoration:line-through;opacity:.5':'';
-          // Update counter
-          const time=wrap.querySelector('.ck-time');
-          if(time){const totalH=subData?LEVELS.reduce((s,l)=>s+subData[l.key].h,0):cp.hours;time.textContent=`~${totalH}h · ${doneSubs}/3`;}
-          // Update sub-boxes
-          if(subData){
-            const subBoxes=wrap.querySelectorAll('.sub-box');
-            subBoxes.forEach((box,li)=>{
-              const done=st.subs&&st.subs[ci]&&st.subs[ci][li];
-              box.style.background=done?LEVELS[li].color:'';
-              box.style.borderColor=done?LEVELS[li].color:LEVELS[li].color+'66';
-              box.innerHTML=done?'<span style="font-size:7px;color:#000;font-weight:700">✓</span>':'';
-            });
-            const subConcepts=wrap.querySelectorAll('.sub-concept');
-            subConcepts.forEach((sc,li)=>{sc.style=st.subs&&st.subs[ci]&&st.subs[ci][li]?'text-decoration:line-through;opacity:.5':'';});
-          }
-        });
-      }
+          const subBoxes=wrap.querySelectorAll('.sub-box');
+          subBoxes.forEach((box,li)=>{
+            const done=st.subs&&st.subs[ci]&&st.subs[ci][li];
+            box.style.borderColor=done?SUB_LEVELS[li].color:SUB_LEVELS[li].color+'66';
+            box.style.background=done?SUB_LEVELS[li].color:'';
+            box.innerHTML=done?'<span style="font-size:7px;color:#000;font-weight:700">\u2713</span>':'';
+          });
+          const concepts=wrap.querySelectorAll('.sub-concept');
+          concepts.forEach((c,li)=>{c.style=st.subs&&st.subs[ci]&&st.subs[ci][li]?'text-decoration:line-through;opacity:.5':'';});
+        }
+      });
     });
-    const h=secHours(sec.id);const pct2=secPct(sec.id);
-    const sp=document.getElementById(`sph-pct-${sec.id}`);if(sp)sp.textContent=pct2+'%';
-    const st2=document.getElementById(`sph-time-${sec.id}`);if(st2)st2.textContent=`${h.done}h done · ${h.total-h.done}h remaining`;
+
+    const h=secHours(sec.id);const pct3=secPct(sec.id);
+    const sp=document.getElementById(`sph-pct-${sec.id}`);if(sp)sp.textContent=pct3+'%';
+    const st2=document.getElementById(`sph-time-${sec.id}`);if(st2)st2.textContent=`${h.done}h done \u00B7 ${h.total-h.done}h remaining`;
   });
+
   updateDashboard(g);
 }
 
 function updateDashboard(g){
-  document.getElementById('d-overall-pct').textContent=g.pct+'%';
-  document.getElementById('d-hrs-done').textContent=g.hrsDone+'h';
-  document.getElementById('d-hrs-total').textContent=g.hrsTotal;
-  document.getElementById('d-topics-done').textContent=g.topicsDone;
-  document.getElementById('d-topics-sub').textContent=`of ${g.topicsTotal} total`;
-  document.getElementById('d-remaining-hrs').textContent=(g.hrsTotal-g.hrsDone)+'h';
+  const d=document.getElementById;
+  const $ = id => document.getElementById(id);
+  if($('d-overall-pct')) $('d-overall-pct').textContent=g.pct+'%';
+  if($('d-hrs-done')) $('d-hrs-done').textContent=g.hrsDone+'h';
+  if($('d-hrs-total')) $('d-hrs-total').textContent=g.hrsTotal;
+  if($('d-topics-done')) $('d-topics-done').textContent=g.topicsDone;
+  if($('d-topics-sub')) $('d-topics-sub').textContent='of '+g.topicsTotal+' total';
+  if($('d-remaining-hrs')) $('d-remaining-hrs').textContent=(g.hrsTotal-g.hrsDone)+'h';
 
-  // Section bars
-  const barsEl=document.getElementById('d-section-bars');barsEl.innerHTML='';
-  SECTIONS.forEach(sec=>{
-    const pct=secPct(sec.id);const h=secHours(sec.id);
-    barsEl.innerHTML+=`<div class="sbar-row">
-      <div class="sbar-header">
-        <div class="sbar-name" style="color:${sec.color}">${sec.label}</div>
-        <div class="sbar-meta">${pct}% · ${h.done}h / ${h.total}h</div>
-      </div>
-      <div class="sbar-track"><div class="sbar-fill" style="width:${pct}%;background:${sec.color}"></div></div>
-    </div>`;
-  });
-
-  // Time breakdown
-  const tbEl=document.getElementById('d-time-breakdown');tbEl.innerHTML='';
-  const maxH=Math.max(...SECTIONS.map(sec=>secHours(sec.id).total));
-  SECTIONS.forEach(sec=>{
-    const h=secHours(sec.id);
-    const wt=(h.total/maxH)*100,wd=(h.done/maxH)*100;
-    tbEl.innerHTML+=`<div class="tb-row">
-      <div class="tb-name" style="color:${sec.color}">${sec.label}</div>
-      <div class="tb-track">
-        <div class="tb-bg" style="width:${wt}%;background:${sec.color}22"></div>
-        <div class="tb-fill" style="width:${wd}%;background:${sec.color}"></div>
-      </div>
-      <div class="tb-hrs">${h.total}h</div>
-    </div>`;
-  });
-
-  // Heatmap
-  const hmEl=document.getElementById('d-heatmap');hmEl.innerHTML='';
-  let mi=0;
-  SECTIONS.filter(s=>!s.isBonus).forEach(sec=>{
-    sec.months.forEach((m,mii)=>{
-      mi++;const pct=monthPct(sec.id,mii);
-      const bg=pct===0?'var(--border)':pct<25?'#182818':pct<50?'#1e4a1e':pct<75?'#1a7a1a':pct<100?'#00cc66':'var(--c4)';
-      hmEl.innerHTML+=`<div class="hm-col">
-        <div class="hm-month-label">M${mi}</div>
-        <div class="hm-cell" style="background:${bg}" title="${m.title}: ${pct}%"></div>
-        <div style="font-size:7px;color:var(--muted);text-align:center">${pct}%</div>
+  const barsEl=$('d-section-bars');
+  if(barsEl){
+    barsEl.innerHTML='';
+    SECTIONS.forEach(sec=>{
+      const pct=secPct(sec.id);const h=secHours(sec.id);
+      barsEl.innerHTML+=`<div class="sbar-row">
+        <div class="sbar-header">
+          <div class="sbar-name" style="color:${sec.color}">${sec.label}</div>
+          <div class="sbar-meta">${pct}% \u00B7 ${h.done}h / ${h.total}h</div>
+        </div>
+        <div class="sbar-track"><div class="sbar-fill" style="width:${pct}%;background:${sec.color}"></div></div>
       </div>`;
     });
-  });
+  }
 
-  // Overview cards
-  const ovEl=document.getElementById('d-sections-overview');ovEl.innerHTML='';
-  SECTIONS.forEach(sec=>{
-    const pct=secPct(sec.id);const h=secHours(sec.id);const c=secChecked(sec.id);
-    const bt=pct===100?'Complete':pct>0?'In Progress':'Not Started';
-    const bb=pct===100?'rgba(0,255,157,.1)':pct>0?'rgba(245,158,11,.1)':'rgba(86,86,128,.1)';
-    const bc=pct===100?'#00ff9d':pct>0?'#f59e0b':'#565680';
-    ovEl.innerHTML+=`<div class="overview-card" onclick="showPage('${sec.id}')">
-      <div class="oc-top">
-        <div class="oc-dot" style="background:${sec.color}"></div>
-        <div class="oc-badge" style="background:${bb};color:${bc}">${bt}</div>
-      </div>
-      <div class="oc-title">${sec.label}</div>
-      <div class="oc-meta">${sec.months.length} modules · ${h.total}h total</div>
-      <div class="oc-track"><div class="oc-fill" style="width:${pct}%;background:${sec.color}"></div></div>
-      <div class="oc-pct"><span style="color:${sec.color};font-weight:500">${pct}%</span><span>${c.done}/${c.total} topics</span></div>
-    </div>`;
+  const tbEl=$('d-time-breakdown');
+  if(tbEl){
+    tbEl.innerHTML='';
+    const maxH=Math.max(...SECTIONS.map(sec=>secHours(sec.id).total));
+    SECTIONS.forEach(sec=>{
+      const h=secHours(sec.id);
+      const wt=(h.total/maxH)*100,wd=(h.done/maxH)*100;
+      tbEl.innerHTML+=`<div class="tb-row">
+        <div class="tb-name" style="color:${sec.color}">${sec.label}</div>
+        <div class="tb-track">
+          <div class="tb-bg" style="width:${wt}%;background:${sec.color}22"></div>
+          <div class="tb-fill" style="width:${wd}%;background:${sec.color}"></div>
+        </div>
+        <div class="tb-hrs">${h.total}h</div>
+      </div>`;
+    });
+  }
+
+  const hmEl=$('d-heatmap');
+  if(hmEl){
+    hmEl.innerHTML='';
+    let mIdx=0;
+    SECTIONS.filter(s=>!s.isBonus).forEach(sec=>{
+      sec.months.forEach((_,mi)=>{
+        mIdx++;
+        const pct=monthPct(sec.id,mi);
+        const bg=pct===0?'var(--border)':pct<25?'#182818':pct<50?'#1e4a1e':pct<75?'#1a7a1a':pct<100?'#00cc66':'var(--c4)';
+        hmEl.innerHTML+=`<div class="hm-col">
+          <div class="hm-month-label">M${mIdx}</div>
+          <div class="hm-cell" style="background:${bg}" title="Month ${mIdx}: ${pct}%"></div>
+          <div style="font-size:7px;color:var(--muted);text-align:center">${pct}%</div>
+        </div>`;
+      });
+    });
+  }
+
+  const ovEl=$('d-sections-overview');
+  if(ovEl){
+    ovEl.innerHTML='';
+    SECTIONS.forEach(sec=>{
+      const pct=secPct(sec.id);const h=secHours(sec.id);const c=secChecked(sec.id);
+      const bt=pct===100?'Complete':pct>0?'In Progress':'Not Started';
+      const bb=pct===100?'rgba(0,255,157,.1)':pct>0?'rgba(245,158,11,.1)':'rgba(86,86,128,.1)';
+      const bc=pct===100?'#00ff9d':pct>0?'#f59e0b':'#565680';
+      ovEl.innerHTML+=`<div class="overview-card" onclick="showPage('${sec.id}')">
+        <div class="oc-top"><div class="oc-dot" style="background:${sec.color}"></div><div class="oc-badge" style="background:${bb};color:${bc}">${bt}</div></div>
+        <div class="oc-title">${sec.label}</div>
+        <div class="oc-meta">${sec.months.length} modules \u00B7 ${h.total}h total</div>
+        <div class="oc-track"><div class="oc-fill" style="width:${pct}%;background:${sec.color}"></div></div>
+        <div class="oc-pct"><span style="color:${sec.color};font-weight:500">${pct}%</span><span>${c.done}/${c.total} subtopics</span></div>
+      </div>`;
+    });
+  }
+}
+
+// ── Connection status ───────────────────────────────────
+function setConnStatus(status,label){
+  const badge=document.getElementById('connBadge');
+  const lbl=document.getElementById('connLabel');
+  if(badge) badge.className='conn-badge '+status;
+  if(lbl) lbl.textContent=label;
+}
+
+// ── Firebase config ─────────────────────────────────────
+const FB_CONFIG={
+  apiKey:"AIzaSyAqQ6_fMH6ZWUiUVft-lkrcq7PtGlVK0QQ",
+  authDomain:"roadmap-ai-engineer.firebaseapp.com",
+  databaseURL:"https://roadmap-ai-engineer-default-rtdb.firebaseio.com",
+  projectId:"roadmap-ai-engineer",
+  storageBucket:"roadmap-ai-engineer.firebasestorage.app",
+  messagingSenderId:"537772791154",
+  appId:"1:537772791154:web:d302ea03be43cc8c0379eb"
+};
+const FB_PATH="roadmap/state";
+
+// ── Firebase init ───────────────────────────────────────
+firebase.initializeApp(FB_CONFIG);
+
+function signInWithGoogle(){
+  const provider=new firebase.auth.GoogleAuthProvider();
+  firebase.auth().signInWithPopup(provider).catch(err=>{
+    document.getElementById("authError").classList.add("show");
+    document.getElementById("authError").textContent=err.message;
   });
 }
 
-buildSectionPages();
-updateAll();
-setConnStatus('offline','sign in to sync');
-// Auth listener already set up above — initFirebase() called after successful login
+firebase.auth().onAuthStateChanged(user=>{
+  if(user){
+    document.getElementById("authGate").classList.add("hidden");
+    const uname=document.getElementById("sidebar-username");
+    const uavatar=document.getElementById("sidebar-avatar");
+    if(uname) uname.textContent=user.displayName||user.email;
+    if(uavatar) uavatar.src=user.photoURL||"";
+    initFirebase(user.uid);
+  }
+});
 
-// Mobile sidebar
+function initFirebase(uid){
+  try{
+    const db=firebase.database();
+    const userPath="roadmap/users/"+uid+"/state";
+    dbRef=db.ref(userPath);
+
+    db.ref('.info/connected').on('value',snap=>{
+      if(snap.val()) setConnStatus('online','live sync');
+      else setConnStatus('offline','offline');
+    });
+
+    dbRef.on('value',snap=>{
+      const remote=snap.val();
+      if(remote){
+        SECTIONS.forEach(sec=>{
+          if(remote[sec.id]){
+            sec.months.forEach((m,mi)=>{
+              if(remote[sec.id][mi]){
+                state[sec.id][mi].checked=remote[sec.id][mi].checked||state[sec.id][mi].checked;
+                state[sec.id][mi].subs=remote[sec.id][mi].subs||state[sec.id][mi].subs;
+              }
+            });
+          }
+        });
+        state=migrateState(state);
+      }
+      updateAll();
+      setConnStatus('online','live sync');
+    });
+  }catch(e){
+    console.warn('Firebase error:',e);
+    setConnStatus('offline','local only');
+  }
+}
+
+setConnStatus('','connecting...');
+
+// ── Mobile sidebar ──────────────────────────────────────
 function toggleSidebar(){
   const s=document.querySelector('.sidebar');
   const o=document.getElementById('sidebarOverlay');
@@ -812,12 +871,13 @@ function closeSidebar(){
   document.querySelector('.sidebar').classList.remove('open');
   document.getElementById('sidebarOverlay').classList.remove('open');
 }
-
-// Close sidebar on nav item click (mobile)
 document.querySelectorAll('.nav-item').forEach(el=>{
-  el.addEventListener('click',()=>{ if(window.innerWidth<=768) closeSidebar(); });
+  el.addEventListener('click',()=>{if(window.innerWidth<=768) closeSidebar();});
 });
 
+// ── Boot ────────────────────────────────────────────────
+buildSectionPages();
+updateAll();
 
 </script>
 <div class="conn-badge" id="connBadge">
